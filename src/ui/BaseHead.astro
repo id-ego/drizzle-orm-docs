@@ -8,7 +8,7 @@ interface Props {
 
 const { title, description } = Astro.props;
 const defaultDescription =
-  "Drizzle ORM is a lightweight and performant TypeScript ORM with developer experience in mind.";
+  "Drizzle ORM은 개발자 경험을 중시하는 가볍고 빠른 TypeScript ORM입니다.";
 ---
 
 <head>
@@ -21,11 +21,6 @@ const defaultDescription =
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
   <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
-  <link
-    rel="preconnect"
-    href="https://MXZNUT59HV-dsn.algolia.net"
-    crossorigin
-  />
   <meta name="generator" content={Astro.generator} />
   <title>{title}</title>
   <meta name="description" content={defaultDescription || description} />
@@ -121,31 +116,14 @@ const defaultDescription =
       }
     });
   </script>
-  <script
-    is:inline
-    type="module"
-    src="https://unpkg.com/@inkeep/widgets-embed@0.2.237/dist/embed.js"
-    defer></script>
-  <script
-    is:inline
-    defer
-    data-domain="orm.drizzle.team"
-    src="https://plausible.io/js/script.js"></script>
-  <script is:inline src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
   <link rel="stylesheet" href="/preferred.css" />
+  <!-- DocSearch -->
   <link
     rel="preconnect"
     href="https://MXZNUT59HV-dsn.algolia.net"
     crossorigin
   />
-  <script
-    is:inline
-    defer
-    data-site-id="orm.drizzle.team"
-    src="https://assets.onedollarstats.com/tracker.js"></script>
-  <script is:inline defer src="https://scripts.withcabin.com/hello.js"></script>
-  <script is:inline async src="https://scripts.simpleanalyticscdn.com/latest.js"
-  ></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
   <GlobalStyles />
 </head>

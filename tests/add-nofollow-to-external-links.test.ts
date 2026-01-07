@@ -36,6 +36,13 @@ describe("addNofollowToExternalLinks", () => {
     expect(addNofollowToExternalLinks(input)).toBe(output);
   });
 
+  it('should not add rel="nofollow" to links on drizzle.docsforall.com but should add target="_blank"', () => {
+    const input = '<a href="https://drizzle.docsforall.com">Drizzle ORM 한글</a>';
+    const output =
+      '<a target="_blank" href="https://drizzle.docsforall.com">Drizzle ORM 한글</a>';
+    expect(addNofollowToExternalLinks(input)).toBe(output);
+  });
+
   it('should add rel="nofollow" and target="_blank" to other external links', () => {
     const input = '<a href="https://otherdomain.com">Other Domain</a>';
     const output =

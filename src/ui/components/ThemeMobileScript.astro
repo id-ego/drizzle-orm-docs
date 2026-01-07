@@ -25,26 +25,6 @@
       if(themeSelect) {
         themeSelect.value = theme;
       }
-      let themeName = "";
-
-      if (theme === "system") {
-        themeName = window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-      } else {
-        themeName = theme;
-      }
-      if (window.inkeepWidget) {
-        window.inkeepWidget.render({
-          baseSettings: {
-            theme: {
-              colorMode: {
-                forcedColorMode: themeName,
-              },
-            },
-          },
-        });
-      }
     };
 
     if (themeSelect) {

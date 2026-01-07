@@ -20,7 +20,7 @@ import {
 
 // https://astro.build/config
 export default defineConfig({
-  site: import.meta.env.DEV ? "http://localhost:4321" : "https://orm.drizzle.team",
+  site: import.meta.env.DEV ? "http://localhost:4321" : "https://drizzle.docsforall.com",
   build: {
     format: "file", // mandatory due to CloudFlare Pages trailing slash problem
   },

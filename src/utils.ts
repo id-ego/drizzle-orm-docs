@@ -2,7 +2,7 @@ import type { IHeading, TreeNode } from "@/types";
 
 export const addNofollowToExternalLinks = (html: string): string => {
   const externalLinkPattern =
-    /<a\s+(?![^>]*\brel=["']nofollow["'])([^>]*\bhref=["']https?:\/\/(?!(orm\.drizzle\.team|drizzle\.team)[^"']*)[^"']+["'][^>]*)>/gi;
+    /<a\s+(?![^>]*\brel=["']nofollow["'])([^>]*\bhref=["']https?:\/\/(?!(drizzle\.docsforall\.com|orm\.drizzle\.team|drizzle\.team)[^"']*)[^"']+["'][^>]*)>/gi;
 
   return html
     .replace(externalLinkPattern, '<a $1 rel="nofollow">')
