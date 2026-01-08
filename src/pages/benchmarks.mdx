@@ -3,59 +3,59 @@ import BenchmarkHeader from "@components/BenchmarkHeader.astro";
 
 import MdxBenchmark from "@components/landing/benchmark/MdxBenchmark";
 
-<CenteredLayout customTitle="Benchmarks">
+<CenteredLayout customTitle="벤치마크">
 
 <BenchmarkHeader />
 
 <MdxBenchmark client:load />
 
-## How it works
+## 작동 방식
 
-Drizzle has been originally designed to be a thin layer on top of SQL and introduce minimal runtime overhead and by introducing Prepared Statements and Relational Queries — we've [smashed it](https://medium.com/drizzle-stories/weve-built-typescript-orm-for-821-days-then-this-happened-71282a8b0206). It's now both fast and has exceptional DX and no n+1 problem for relational queries.
+Drizzle은 원래 SQL 위에 얇은 레이어로 설계되어 최소한의 런타임 오버헤드를 도입했으며, Prepared Statements와 Relational Queries를 도입함으로써 [놀라운 성과를 달성했습니다](https://medium.com/drizzle-stories/weve-built-typescript-orm-for-821-days-then-this-happened-71282a8b0206). 이제 빠르면서도 뛰어난 DX를 제공하며, 관계형 쿼리에서 n+1 문제가 없습니다.
 
-But how fast is it? Is it Drizzle or is it SQL who’s fast? What to measure?
+그런데 얼마나 빠를까요? Drizzle이 빠른 건가요, SQL이 빠른 건가요? 무엇을 측정해야 할까요?
 
-What is a meaningful benchmark?
-We’ve spent quite some time doing synthetic benchmarks with mitata, tested everything in one runtime and then in separate containerised so there’s no GC cross-influence, community made their own benchmarks and helped us allocate Relational Queries performance and row reads bottlenecks and make them really fast and efficient.
+의미 있는 벤치마크란 무엇일까요?
+우리는 mitata로 합성 벤치마크를 수행하는 데 상당한 시간을 보냈습니다. 하나의 런타임에서 모든 것을 테스트한 다음 GC 상호 영향이 없도록 별도의 컨테이너에서도 테스트했습니다. 커뮤니티도 자체 벤치마크를 만들어 Relational Queries 성능과 행 읽기 병목 현상을 파악하고 정말 빠르고 효율적으로 만드는 데 도움을 주었습니다.
 
-We’ve tested different SQL dialects across all the competitors, and while we were crazy fast, in some cases 100+ times faster than Prisma with SQLite, we only wanted to share benchmarks that were meaningful for businesses and developers.
+우리는 모든 경쟁 제품에서 다양한 SQL 방언을 테스트했고, SQLite에서 Prisma보다 100배 이상 빠른 경우도 있었지만, 비즈니스와 개발자에게 의미 있는 벤치마크만 공유하고 싶었습니다.
 
-From business perspective— request roundtrip is the most important metric when it comes down to the server-side performance. While you can influence network latency with services like Cloudflare Argo, on the server side it usually comes down to the database queries.
+비즈니스 관점에서 — 서버 측 성능에 있어 요청 왕복 시간이 가장 중요한 지표입니다. Cloudflare Argo와 같은 서비스로 네트워크 지연 시간에 영향을 줄 수 있지만, 서버 측에서는 일반적으로 데이터베이스 쿼리가 핵심입니다.
 
-We’ve composed a test case with a ~370k records in a PostgreSQL database and generated production-like E-commerce traffic benchmarks on 1GB ethernet to eliminate any discrepancies. On Lenovo M720q Drizzle can handle 4.6k reqs/s while maintaining a ~100ms p95 latency.
+우리는 PostgreSQL 데이터베이스에 약 37만 개의 레코드로 테스트 케이스를 구성하고, 1GB 이더넷에서 프로덕션과 유사한 E-commerce 트래픽 벤치마크를 생성하여 불일치를 제거했습니다. Lenovo M720q에서 Drizzle은 약 100ms p95 지연 시간을 유지하면서 4.6k reqs/s를 처리할 수 있습니다.
 
 ![](@/assets/images/benchmark-result.webp)
 
-We ran our benchmarks on 2 separate machines, so that observer does not influence results. For database we're using PostgreSQL instance with 42MB of E-commerce data(~370k records).  
-K6 benchmarking instance lives on MacBook Air and makes [1M prepared requests](https://github.com/drizzle-team/drizzle-benchmarks/blob/main/data/requests.json) through 1GB ethernet to Lenovo M720q with Intel Core i3-9100T and 32GB of RAM.
+우리는 관찰자가 결과에 영향을 미치지 않도록 2대의 별도 머신에서 벤치마크를 실행했습니다. 데이터베이스로는 42MB의 E-commerce 데이터(약 37만 개 레코드)가 있는 PostgreSQL 인스턴스를 사용합니다.
+K6 벤치마킹 인스턴스는 MacBook Air에서 실행되며 1GB 이더넷을 통해 Intel Core i3-9100T와 32GB RAM이 장착된 Lenovo M720q로 [100만 개의 prepared requests](https://github.com/drizzle-team/drizzle-benchmarks/blob/main/data/requests.json)를 보냅니다.
 
 ![image](@/assets/images/how-it-works.png)
 
 
-To run your own tests - follow instructions below!
+직접 테스트를 실행하려면 아래 지침을 따르세요!
 
-## Prepare test machine
-1. Spin up a docker container with PostgreSQL using `pnpm start:docker` command. You can configure a desired database port in `./src/docker.ts` file:
+## 테스트 머신 준비
+1. `pnpm start:docker` 명령으로 PostgreSQL이 포함된 docker 컨테이너를 시작합니다. `./src/docker.ts` 파일에서 원하는 데이터베이스 포트를 설정할 수 있습니다:
 ```ts
 ...
 }
 
-const desiredPostgresPort = 5432; // change here
+const desiredPostgresPort = 5432; // 여기서 변경
 main();
 ```
-2. Update `DATABASE_URL` with allocated database port in .env file:
+2. .env 파일에서 할당된 데이터베이스 포트로 `DATABASE_URL`을 업데이트합니다:
 ```ts
 DATABASE_URL="postgres://postgres:postgres@localhost:5432/postgres"
 ```
-3. Seed your database with test data using `pnpm start:seed` command, you can change the size of the database in `./src/seed.ts` file:
+3. `pnpm start:seed` 명령으로 테스트 데이터로 데이터베이스를 시드합니다. `./src/seed.ts` 파일에서 데이터베이스 크기를 변경할 수 있습니다:
 ```ts
 ...
 }
 
 main("micro"); // nano | micro
 ```
-4. Make sure you have Node version 18 installed or above. You can use [`nvm use 18`](https://github.com/nvm-sh/nvm) command
-5. Start Drizzle/Prisma server:
+4. Node 버전 18 이상이 설치되어 있는지 확인하세요. [`nvm use 18`](https://github.com/nvm-sh/nvm) 명령을 사용할 수 있습니다
+5. Drizzle/Prisma 서버를 시작합니다:
 ```bash
 ## Drizzle
 pnpm start:drizzle
@@ -65,19 +65,19 @@ pnpm prepare:prisma
 pnpm start:prisma
 ```
 
-## Prepare testing machine
-1. Generate a list of http requests with `pnpm start:generate`. It will output a list of http requests to be run on the tested server | `./data/requests.json`
-2. Install [k6 load tester](https://k6.io/)
-3. Run benchmarks 🚀  
-Use the built-in benchmark runner:
+## 테스팅 머신 준비
+1. `pnpm start:generate`로 http 요청 목록을 생성합니다. 테스트할 서버에서 실행할 http 요청 목록이 `./data/requests.json`에 출력됩니다
+2. [k6 부하 테스터](https://k6.io/)를 설치합니다
+3. 벤치마크를 실행합니다 🚀
+내장 벤치마크 러너를 사용합니다:
 ```bash
 tsx bench/index --host http://192.168.31.144:3000 --name my-bench --folder results
 
 http://192.168.31.144:3000 // drizzle
 http://192.168.31.144:3001 // prisma
 ```
-4. Prepare final combined results  
-After benchmarks finish, merge all outputs into a single JSON file:
+4. 최종 결합 결과를 준비합니다
+벤치마크가 완료되면 모든 출력을 단일 JSON 파일로 병합합니다:
 ```bash
 tsx bench/prepare --folder results
 ```
