@@ -1,25 +1,31 @@
+---
+title: "drizzle-typebox"
+description: "Drizzle ORM 스키마에서 Typebox 스키마를 생성하는 플러그인"
+slug: "typebox"
+---
+
 import Npm from '@mdx/Npm.astro';
 import Callout from '@mdx/Callout.astro';
 
 # drizzle-typebox
 
-`drizzle-typebox` is a plugin for **[Drizzle ORM](https://github.com/drizzle-team/drizzle-orm)** that allows you to generate **[Typebox](https://github.com/sinclairzx81/typebox)** schemas from Drizzle ORM schemas.
+`drizzle-typebox`는 **[Drizzle ORM](https://github.com/drizzle-team/drizzle-orm)** 스키마에서 **[Typebox](https://github.com/sinclairzx81/typebox)** 스키마를 생성할 수 있게 해주는 플러그인입니다.
 
-### Install the dependencies
+### 종속성 설치
 
 <Npm>
 drizzle-typebox
 </Npm>
 
 <Callout type="warning">
-This documentation is for `drizzle-typebox@0.2.0` and higher
+이 문서는 `drizzle-typebox@0.2.0` 이상 버전을 위한 것입니다.
 
-You must also have Drizzle ORM v0.36.0 or greater and Typebox v0.34.8 or greater installed.
+Drizzle ORM v0.36.0 이상 및 Typebox v0.34.8 이상도 설치되어 있어야 합니다.
 </Callout>
 
-### Select schema
+### Select 스키마
 
-Defines the shape of data queried from the database - can be used to validate API responses.
+데이터베이스에서 조회된 데이터의 형태를 정의합니다 - API 응답을 검증하는 데 사용할 수 있습니다.
 
 ```ts copy
 import { pgTable, text, integer } from 'drizzle-orm/pg-core';
@@ -35,13 +41,13 @@ const users = pgTable('users', {
 const userSelectSchema = createSelectSchema(users);
 
 const rows = await db.select({ id: users.id, name: users.name }).from(users).limit(1);
-const parsed: { id: number; name: string; age: number } = Value.Parse(userSelectSchema, rows[0]); // Error: `age` is not returned in the above query
+const parsed: { id: number; name: string; age: number } = Value.Parse(userSelectSchema, rows[0]); // 에러: 위 쿼리에서 `age`가 반환되지 않음
 
 const rows = await db.select().from(users).limit(1);
-const parsed: { id: number; name: string; age: number } = Value.Parse(userSelectSchema, rows[0]); // Will parse successfully
+const parsed: { id: number; name: string; age: number } = Value.Parse(userSelectSchema, rows[0]); // 파싱 성공
 ```
 
-Views and enums are also supported.
+뷰(View)와 열거형(enum)도 지원됩니다.
 
 ```ts copy
 import { pgEnum } from 'drizzle-orm/pg-core';
@@ -57,9 +63,9 @@ const usersViewSchema = createSelectSchema(usersView);
 const parsed: { id: number; name: string; age: number } = Value.Parse(usersViewSchema, ...);
 ```
 
-### Insert schema
+### Insert 스키마
 
-Defines the shape of data to be inserted into the database - can be used to validate API requests.
+데이터베이스에 삽입할 데이터의 형태를 정의합니다 - API 요청을 검증하는 데 사용할 수 있습니다.
 
 ```ts copy
 import { pgTable, text, integer } from 'drizzle-orm/pg-core';
@@ -75,16 +81,16 @@ const users = pgTable('users', {
 const userInsertSchema = createInsertSchema(users);
 
 const user = { name: 'John' };
-const parsed: { name: string, age: number } = Value.Parse(userInsertSchema, user); // Error: `age` is not defined
+const parsed: { name: string, age: number } = Value.Parse(userInsertSchema, user); // 에러: `age`가 정의되지 않음
 
 const user = { name: 'Jane', age: 30 };
-const parsed: { name: string, age: number } = Value.Parse(userInsertSchema, user); // Will parse successfully
+const parsed: { name: string, age: number } = Value.Parse(userInsertSchema, user); // 파싱 성공
 await db.insert(users).values(parsed);
 ```
 
-### Update schema
+### Update 스키마
 
-Defines the shape of data to be updated in the database - can be used to validate API requests.
+데이터베이스에서 업데이트할 데이터의 형태를 정의합니다 - API 요청을 검증하는 데 사용할 수 있습니다.
 
 ```ts copy
 import { pgTable, text, integer } from 'drizzle-orm/pg-core';
@@ -100,16 +106,16 @@ const users = pgTable('users', {
 const userUpdateSchema = createUpdateSchema(users);
 
 const user = { id: 5, name: 'John' };
-const parsed: { name?: string | undefined, age?: number | undefined } = Value.Parse(userUpdateSchema, user); // Error: `id` is a generated column, it can't be updated
+const parsed: { name?: string | undefined, age?: number | undefined } = Value.Parse(userUpdateSchema, user); // 에러: `id`는 생성된 컬럼이므로 업데이트할 수 없음
 
 const user = { age: 35 };
-const parsed: { name?: string | undefined, age?: number | undefined } = Value.Parse(userUpdateSchema, user); // Will parse successfully
+const parsed: { name?: string | undefined, age?: number | undefined } = Value.Parse(userUpdateSchema, user); // 파싱 성공
 await db.update(users).set(parsed).where(eq(users.name, 'Jane'));
 ```
 
-### Refinements
+### 정제(Refinements)
 
-Each create schema function accepts an additional optional parameter that you can used to extend, modify or completely overwite a field's schema. Defining a callback function will extend or modify while providing a Typebox schema will overwrite it.
+각 스키마 생성 함수는 필드의 스키마를 확장, 수정 또는 완전히 덮어쓰는 데 사용할 수 있는 추가 선택적 매개변수를 받습니다. 콜백 함수를 정의하면 확장 또는 수정되며, Typebox 스키마를 제공하면 덮어씁니다.
 
 ```ts copy
 import { pgTable, text, integer, json } from 'drizzle-orm/pg-core';
@@ -125,9 +131,9 @@ const users = pgTable('users', {
 });
 
 const userSelectSchema = createSelectSchema(users, {
-  name: (schema) => Type.String({ ...schema, maxLength: 20 }), // Extends schema
-  bio: (schema) => Type.String({ ...schema, maxLength: 1000 }), // Extends schema before becoming nullable/optional
-  preferences: Type.Object({ theme: Type.String() }) // Overwrites the field, including its nullability
+  name: (schema) => Type.String({ ...schema, maxLength: 20 }), // 스키마 확장
+  bio: (schema) => Type.String({ ...schema, maxLength: 1000 }), // nullable/optional이 되기 전에 스키마 확장
+  preferences: Type.Object({ theme: Type.String() }) // 필드를 덮어쓰며, null 허용 여부도 포함
 });
 
 const parsed: {
@@ -140,11 +146,11 @@ const parsed: {
 } = Value.Parse(userSelectSchema, ...);
 ```
 
-### Factory functions
+### 팩토리 함수
 
-For more advanced use cases, you can use the `createSchemaFactory` function.
+더 고급 사용 사례의 경우 `createSchemaFactory` 함수를 사용할 수 있습니다.
 
-**Use case: Using an extended Typebox instance**
+**사용 사례: 확장된 Typebox 인스턴스 사용하기**
 
 ```ts copy
 import { pgTable, text, integer } from 'drizzle-orm/pg-core';
@@ -160,12 +166,12 @@ const users = pgTable('users', {
 const { createInsertSchema } = createSchemaFactory({ typeboxInstance: t });
 
 const userInsertSchema = createInsertSchema(users, {
-  // We can now use the extended instance
+  // 이제 확장된 인스턴스를 사용할 수 있습니다
   name: (schema) => t.Number({ ...schema }, { error: '`name` must be a string' })
 });
 ```
 
-### Data type reference
+### 데이터 타입 레퍼런스
 
 ```ts
 pg.boolean();
@@ -174,7 +180,7 @@ mysql.boolean();
 
 sqlite.integer({ mode: 'boolean' });
 
-// Schema
+// 스키마
 Type.Boolean();
 ```
 
@@ -189,7 +195,7 @@ mysql.timestamp({ mode: 'date' });
 sqlite.integer({ mode: 'timestamp' });
 sqlite.integer({ mode: 'timestamp_ms' });
 
-// Schema
+// 스키마
 Type.Date();
 ```
 
@@ -217,21 +223,21 @@ mysql.varbinary();
 sqlite.numeric();
 sqlite.text({ mode: 'text' });
 
-// Schema
+// 스키마
 Type.String();
 ```
 
 ```ts
 pg.bit({ dimensions: ... });
 
-// Schema
+// 스키마
 t.RegExp(/^[01]+$/, { maxLength: dimensions });
 ```
 
 ```ts
 pg.uuid();
 
-// Schema
+// 스키마
 Type.String({ format: 'uuid' });
 ```
 
@@ -240,7 +246,7 @@ pg.char({ length: ... });
 
 mysql.char({ length: ... });
 
-// Schema
+// 스키마
 Type.String({ minLength: length, maxLength: length });
 ```
 
@@ -251,36 +257,36 @@ mysql.varchar({ length: ... });
 
 sqlite.text({ mode: 'text', length: ... });
 
-// Schema
+// 스키마
 Type.String({ maxLength: length });
 ```
 
 ```ts
 mysql.tinytext();
 
-// Schema
-Type.String({ maxLength: 255 }); // unsigned 8-bit integer limit
+// 스키마
+Type.String({ maxLength: 255 }); // unsigned 8비트 정수 한계
 ```
 
 ```ts
 mysql.text();
 
-// Schema
-Type.String({ maxLength: 65_535 }); // unsigned 16-bit integer limit
+// 스키마
+Type.String({ maxLength: 65_535 }); // unsigned 16비트 정수 한계
 ```
 
 ```ts
 mysql.mediumtext();
 
-// Schema
-Type.String({ maxLength: 16_777_215 }); // unsigned 24-bit integer limit
+// 스키마
+Type.String({ maxLength: 16_777_215 }); // unsigned 24비트 정수 한계
 ```
 
 ```ts
 mysql.longtext();
 
-// Schema
-Type.String({ maxLength: 4_294_967_295 }); // unsigned 32-bit integer limit
+// 스키마
+Type.String({ maxLength: 4_294_967_295 }); // unsigned 32비트 정수 한계
 ```
 
 ```ts
@@ -298,22 +304,22 @@ mysql.mysqlEnum(..., ...);
 
 sqlite.text({ mode: 'text', enum: ... });
 
-// Schema
+// 스키마
 Type.Enum(enum);
 ```
 
 ```ts
 mysql.tinyint();
 
-// Schema
-Type.Integer({ minimum: -128, maximum: 127 }); // 8-bit integer lower and upper limit
+// 스키마
+Type.Integer({ minimum: -128, maximum: 127 }); // 8비트 정수 하한과 상한
 ```
 
 ```ts
 mysql.tinyint({ unsigned: true });
 
-// Schema
-Type.Integer({ minimum: 0, maximum: 255 }); // unsigned 8-bit integer lower and upper limit
+// 스키마
+Type.Integer({ minimum: 0, maximum: 255 }); // unsigned 8비트 정수 하한과 상한
 ```
 
 ```ts
@@ -322,15 +328,15 @@ pg.smallserial();
 
 mysql.smallint();
 
-// Schema
-Type.Integer({ minimum: -32_768, maximum: 32_767 }); // 16-bit integer lower and upper limit
+// 스키마
+Type.Integer({ minimum: -32_768, maximum: 32_767 }); // 16비트 정수 하한과 상한
 ```
 
 ```ts
 mysql.smallint({ unsigned: true });
 
-// Schema
-Type.Integer({ minimum: 0, maximum: 65_535 }); // unsigned 16-bit integer lower and upper limit
+// 스키마
+Type.Integer({ minimum: 0, maximum: 65_535 }); // unsigned 16비트 정수 하한과 상한
 ```
 
 ```ts
@@ -338,29 +344,29 @@ pg.real();
 
 mysql.float();
 
-// Schema
-Type.Number().min(-8_388_608).max(8_388_607); // 24-bit integer lower and upper limit
+// 스키마
+Type.Number().min(-8_388_608).max(8_388_607); // 24비트 정수 하한과 상한
 ```
 
 ```ts
 mysql.mediumint();
 
-// Schema
-Type.Integer({ minimum: -8_388_608, maximum: 8_388_607 }); // 24-bit integer lower and upper limit
+// 스키마
+Type.Integer({ minimum: -8_388_608, maximum: 8_388_607 }); // 24비트 정수 하한과 상한
 ```
 
 ```ts
 mysql.float({ unsigned: true });
 
-// Schema
-Type.Number({ minimum: 0, maximum: 16_777_215 }); // unsigned 24-bit integer lower and upper limit
+// 스키마
+Type.Number({ minimum: 0, maximum: 16_777_215 }); // unsigned 24비트 정수 하한과 상한
 ```
 
 ```ts
 mysql.mediumint({ unsigned: true });
 
-// Schema
-Type.Integer({ minimum: 0, maximum: 16_777_215 }); // unsigned 24-bit integer lower and upper limit
+// 스키마
+Type.Integer({ minimum: 0, maximum: 16_777_215 }); // unsigned 24비트 정수 하한과 상한
 ```
 
 ```ts
@@ -369,15 +375,15 @@ pg.serial();
 
 mysql.int();
 
-// Schema
-Type.Integer({ minimum: -2_147_483_648, maximum: 2_147_483_647 }); // 32-bit integer lower and upper limit
+// 스키마
+Type.Integer({ minimum: -2_147_483_648, maximum: 2_147_483_647 }); // 32비트 정수 하한과 상한
 ```
 
 ```ts
 mysql.int({ unsigned: true });
 
-// Schema
-Type.Integer({ minimum: 0, maximum: 4_294_967_295 }); // unsgined 32-bit integer lower and upper limit
+// 스키마
+Type.Integer({ minimum: 0, maximum: 4_294_967_295 }); // unsigned 32비트 정수 하한과 상한
 ```
 
 ```ts
@@ -388,15 +394,15 @@ mysql.real();
 
 sqlite.real();
 
-// Schema
-Type.Number({ minimum: -140_737_488_355_328, maximum: 140_737_488_355_327 }); // 48-bit integer lower and upper limit
+// 스키마
+Type.Number({ minimum: -140_737_488_355_328, maximum: 140_737_488_355_327 }); // 48비트 정수 하한과 상한
 ```
 
 ```ts
 mysql.double({ unsigned: true });
 
-// Schema
-Type.Numer({ minimum: 0, maximum: 281_474_976_710_655 }); // unsigned 48-bit integer lower and upper limit
+// 스키마
+Type.Numer({ minimum: 0, maximum: 281_474_976_710_655 }); // unsigned 48비트 정수 하한과 상한
 ```
 
 ```ts
@@ -408,14 +414,15 @@ mysql.bigserial({ mode: 'number' });
 
 sqlite.integer({ mode: 'number' });
 
-// Schema
-Type.Integer({ minimum: -9_007_199_254_740_991, maximum: 9_007_199_254_740_991 }); // Javascript min. and max. safe integers
+// 스키마
+Type.Integer({ minimum: -9_007_199_254_740_991, maximum: 9_007_199_254_740_991 }); // JavaScript 최소 및 최대 안전 정수
 ```
 
 ```ts
 mysql.serial();
 
-Type.Integer({ minimum: 0, maximum: 9_007_199_254_740_991 }); // Javascript max. safe integer
+// 스키마
+Type.Integer({ minimum: 0, maximum: 9_007_199_254_740_991 }); // JavaScript 최대 안전 정수
 ```
 
 ```ts
@@ -426,21 +433,21 @@ mysql.bigint({ mode: 'bigint' });
 
 sqlite.blob({ mode: 'bigint' });
 
-// Schema
-Type.BigInt({ minimum: -9_223_372_036_854_775_808n, maximum: 9_223_372_036_854_775_807n }); // 64-bit integer lower and upper limit
+// 스키마
+Type.BigInt({ minimum: -9_223_372_036_854_775_808n, maximum: 9_223_372_036_854_775_807n }); // 64비트 정수 하한과 상한
 ```
 
 ```ts
 mysql.bigint({ mode: 'bigint', unsigned: true });
 
-// Schema
-Type.BigInt({ minimum: 0, maximum: 18_446_744_073_709_551_615n }); // unsigned 64-bit integer lower and upper limit
+// 스키마
+Type.BigInt({ minimum: 0, maximum: 18_446_744_073_709_551_615n }); // unsigned 64비트 정수 하한과 상한
 ```
 
 ```ts
 mysql.year();
 
-// Schema
+// 스키마
 Type.Integer({ minimum: 1_901, maximum: 2_155 });
 ```
 
@@ -448,7 +455,7 @@ Type.Integer({ minimum: 1_901, maximum: 2_155 });
 pg.geometry({ type: 'point', mode: 'tuple' });
 pg.point({ mode: 'tuple' });
 
-// Schema
+// 스키마
 Type.Tuple([Type.Number(), Type.Number()]);
 ```
 
@@ -456,7 +463,7 @@ Type.Tuple([Type.Number(), Type.Number()]);
 pg.geometry({ type: 'point', mode: 'xy' });
 pg.point({ mode: 'xy' });
 
-// Schema
+// 스키마
 Type.Object({ x: Type.Number(), y: Type.Number() });
 ```
 
@@ -464,21 +471,21 @@ Type.Object({ x: Type.Number(), y: Type.Number() });
 pg.halfvec({ dimensions: ... });
 pg.vector({ dimensions: ... });
 
-// Schema
+// 스키마
 Type.Array(Type.Number(), { minItems: dimensions, maxItems: dimensions });
 ```
 
 ```ts
 pg.line({ mode: 'abc' });
 
-// Schema
+// 스키마
 Type.Object({ a: Type.Number(), b: Type.Number(), c: Type.Number() });
 ```
 
 ```ts
 pg.line({ mode: 'tuple' });
 
-// Schema
+// 스키마
 Type.Tuple([Type.Number(), Type.Number(), Type.Number()]);
 ```
 
@@ -491,20 +498,20 @@ mysql.json();
 sqlite.blob({ mode: 'json' });
 sqlite.text({ mode: 'json' });
 
-// Schema
+// 스키마
 Type.Recursive((self) => Type.Union([Type.Union([Type.String(), Type.Number(), Type.Boolean(), Type.Null()]), Type.Array(self), Type.Record(Type.String(), self)]));
 ```
 
 ```ts
 sqlite.blob({ mode: 'buffer' });
 
-// Schema
+// 스키마
 t.Union([t.Union([t.String(), t.Number(), t.Boolean(), t.Null()]), t.Array(t.Any()), t.Record(t.String(), t.Any())]);
 ```
 
 ```ts
 pg.dataType().array(...);
 
-// Schema
+// 스키마
 Type.Array(baseDataTypeSchema, { minItems: size, maxItems: size });
 ```

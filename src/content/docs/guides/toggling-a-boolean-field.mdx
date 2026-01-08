@@ -1,5 +1,5 @@
 ---
-title: SQL Toggle value
+title: SQL Toggle 값
 slug: toggling-a-boolean-field
 ---
 import Section from "@mdx/Section.astro";
@@ -9,13 +9,13 @@ import Prerequisites from "@mdx/Prerequisites.astro";
 <IsSupportedChipGroup chips={{PostgreSQL: true, MySQL: true, SQLite: true}}/>
 
 <Prerequisites>
-- Get started with [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql) and [SQLite](/docs/get-started-sqlite)
-- [Update statement](/docs/update)
-- [Filters](/docs/operators) and [not operator](/docs/operators#not)
-- Boolean data type in [MySQL](/docs/column-types/mysql#boolean) and [SQLite](/docs/column-types/sqlite#boolean)
+- [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql), [SQLite](/docs/get-started-sqlite) 시작하기
+- [Update 문](/docs/update)
+- [필터](/docs/operators)와 [not 연산자](/docs/operators#not)
+- [MySQL](/docs/column-types/mysql#boolean)과 [SQLite](/docs/column-types/sqlite#boolean)의 Boolean 데이터 타입
 </Prerequisites>
 
-To toggle a column value you can use `update().set()` method like below:
+컬럼 값을 토글하려면 아래와 같이 `update().set()` 메서드를 사용할 수 있습니다:
 
 <Section>
 ```tsx copy {8}
@@ -36,6 +36,6 @@ update "table" set "is_active" = not "is_active" where "id" = 1;
 ```
 </Section>
 
-Please note that there is no boolean type in MySQL and SQLite.
-MySQL uses tinyint(1).
-SQLite uses integers 0 (false) and 1 (true). 
+MySQL과 SQLite에는 boolean 타입이 없다는 점에 유의하세요.
+MySQL은 tinyint(1)을 사용합니다.
+SQLite는 정수 0 (false)과 1 (true)을 사용합니다. 

@@ -1,26 +1,26 @@
 ---
-title: Drizzle ORM and Drizzle Kit v1.0.0-beta.2 release
+title: Drizzle ORM과 Drizzle Kit v1.0.0-beta.2 릴리스
 pubDate: 2025-02-12
-description: v1 pre-release
+description: v1 프리릴리스
 ---
 
-> We've introduced a lot of changes in this version, and something will definitely break. If anything goes wrong, you can either downgrade to version `1.0.0-beta.1` or `0.44.7`, and please report any issues on GitHub or our Discord!
+> 이 버전에서 많은 변경사항이 도입되었으며, 일부 기능이 동작하지 않을 수 있습니다. 문제가 발생하면 `1.0.0-beta.1` 또는 `0.44.7` 버전으로 다운그레이드할 수 있으며, GitHub나 Discord에 이슈를 제보해 주세요!
 
-> Don't forget to check `1.0.0-beta.1` release notes as well: https://github.com/drizzle-team/drizzle-orm/blob/beta/changelogs/drizzle-orm/1.0.0-beta.1.md
+> `1.0.0-beta.1` 릴리스 노트도 함께 확인하세요: https://github.com/drizzle-team/drizzle-orm/blob/beta/changelogs/drizzle-orm/1.0.0-beta.1.md
 
-> Check the migration guide for RQBv1 to RQBv2 migration steps: https://orm.drizzle.team/docs/relations-v1-v2
+> RQBv1에서 RQBv2로의 마이그레이션 가이드를 확인하세요: https://orm.drizzle.team/docs/relations-v1-v2
 
-> Check new RQBv2 schema docs: https://orm.drizzle.team/docs/relations-v2 
+> 새로운 RQBv2 스키마 문서를 확인하세요: https://orm.drizzle.team/docs/relations-v2
 
-> Check new RQBv2 query docs: https://orm.drizzle.team/docs/rqb-v2
+> 새로운 RQBv2 쿼리 문서를 확인하세요: https://orm.drizzle.team/docs/rqb-v2
 
-# New Features
+# 새로운 기능
 
-## MSSQL dialect 
+## MSSQL dialect
 
-Drizzle now supports MSSQL in `drizzle-orm`, `drizzle-kit` and `drizzle-seed` packages. It support most of the columns, query builder capabilities, migration strategies, etc.
+Drizzle이 이제 `drizzle-orm`, `drizzle-kit`, `drizzle-seed` 패키지에서 MSSQL을 지원합니다. 대부분의 컬럼, 쿼리 빌더 기능, 마이그레이션 전략 등을 지원합니다.
 
-The only feature that is not yet supported is `RQBv2`
+아직 지원되지 않는 기능은 `RQBv2`입니다.
 
 ```ts
 // Make sure to install the 'mssql' package 
@@ -47,9 +47,9 @@ const result = await db.execute('select 1');
 
 ## CockroachDB dialect
 
-Drizzle now supports MSSQL in `drizzle-orm`, `drizzle-kit` and `drizzle-seed` packages. It support most of the columns, query builder capabilities, migration strategies, etc.
+Drizzle이 이제 `drizzle-orm`, `drizzle-kit`, `drizzle-seed` 패키지에서 CockroachDB를 지원합니다. 대부분의 컬럼, 쿼리 빌더 기능, 마이그레이션 전략 등을 지원합니다.
 
-The only feature that is not yet supported is `RQBv2`
+아직 지원되지 않는 기능은 `RQBv2`입니다.
 
 ```ts
 // Make sure to install the 'pg' package 
@@ -74,9 +74,9 @@ const db = drizzle({
 const result = await db.execute('select 1');
 ```
 
-## Relational Query Parts
+## 관계형 쿼리 파트
 
-In a case you need to separate relations config into several parts you can use `defineRelationsPart` helpers
+관계 설정을 여러 부분으로 분리해야 하는 경우 `defineRelationsPart` 헬퍼를 사용할 수 있습니다.
 
 ```ts
 import { defineRelations, defineRelationsPart } from 'drizzle-orm';
@@ -100,72 +100,72 @@ export const part = defineRelationsPart(schema, (r) => ({
 }));
 ```
 
-and then you can provide it to the db instance
+그런 다음 db 인스턴스에 제공할 수 있습니다.
 
 ```ts
 const db = drizzle(process.env.DB_URL, { relations: { ...relations, ...part } })
 ```
 
-## Folders v3 migrations
+## 폴더 v3 마이그레이션
 
-> Linked discussion: https://github.com/drizzle-team/drizzle-orm/discussions/2832
+> 관련 논의: https://github.com/drizzle-team/drizzle-orm/discussions/2832
 
-We've updated the migrations folder structure by:
-- removing journal.json
-- grouping SQL files and snapshots into separate migration folders
-- removing the `drizzle-kit drop` command
+마이그레이션 폴더 구조를 다음과 같이 업데이트했습니다:
+- journal.json 제거
+- SQL 파일과 스냅샷을 별도의 마이그레이션 폴더로 그룹화
+- `drizzle-kit drop` 명령어 제거
 
-These changes eliminate potential Git conflicts with the journal file and simplify the process of dropping or fixing conflicted migrations
+이러한 변경사항은 journal 파일과의 잠재적인 Git 충돌을 제거하고 충돌된 마이그레이션을 삭제하거나 수정하는 프로세스를 단순화합니다.
 
-In upcoming beta releases, we'll introduce commutativity checks to help guide you through team migration conflicts, detect possible collisions, and suggest ways to resolve them
-> Commutativity discussion: https://github.com/drizzle-team/drizzle-orm/discussions/5005
+향후 베타 릴리스에서는 팀 마이그레이션 충돌을 안내하고, 가능한 충돌을 감지하며, 해결 방법을 제안하는 교환법칙 검사 기능을 도입할 예정입니다.
+> 교환법칙 논의: https://github.com/drizzle-team/drizzle-orm/discussions/5005
 
-To migrate previous folders to a new format you would need to run
+이전 폴더를 새로운 형식으로 마이그레이션하려면 다음을 실행해야 합니다.
 ```
 drizzle-kit up
 ```
 
-## Full `drizzle-kit` rewrite
+## 전체 `drizzle-kit` 재작성
 
-Architecture rewrite to close major kit and migration issues. We’ve completed a set of valuable and necessary updates to help us iterate faster, improve test coverage, and enhance overall stability.
+주요 kit 및 마이그레이션 이슈를 해결하기 위한 아키텍처 재작성입니다. 더 빠른 반복 개발, 테스트 커버리지 개선, 전반적인 안정성 향상을 위한 가치 있고 필요한 업데이트를 완료했습니다.
 
-Summary of work completed:
-- Migrated from database snapshots to database DDL snapshots
-- Reworked the entire architecture for detecting and applying diffs
-- Added significant improvements for defaults, expressions, and types detection
-- Reduced schema introspection time from 10 seconds to under 1 second by minimizing database calls and query complexity
-- Added query hints and explain support for push
-- Expanded test coverage - each test case now runs up to 6 different scenarios (e.g., push+push, pull+generate, etc.)
+완료된 작업 요약:
+- 데이터베이스 스냅샷에서 데이터베이스 DDL 스냅샷으로 마이그레이션
+- diff 감지 및 적용을 위한 전체 아키텍처 재작업
+- 기본값, 표현식, 타입 감지에 대한 상당한 개선 추가
+- 데이터베이스 호출 및 쿼리 복잡도를 최소화하여 스키마 introspection 시간을 10초에서 1초 미만으로 단축
+- push를 위한 쿼리 힌트 및 explain 지원 추가
+- 테스트 커버리지 확대 - 각 테스트 케이스가 이제 최대 6가지 다른 시나리오를 실행 (예: push+push, pull+generate 등)
 
-## Added `drizzle-kit pull --init`
+## `drizzle-kit pull --init` 추가
 
-This flag will create a drizzle migration table in the database and will mark first pulled migration as applied, so you can contrinue iterating from there
+이 플래그는 데이터베이스에 drizzle 마이그레이션 테이블을 생성하고 첫 번째 pull된 마이그레이션을 적용된 것으로 표시하므로, 거기서부터 계속 반복할 수 있습니다.
 
-## `schemaFilter` behavior update
+## `schemaFilter` 동작 업데이트
 
-`drizzle-kit` will start managing all the schemas defined in your code. If you want to filter them, you can use `schemaFilter` 
-Previously, only the public schema was managed unless you explicitly added more schemas to `schemaFilter`.
+`drizzle-kit`은 코드에 정의된 모든 스키마를 관리하기 시작합니다. 필터링하려면 `schemaFilter`를 사용할 수 있습니다.
+이전에는 `schemaFilter`에 명시적으로 더 많은 스키마를 추가하지 않는 한 public 스키마만 관리되었습니다.
 
-It now also supports glob patterns, allowing you to filter schemas in any way you like
+이제 glob 패턴도 지원하므로 원하는 방식으로 스키마를 필터링할 수 있습니다.
 
-## `.enableRLS()` deprecation
+## `.enableRLS()` 지원 중단
 
-Previously to mark PostgreSQL table with RLS enabled you would need to:
+이전에는 RLS가 활성화된 PostgreSQL 테이블을 표시하려면 다음과 같이 해야 했습니다:
 
 ```ts
-// OLD syntax
+// 이전 구문
 pgTable('name', {}).enableRLS()
-``` 
+```
 
-We moved this option to a different place
+이 옵션을 다른 위치로 이동했습니다:
 
 ```ts
 pgTable.withRLS('users', {});
 ```
 
-## Alias directly on columns
+## 컬럼에 직접 별칭 지정
 
-You can now add `as` alias to the column in a simple way:
+이제 간단한 방법으로 컬럼에 `as` 별칭을 추가할 수 있습니다:
 
 ```
 const query = db
@@ -174,26 +174,26 @@ const query = db
 	.orderBy(asc(users.id.as('userId')));
 ```
 
-## MySQL new column types
+## MySQL 새 컬럼 타입
 
-We've added a few more MySQL column types:
+몇 가지 MySQL 컬럼 타입을 추가했습니다:
 
 - blob: https://orm.drizzle.team/docs/column-types/mysql#blob
 - tinyblob: https://orm.drizzle.team/docs/column-types/mysql#tinyblob
 - mediumblob: https://orm.drizzle.team/docs/column-types/mysql#mediumblob
 - longblob: https://orm.drizzle.team/docs/column-types/mysql#longblob
 
-## More Updates and Fixes
+## 추가 업데이트 및 수정사항
 
-- Fixed pg-native Pool detection in node-postgres transactions  
-- Allowed subqueries in select fields  
-- Updated typo algorythm => algorithm  
-- Fixed `$onUpdate` not handling `SQL` values (fixes [#2388](https://github.com/drizzle-team/drizzle-orm/issues/2388), tests implemented by [L-Mario564](https://github.com/L-Mario564) in [#2911](https://github.com/drizzle-team/drizzle-orm/pull/2911))
-- Fixed `pg` mappers not handling `Date` instances in `bun-sql:postgresql` driver responses for `date`, `timestamp` types (fixes [#4493](https://github.com/drizzle-team/drizzle-orm/issues/4493))  
+- node-postgres 트랜잭션에서 pg-native Pool 감지 수정
+- select 필드에서 서브쿼리 허용
+- 오타 수정: algorythm => algorithm
+- `$onUpdate`가 `SQL` 값을 처리하지 않는 문제 수정 ([#2388](https://github.com/drizzle-team/drizzle-orm/issues/2388) 해결, [L-Mario564](https://github.com/L-Mario564)가 [#2911](https://github.com/drizzle-team/drizzle-orm/pull/2911)에서 테스트 구현)
+- `date`, `timestamp` 타입에 대한 `bun-sql:postgresql` 드라이버 응답에서 `pg` 매퍼가 `Date` 인스턴스를 처리하지 않는 문제 수정 ([#4493](https://github.com/drizzle-team/drizzle-orm/issues/4493) 해결)
 
-## Bugs fixed
+## 버그 수정
 
-> This list is not full, we just had a time to get through some of the issues. This list will be updated through the next few weeks
+> 이 목록은 완전하지 않으며, 일부 이슈만 처리할 시간이 있었습니다. 이 목록은 향후 몇 주 동안 업데이트될 예정입니다.
 
 - [[BUG]: Drizzle-kit pulls postgres functions as Typescript methods](https://github.com/drizzle-team/drizzle-orm/issues/4916)
 

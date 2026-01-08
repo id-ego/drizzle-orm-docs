@@ -24,40 +24,40 @@ import LibsqlTabs from '@mdx/LibsqlTabs.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and Turso Cloud in existing project
+# 기존 프로젝트에서 Drizzle과 Turso Cloud 시작하기
 
-<Prerequisites>  
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **turso** - SQLite for Production - [read here](https://turso.tech/)
-  - **libsql** - a fork of SQLite optimized for low query latency, making it suitable for global applications - [read here](https://docs.turso.tech/libsql)
+<Prerequisites>
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **turso** - 프로덕션을 위한 SQLite - [자세히 보기](https://turso.tech/)
+  - **libsql** - 낮은 쿼리 지연 시간에 최적화된 SQLite 포크로, 글로벌 애플리케이션에 적합합니다 - [자세히 보기](https://docs.turso.tech/libsql)
 </Prerequisites>
 
 <FileStructure />
 
-#### Step 1 - Install required packages
+#### 1단계 - 필수 패키지 설치
 
 <InstallPackages lib='@libsql/client'/>
 
-#### Step 2 - Setup connection variables
+#### 2단계 - 연결 변수 설정
 
-Create a `.env` file in the root of your project and add you Turso database url and auth token:
+프로젝트 루트에 `.env` 파일을 생성하고 Turso 데이터베이스 URL과 인증 토큰을 추가하세요:
 
 ```plaintext copy
 TURSO_DATABASE_URL=
 TURSO_AUTH_TOKEN=
 ```
 
-<Callout type='info' title='important'>
-If you don't know your `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` values, you can refer to the LibSQL Driver SDK tutorial. 
-Check it out [here](https://docs.turso.tech/sdk/ts/quickstart), then return with all the values generated and added to the `.env` file
+<Callout type='info' title='중요'>
+`TURSO_DATABASE_URL`과 `TURSO_AUTH_TOKEN` 값을 모르는 경우 LibSQL Driver SDK 튜토리얼을 참고하세요.
+[여기](https://docs.turso.tech/sdk/ts/quickstart)에서 확인한 후, 모든 값을 생성하여 `.env` 파일에 추가하세요
 </Callout>
 
-#### Step 3 - Setup Drizzle config file
+#### 3단계 - Drizzle 설정 파일 구성
 
-**Drizzle config** - a configuration file that is used by [Drizzle Kit](/docs/kit-overview) and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config** - [Drizzle Kit](/docs/kit-overview)에서 사용하는 설정 파일로, 데이터베이스 연결, 마이그레이션 폴더, 스키마 파일에 대한 모든 정보를 포함합니다.
 
-Create a `drizzle.config.ts` file in the root of your project and add the following content:
+프로젝트 루트에 `drizzle.config.ts` 파일을 생성하고 다음 내용을 추가하세요:
 
 ```typescript copy filename="drizzle.config.ts"
 import 'dotenv/config';
@@ -74,37 +74,37 @@ export default defineConfig({
 });
 ```
 
-#### Step 4 - Introspect your database
+#### 4단계 - 데이터베이스 인트로스펙트
 
 <IntrospectSqlite/>
 
-#### Step 5 - Transfer code to your actual schema file
+#### 5단계 - 실제 스키마 파일로 코드 전송
 
 <TransferCode/>
 
-#### Step 6 - Connect Drizzle ORM to the database
-Drizzle has native support for all @libsql/client driver variations:
+#### 6단계 - Drizzle ORM을 데이터베이스에 연결
+Drizzle은 모든 @libsql/client 드라이버 변형을 기본적으로 지원합니다:
 
 <LibsqlTable />
 <br/>
 <LibsqlTabs />
 
-Create a `index.ts` file in the `src` directory and initialize the connection:
+`src` 디렉토리에 `index.ts` 파일을 생성하고 연결을 초기화하세요:
 
 ```typescript copy
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/libsql';
 
-// You can specify any property from the libsql connection options
-const db = drizzle({ 
-  connection: { 
-    url: process.env.TURSO_DATABASE_URL!, 
+// libsql 연결 옵션의 모든 속성을 지정할 수 있습니다
+const db = drizzle({
+  connection: {
+    url: process.env.TURSO_DATABASE_URL!,
     authToken: process.env.TURSO_AUTH_TOKEN!
   }
 });
 ```
 
-If you need to provide your existing driver:
+기존 드라이버를 제공해야 하는 경우:
 
 ```typescript copy
 import 'dotenv/config';
@@ -119,22 +119,22 @@ const client = createClient({
 const db = drizzle({ client });
 ```
 
-#### Step 7 - Query the database
+#### 7단계 - 데이터베이스 쿼리
 
 <QueryTurso/>
 
-#### Step 8 - Run index.ts file
+#### 8단계 - index.ts 파일 실행
 
 <RunFile/>
 
-#### Step 9 - Update your table schema (optional)
+#### 9단계 - 테이블 스키마 업데이트 (선택사항)
 
 <UpdateSchema/>
 
-#### Step 9 - Applying changes to the database (optional)
+#### 10단계 - 데이터베이스에 변경사항 적용 (선택사항)
 
 <ApplyChanges/>
 
-#### Step 10 - Query the database with a new field (optional)
+#### 11단계 - 새 필드로 데이터베이스 쿼리 (선택사항)
 
 <QueryTursoUpdated />

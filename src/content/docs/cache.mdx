@@ -1,20 +1,19 @@
 import Callout from '@mdx/Callout.astro';
 import Npm from '@mdx/Npm.astro';
 
-# Cache
+# 캐시
 
-Drizzle sends every query straight to your database by default. There are no hidden actions, no automatic caching 
-or invalidation - you'll always see exactly what runs. If you want caching, you must opt in.
+Drizzle은 기본적으로 모든 쿼리를 데이터베이스로 직접 전송합니다. 숨겨진 동작이나 자동 캐싱 또는 무효화가 없어 실행되는 내용을 정확히 확인할 수 있습니다. 캐싱을 원한다면 명시적으로 선택해야 합니다.
 
-By default, Drizzle uses a `explicit` caching strategy (i.e. `global: false`), so nothing is ever cached unless you ask. 
-This prevents surprises or hidden performance traps in your application. 
-Alternatively, you can flip on `all` caching (`global: true`) so that every select will look in cache first.
+기본적으로 Drizzle은 `explicit` 캐싱 전략(즉, `global: false`)을 사용하므로 요청하지 않는 한 아무것도 캐시되지 않습니다.
+이는 애플리케이션에서 예상치 못한 상황이나 숨겨진 성능 함정을 방지합니다.
+또는 `all` 캐싱(`global: true`)을 활성화하여 모든 select가 먼저 캐시를 확인하도록 할 수 있습니다.
 
-## Quickstart
+## 빠른 시작
 
-### Upstash integration
+### Upstash 통합
 
-Drizzle provides an `upstashCache()` helper out of the box. By default, this uses Upstash Redis with automatic configuration if environment variables are set.
+Drizzle은 기본적으로 `upstashCache()` 헬퍼를 제공합니다. 환경 변수가 설정되어 있으면 Upstash Redis를 자동 구성과 함께 사용합니다.
 
 ```ts
 import { upstashCache } from "drizzle-orm/cache/upstash";
@@ -25,7 +24,7 @@ const db = drizzle(process.env.DB_URL!, {
 });
 ```
 
-You can also explicitly define your Upstash credentials, enable global caching for all queries by default or pass custom caching options:
+Upstash 자격 증명을 명시적으로 정의하거나, 모든 쿼리에 대해 기본적으로 전역 캐싱을 활성화하거나, 사용자 정의 캐싱 옵션을 전달할 수도 있습니다:
 
 ```ts
 import { upstashCache } from "drizzle-orm/cache/upstash";
@@ -46,9 +45,9 @@ const db = drizzle(process.env.DB_URL!, {
 });
 ```
 
-## Cache config reference
+## 캐시 설정 레퍼런스
 
-Drizzle supports the following cache config options for Upstash:
+Drizzle은 Upstash에 대해 다음 캐시 설정 옵션을 지원합니다:
 
 ```ts
 export type CacheConfig = {
@@ -64,11 +63,11 @@ export type CacheConfig = {
 };
 ```
 
-## Cache usage examples
+## 캐시 사용 예제
 
-Once you've configured caching, here's how the cache behaves:
+캐싱을 구성하면 캐시가 다음과 같이 작동합니다:
 
-**Case 1: Drizzle with `global: false` (default, opt-in caching)**
+**케이스 1: `global: false`를 사용하는 Drizzle (기본값, 선택적 캐싱)**
 
 ```ts
 import { upstashCache } from "drizzle-orm/cache/upstash";
@@ -80,7 +79,7 @@ const db = drizzle(process.env.DB_URL!, {
 });
 ```
 
-In this case, the following query won't read from cache
+이 경우 다음 쿼리는 캐시에서 읽지 않습니다
 
 ```ts
 const res = await db.select().from(users);
@@ -90,13 +89,13 @@ const res = await db.select().from(users);
 await db.insert(users).value({ email: "cacheman@upstash.com" });
 ```
 
-To make this query read from the cache, call `.$withCache()`
+이 쿼리가 캐시에서 읽도록 하려면 `.$withCache()`를 호출합니다
 
 ```ts
 const res = await db.select().from(users).$withCache();
 ```
 
-`.$withCache` has a set of options you can use to manage and configure this specific query strategy
+`.$withCache`는 이 특정 쿼리 전략을 관리하고 구성하는 데 사용할 수 있는 옵션 세트가 있습니다
 
 ```ts
 // rewrite the config for this specific query
@@ -111,17 +110,17 @@ const res = await db.select().from(users).$withCache();
 ```
 
 <Callout>
-**Eventual consistency example**
+**최종 일관성 예제**
 
-This example is only relevant if you manually set `autoInvalidate: false`. By default, `autoInvalidate` is enabled. 
+이 예제는 `autoInvalidate: false`를 수동으로 설정한 경우에만 관련이 있습니다. 기본적으로 `autoInvalidate`는 활성화되어 있습니다.
 
-You might want to turn off `autoInvalidate` if:
-- your data doesn't change often, and slight staleness is acceptable (e.g. product listings, blog posts)
-- you handle cache invalidation manually
+다음과 같은 경우 `autoInvalidate`를 끄고 싶을 수 있습니다:
+- 데이터가 자주 변경되지 않고 약간의 오래된 정보가 허용되는 경우 (예: 제품 목록, 블로그 게시물)
+- 캐시 무효화를 수동으로 처리하는 경우
 
-In those cases, turning it off can reduce unnecessary cache invalidation. However, in most cases, we recommend keeping the default enabled.
+이러한 경우 이 옵션을 끄면 불필요한 캐시 무효화를 줄일 수 있습니다. 그러나 대부분의 경우 기본값을 유지하는 것을 권장합니다.
 
-Example: Imagine you cache the following query on `usersTable` with a 3-second TTL:
+예제: 3초 TTL로 `usersTable`에 대해 다음 쿼리를 캐시한다고 가정합니다:
 
 ``` ts
 const recent = await db
@@ -129,10 +128,10 @@ const recent = await db
   .$withCache({ config: { ex: 3 }, autoInvalidate: false });
 ```
 
-If someone runs `db.insert(usersTable)...` the cache won't be invalidated immediately. For up to 3 seconds, you'll keep seeing the old data until it eventually becomes consistent.
+누군가가 `db.insert(usersTable)...`을 실행하면 캐시가 즉시 무효화되지 않습니다. 최대 3초 동안 이전 데이터가 계속 표시되며, 최종적으로 일관성이 확보됩니다.
 </Callout>
 
-**Case 2: Drizzle with `global: true` option**
+**케이스 2: `global: true` 옵션을 사용하는 Drizzle**
 
 ```ts
 import { upstashCache } from "drizzle-orm/cache/upstash";
@@ -143,20 +142,20 @@ const db = drizzle(process.env.DB_URL!, {
 });
 ```
 
-In this case, the following query will read from cache
+이 경우 다음 쿼리는 캐시에서 읽습니다
 
 ```ts
 const res = await db.select().from(users);
 ```
 
-If you want to disable cache for this specific query, call `.$withCache(false)`
+이 특정 쿼리에 대해 캐시를 비활성화하려면 `.$withCache(false)`를 호출합니다
 
 ```ts
 // disable cache for this query
 const res = await db.select().from(users).$withCache(false);
 ```
 
-You can also use cache instance from a `db` to invalidate specific tables or tags
+`db`의 캐시 인스턴스를 사용하여 특정 테이블이나 태그를 무효화할 수도 있습니다
 
 ```ts
 // Invalidate all queries that use the `users` table. You can do this with the Drizzle instance.
@@ -175,11 +174,11 @@ await db.$cache.invalidate({ tags: "custom_key" });
 await db.$cache.invalidate({ tags: ["custom_key", "custom_key1"] });
 ```
 
-## Custom cache
+## 사용자 정의 캐시
 
-This example shows how to plug in a custom `cache` in Drizzle: you provide functions to fetch data from the cache, store results back into cache, and invalidate entries whenever a mutation runs.
+이 예제는 Drizzle에 사용자 정의 `cache`를 연결하는 방법을 보여줍니다. 캐시에서 데이터를 가져오고, 결과를 캐시에 다시 저장하고, 뮤테이션이 실행될 때마다 항목을 무효화하는 함수를 제공합니다.
 
-Cache extension provides this set of config options
+캐시 확장은 다음 설정 옵션 세트를 제공합니다
 ```ts
 export type CacheConfig = {
   /** expire time, in seconds */
@@ -308,17 +307,17 @@ export class TestGlobalCache extends Cache {
 }
 ```
 
-## Limitations
+## 제한사항
 
-#### Queries that won't be handled by the `cache` extension:
+#### `cache` 확장에서 처리되지 않는 쿼리:
 
-- Using cache with raw queries, such as:
+- 다음과 같은 원시 쿼리와 함께 캐시 사용:
 
 ```ts
 db.execute(sql`select 1`);
 ```
 
-- Using cache with `batch` feature in `d1` and `libsql`
+- `d1` 및 `libsql`의 `batch` 기능과 함께 캐시 사용
 
 ```ts
 db.batch([
@@ -327,7 +326,7 @@ db.batch([
 ])
 ```
 
-- Using cache in transactions
+- 트랜잭션에서 캐시 사용
 ```ts
 await db.transaction(async (tx) => {
   await tx.update(accounts).set(...).where(...);
@@ -335,13 +334,13 @@ await db.transaction(async (tx) => {
 });
 ```
 
-#### Limitations that are temporary and will be handled soon:
+#### 일시적인 제한사항으로 곧 처리될 예정:
 
-- Using cache with Drizzle Relational Queries
+- Drizzle 관계형 쿼리와 함께 캐시 사용
 ```ts
 await db.query.users.findMany();
 ```
 
-- Using cache with `better-sqlite3`, `Durable Objects`, `expo sqlite`
-- Using cache with AWS Data API drivers
-- Using cache with views
+- `better-sqlite3`, `Durable Objects`, `expo sqlite`와 함께 캐시 사용
+- AWS Data API 드라이버와 함께 캐시 사용
+- 뷰와 함께 캐시 사용

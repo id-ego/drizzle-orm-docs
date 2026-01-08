@@ -1,5 +1,5 @@
 ---
-title: SQL Decrement value
+title: SQL 값 감소시키기
 slug: decrementing-a-value
 ---
 import Section from "@mdx/Section.astro";
@@ -9,12 +9,12 @@ import Prerequisites from "@mdx/Prerequisites.astro";
 <IsSupportedChipGroup chips={{PostgreSQL: true, MySQL: true, SQLite: true}}/>
 
 <Prerequisites>
-- Get started with [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql) and [SQLite](/docs/get-started-sqlite)
-- [Update statement](/docs/update)
-- [Filters](/docs/operators) and [sql operator](/docs/sql)
+- [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql), [SQLite](/docs/get-started-sqlite) 시작하기
+- [Update 문](/docs/update)
+- [필터](/docs/operators) 및 [sql 연산자](/docs/sql)
 </Prerequisites>
 
-To decrement a column value you can use `update().set()` method like below:
+컬럼 값을 감소시키려면 아래와 같이 `update().set()` 메서드를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {8}
@@ -35,7 +35,7 @@ update "table" set "counter" = "counter" - 1 where "id" = 1;
 ```
 </Section>
 
-Drizzle has simple and flexible API, which lets you easily create custom solutions. This is how you do custom decrement function:
+Drizzle은 간단하고 유연한 API를 제공하여 커스텀 솔루션을 쉽게 만들 수 있습니다. 다음은 커스텀 감소 함수를 만드는 방법입니다:
 
 ```ts copy {4,10,11}
 import { AnyColumn } from 'drizzle-orm';

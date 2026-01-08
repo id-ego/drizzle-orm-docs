@@ -22,23 +22,23 @@ import UpdateSchema from '@mdx/get-started/sqlite/UpdateSchema.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and D1 in existing project
+# 기존 프로젝트에서 Drizzle과 D1 시작하기
 
 <Prerequisites>
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **Cloudflare D1** - Serverless SQL database to query from your Workers and Pages projects - [read here](https://developers.cloudflare.com/d1/)
-  - **wrangler** - Cloudflare Developer Platform command-line interface - [read here](https://developers.cloudflare.com/workers/wrangler)
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **Cloudflare D1** - Workers 및 Pages 프로젝트에서 쿼리할 수 있는 서버리스 SQL 데이터베이스 - [자세히 보기](https://developers.cloudflare.com/d1/)
+  - **wrangler** - Cloudflare Developer Platform 커맨드라인 인터페이스 - [자세히 보기](https://developers.cloudflare.com/workers/wrangler)
 </Prerequisites>
 
 <FileStructure/>
 
-#### Step 1 - Install required package
+#### Step 1 - 필수 패키지 설치
 <InstallPackages lib=''/>
 
-#### Step 2 - Setup wrangler.toml
+#### Step 2 - wrangler.toml 설정
 
-You would need to have a `wrangler.toml` file for D1 database and will look something like this:
+D1 데이터베이스를 위해 `wrangler.toml` 파일이 필요하며 다음과 같이 작성합니다:
 ```toml
 name = "YOUR PROJECT NAME"
 main = "src/index.ts"
@@ -52,11 +52,11 @@ database_id = "YOUR DB ID"
 migrations_dir = "drizzle"
 ```
 
-#### Step 3 - Setup Drizzle config file
+#### Step 3 - Drizzle 설정 파일 설정
 
-**Drizzle config** - a configuration file that is used by [Drizzle Kit](/docs/kit-overview) and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config** - [Drizzle Kit](/docs/kit-overview)에서 사용하는 설정 파일로, 데이터베이스 연결, 마이그레이션 폴더, 스키마 파일에 대한 모든 정보를 포함합니다.
 
-Create a `drizzle.config.ts` file in the root of your project and add the following content:
+프로젝트 루트에 `drizzle.config.ts` 파일을 생성하고 다음 내용을 추가합니다:
 
 ```typescript copy filename="drizzle.config.ts"
 import 'dotenv/config';
@@ -74,19 +74,19 @@ export default defineConfig({
   },
 });
 ```
-<Callout title='tips'>
-You can check [our tutorial](/docs/guides/d1-http-with-drizzle-kit) on how to get env variables from CloudFlare
+<Callout title='팁'>
+CloudFlare에서 환경 변수를 가져오는 방법은 [튜토리얼](/docs/guides/d1-http-with-drizzle-kit)을 확인하세요
 </Callout>
 
-#### Step 4 - Introspect your database
+#### Step 4 - 데이터베이스 인트로스펙션
 
 <IntrospectSQLite/>
 
-#### Step 5 - Transfer code to your actual schema file
+#### Step 5 - 실제 스키마 파일로 코드 이전
 
 <TransferCode/>
 
-#### Step 6 - Connect Drizzle ORM to the database
+#### Step 6 - Drizzle ORM을 데이터베이스에 연결
 
 ```typescript copy
 import { drizzle } from 'drizzle-orm/d1';
@@ -101,7 +101,7 @@ export default {
 };
 ```
 
-#### Step 7 - Query the database
+#### Step 7 - 데이터베이스 쿼리
 
 ```typescript copy
 import { drizzle } from 'drizzle-orm/d1';
@@ -149,19 +149,19 @@ export default {
 };
 ```
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
 <RunFile/>
 
-#### Step 9 - Update your table schema (optional)
+#### Step 9 - 테이블 스키마 업데이트 (선택사항)
 
 <UpdateSchema/>
 
-#### Step 10 - Applying changes to the database (optional)
+#### Step 10 - 데이터베이스에 변경사항 적용 (선택사항)
 
 <ApplyChanges />
 
-#### Step 11 - Query the database with a new field (optional)
+#### Step 11 - 새 필드로 데이터베이스 쿼리 (선택사항)
 
 ```typescript copy filename="src/index.ts"
 import 'dotenv/config';

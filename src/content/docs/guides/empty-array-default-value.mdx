@@ -1,5 +1,5 @@
 ---
-title: Empty array as a default value
+title: 빈 배열을 기본값으로 사용하기
 slug: empty-array-default-value
 ---
 
@@ -7,14 +7,14 @@ import Section from "@mdx/Section.astro";
 import Prerequisites from "@mdx/Prerequisites.astro";
 
 <Prerequisites>
-- Get started with [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql) and [SQLite](/docs/get-started-sqlite)
-- Learn about column data types for [PostgreSQL](/docs/column-types/pg), [MySQL](/docs/column-types/mysql) and [SQLite](/docs/column-types/sqlite)
-- [sql operator](/docs/sql)
+- [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql), [SQLite](/docs/get-started-sqlite) 시작하기
+- [PostgreSQL](/docs/column-types/pg), [MySQL](/docs/column-types/mysql), [SQLite](/docs/column-types/sqlite) 컬럼 데이터 타입에 대해 알아보기
+- [sql 연산자](/docs/sql)
 </Prerequisites>
 
 ### PostgreSQL
 
-To set an empty array as a default value in PostgreSQL, you can use `sql` operator with `'{}'` or `ARRAY[]` syntax:
+PostgreSQL에서 빈 배열을 기본값으로 설정하려면 `sql` 연산자를 `'{}'` 또는 `ARRAY[]` 문법과 함께 사용할 수 있습니다:
 
 <Section>
 ```ts copy {10,14}
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 
 ### MySQL
 
-MySQL doesn't have an array data type, but you can use `json` data type for the same purpose. To set an empty array as a default value in MySQL, you can use `JSON_ARRAY()` function or `sql` operator with `('[]')` syntax:
+MySQL은 배열 데이터 타입을 제공하지 않지만, 같은 목적으로 `json` 데이터 타입을 사용할 수 있습니다. MySQL에서 빈 배열을 기본값으로 설정하려면 `JSON_ARRAY()` 함수나 `sql` 연산자를 `('[]')` 문법과 함께 사용할 수 있습니다:
 
 <Section>
 ```ts copy {7,11,15}
@@ -82,13 +82,13 @@ CREATE TABLE `users` (
 ```
 </Section>
 
-The `mode` option defines how values are handled in the application. With `json` mode, values are treated as JSON object literal. 
+`mode` 옵션은 애플리케이션에서 값을 처리하는 방식을 정의합니다. `json` 모드를 사용하면 값이 JSON 객체 리터럴로 처리됩니다.
 
-You can specify `.$type<..>()` for json object inference, it will not check runtime values. It provides compile time protection for default values, insert and select schemas.
+`.$type<..>()`을 사용하여 JSON 객체의 타입을 추론할 수 있으며, 런타임 값은 검사하지 않습니다. 이는 기본값, insert 및 select 스키마에 대한 컴파일 타임 보호를 제공합니다.
 
 ### SQLite
 
-SQLite doesn't have an array data type, but you can use `text` data type for the same purpose. To set an empty array as a default value in SQLite, you can use `json_array()` function or `sql` operator with `'[]'` syntax:
+SQLite는 배열 데이터 타입을 제공하지 않지만, 같은 목적으로 `text` 데이터 타입을 사용할 수 있습니다. SQLite에서 빈 배열을 기본값으로 설정하려면 `json_array()` 함수나 `sql` 연산자를 `'[]'` 문법과 함께 사용할 수 있습니다:
 
 <Section>
 ```ts copy {9,13}
@@ -117,6 +117,6 @@ CREATE TABLE `users` (
 ```
 </Section>
 
-The `mode` option defines how values are handled in the application. With `json` mode, values are treated as JSON object literal. 
+`mode` 옵션은 애플리케이션에서 값을 처리하는 방식을 정의합니다. `json` 모드를 사용하면 값이 JSON 객체 리터럴로 처리됩니다.
 
-You can specify `.$type<..>()` for json object inference, it will not check runtime values. It provides compile time protection for default values, insert and select schemas.
+`.$type<..>()`을 사용하여 JSON 객체의 타입을 추론할 수 있으며, 런타임 값은 검사하지 않습니다. 이는 기본값, insert 및 select 스키마에 대한 컴파일 타임 보호를 제공합니다.

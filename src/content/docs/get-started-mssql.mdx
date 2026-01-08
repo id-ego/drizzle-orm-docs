@@ -11,52 +11,52 @@ import WhatsNextMSSQL from "@mdx/WhatsNextMSSQL.astro";
 # Drizzle \<\> MSSQL
 
 <Callout type='error'>
-This page explains concepts available on drizzle versions `1.0.0-beta.2` and higher.
+이 페이지는 Drizzle 버전 `1.0.0-beta.2` 이상에서 사용 가능한 개념을 설명합니다.
 </Callout>
 
 <br/>
 
 <Prerequisites>
-- Database [connection basics](/docs/connect-overview) with Drizzle
-- node-mssql [basics](https://github.com/tediousjs/node-mssql)
+- Drizzle을 사용한 데이터베이스 [연결 기초](/docs/connect-overview)
+- node-mssql [기초](https://github.com/tediousjs/node-mssql)
 </Prerequisites>
 
-Drizzle has native support for MSSQL connections with the `mssql` driver.
+Drizzle은 `mssql` 드라이버를 사용한 MSSQL 연결을 네이티브로 지원합니다.
 
-#### Step 1 - Install packages
+#### Step 1 - 패키지 설치
 <Npm>
 drizzle-orm@beta mssql
 -D drizzle-kit@beta
 </Npm>
 
-#### Step 2 - Initialize the driver and make a query
+#### Step 2 - 드라이버 초기화 및 쿼리 실행
 <CodeTabs items={["mssql", "mssql with config"]}>
 ```typescript copy
-// Make sure to install the 'mssql' package 
+// Make sure to install the 'mssql' package
 import { drizzle } from 'drizzle-orm/node-mssql';
 
 const db = drizzle(process.env.DATABASE_URL);
- 
+
 const result = await db.execute('select 1');
 ```
 ```typescript copy
-// Make sure to install the 'pg' package 
+// Make sure to install the 'pg' package
 import { drizzle } from 'drizzle-orm/node-mssql';
 
 // You can specify any property from the mssql connection options
-const db = drizzle({ 
-  connection: { 
+const db = drizzle({
+  connection: {
     connectionString: process.env.DATABASE_URL,
     ssl: true
   }
 });
- 
+
 const result = await db.execute('select 1');
 ```
 </CodeTabs>
 
 <Callout type='warning'>
-As long as the `node-mssql` driver requires `await` on `Pool` initialization, we need to `await` it before each request - unless you are providing your own Pool instance to Drizzle. In that case, when you want to access `db.$client`, you first need to `await` it, and then use it
+`node-mssql` 드라이버는 `Pool` 초기화 시 `await`를 요구하기 때문에, 각 요청 전에 `await`를 사용해야 합니다. 단, Drizzle에 자체 Pool 인스턴스를 제공하는 경우는 예외입니다. 이 경우 `db.$client`에 접근하려면 먼저 `await`를 사용한 후 사용해야 합니다.
 
 ```ts
 const awaitedClient = await db.$client;
@@ -64,19 +64,19 @@ const response = awaitedClient.query...
 ```
 </Callout>
 
-If you need to provide your existing driver:
+기존 드라이버를 제공해야 하는 경우:
 
 ```typescript copy
-// Make sure to install the 'mssql' package 
+// Make sure to install the 'mssql' package
 import { drizzle } from "drizzle-orm/node-mssql";
 import type { ConnectionPool } from 'mssql';
 
 const pool = await mssql.connect(connectionString);
 const db = drizzle({ client: pool });
- 
+
 const result = await db.execute('select 1');
 ```
 
-#### What's next?
+#### 다음 단계
 
 <WhatsNextMSSQL/>

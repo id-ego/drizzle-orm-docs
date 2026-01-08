@@ -3,22 +3,17 @@ import Tabs from "@mdx/Tabs.astro";
 import Callout from "@mdx/Callout.astro";
 import TableWrapper from "@mdx/TableWrapper.astro";
 
-# Versioning
+# 버전 관리
 
-`drizzle-seed` uses versioning to manage outputs for static and dynamic data. To ensure true 
-determinism, ensure that values remain unchanged when using the same `seed` number. If changes are made to 
-static data sources or dynamic data generation logic, the version will be updated, allowing
-you to choose between sticking with the previous version or using the latest.
+`drizzle-seed`는 정적 및 동적 데이터의 출력을 관리하기 위해 버전 관리를 사용합니다. 진정한 결정론을 보장하려면 동일한 `seed` 숫자를 사용할 때 값이 변경되지 않도록 해야 합니다. 정적 데이터 소스나 동적 데이터 생성 로직에 변경이 발생하면 버전이 업데이트되어 이전 버전을 유지하거나 최신 버전을 사용할지 선택할 수 있습니다.
 
-You can upgrade to the latest `drizzle-seed` version for new features, such as additional
-generators, while maintaining deterministic outputs with a previous version if needed. This
-is particularly useful when you need to rely on existing deterministic data while accessing new functionality.
+추가 제너레이터와 같은 새로운 기능을 위해 최신 `drizzle-seed` 버전으로 업그레이드하면서도 필요에 따라 이전 버전의 결정론적 출력을 유지할 수 있습니다. 이는 새로운 기능에 접근하면서도 기존의 결정론적 데이터에 의존해야 할 때 특히 유용합니다.
 
 ```ts
 await seed(db, schema, { version: '2' });
 ```
 
-## History
+## 히스토리
 <TableWrapper>
 |          api version  |   npm version    |     Changed generators                             |
 |  :-------------- | :-------------- | :-------------                         |
@@ -26,12 +21,12 @@ await seed(db, schema, { version: '2' });
 |       `v2 (LTS) `       | `0.2.1`          |`string()`, `interval({ isUnique: true })` |
 </TableWrapper>
 
-<Callout collapsed="How it works under the hood?">
-> This is not an actual API change; it is just an example of how we will proceed with `drizzle-seed` versioning.
+<Callout collapsed="내부 동작 방식은?">
+> 이것은 실제 API 변경이 아니며, `drizzle-seed` 버전 관리를 어떻게 진행할지에 대한 예시일 뿐입니다.
 
-For example, `lastName` generator was changed, and new version, `V2`, of this generator became available.
+예를 들어, `lastName` 제너레이터가 변경되어 이 제너레이터의 새 버전인 `V2`가 사용 가능해졌습니다.
 
-Later, `firstName` generator was changed, making `V3` version of this generator available.
+나중에 `firstName` 제너레이터가 변경되어 이 제너레이터의 `V3` 버전이 사용 가능해졌습니다.
 
 |                  |       `V1`       |      `V2`       |   `V3(latest)`   |
 | :--------------: | :--------------: | :-------------: | :--------------: |
@@ -39,34 +34,34 @@ Later, `firstName` generator was changed, making `V3` version of this generator 
 | **FirstNameGen** | `FirstNameGenV1` |                 | `FirstNameGenV3` |
 
 
-##### Use the `firstName` generator of version 3 and the `lastName` generator of version 2
+##### 버전 3의 `firstName` 제너레이터와 버전 2의 `lastName` 제너레이터를 사용
 ```ts
 await seed(db, schema);
 ```
 
-If you are not ready to use latest generator version right away, you can specify max version to use
+최신 제너레이터 버전을 바로 사용할 준비가 되지 않았다면, 사용할 최대 버전을 지정할 수 있습니다
 
-##### Use the `firstName` generator of version 1 and the `lastName` generator of version 2
+##### 버전 1의 `firstName` 제너레이터와 버전 2의 `lastName` 제너레이터를 사용
 ```ts
 await seed(db, schema, { version: '2' });
 ```
 
-##### Use the `firstName` generator of version 1 and the `lastName` generator of version 1.
+##### 버전 1의 `firstName` 제너레이터와 버전 1의 `lastName` 제너레이터를 사용
 ```ts
 await seed(db, schema, { version: '1' });
 ```
 
 </Callout>
 
-## Version 2
-#### Unique `interval` generator was changed
+## 버전 2
+#### Unique `interval` 제너레이터 변경
 
-<Callout title='Reason for upgrade'>
-An older version of the generator could produce intervals like `1 minute 60 seconds` and `2 minutes 0 seconds`, treating them as distinct intervals.
-However, when the `1 minute 60 seconds` interval is inserted into a PostgreSQL database, it is automatically converted to `2 minutes 0 seconds`. As a result, attempting to insert the `2 minutes 0 seconds` interval into a unique column afterwards will cause an error
+<Callout title='업그레이드 이유'>
+이전 버전의 제너레이터는 `1 minute 60 seconds`와 `2 minutes 0 seconds` 같은 간격을 별개의 간격으로 처리할 수 있었습니다.
+그러나 `1 minute 60 seconds` 간격이 PostgreSQL 데이터베이스에 삽입되면 자동으로 `2 minutes 0 seconds`로 변환됩니다. 그 결과, `2 minutes 0 seconds` 간격을 나중에 unique 컬럼에 삽입하려고 시도하면 오류가 발생합니다
 </Callout>
 
-You will be affected, if your table includes a unique column of type `interval`:
+테이블에 `interval` 타입의 unique 컬럼이 포함되어 있다면 영향을 받습니다:
 <Tabs items={['PostgreSQL']}>
 <Tab>
 ```ts
@@ -89,7 +84,7 @@ main();
 </Tab>
 </Tabs>
 
-You will be affected, if you use the unique `interval` generator in your seeding script, as shown in the script below:
+아래 스크립트에 표시된 것처럼 시딩 스크립트에서 unique `interval` 제너레이터를 사용하는 경우 영향을 받습니다:
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
 <Tab>
 ```ts
@@ -207,13 +202,13 @@ main();
 </Tab>
 </Tabs>
 
-#### `string` generators were changed: both non-unique and unique
+#### `string` 제너레이터 변경: non-unique 및 unique 모두
 
-<Callout title='Reason to upgrade'>
-Ability to generate a unique string based on the length of the text column (e.g., `varchar(20)`)
+<Callout title='업그레이드 이유'>
+텍스트 컬럼의 길이를 기반으로 unique 문자열을 생성할 수 있는 기능 (예: `varchar(20)`)
 </Callout>
 
-You will be affected, if your table includes a column of a text-like type with a maximum length parameter or a unique column of a text-like type:
+테이블에 최대 길이 매개변수가 있는 텍스트 유사 타입의 컬럼이나 텍스트 유사 타입의 unique 컬럼이 포함되어 있다면 영향을 받습니다:
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
 <Tab>
 ```ts
@@ -290,7 +285,7 @@ main();
 </Tab>
 </Tabs>
 
-You will be affected, if you use the `string` generator in your seeding script, as shown in the script below:
+아래 스크립트에 표시된 것처럼 시딩 스크립트에서 `string` 제너레이터를 사용하는 경우 영향을 받습니다:
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
 <Tab>
 ```ts

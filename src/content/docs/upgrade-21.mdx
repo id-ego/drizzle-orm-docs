@@ -1,14 +1,14 @@
 import Callout from '@mdx/Callout.astro';
 
-## How to migrate to `0.21.0`
+## `0.21.0`으로 마이그레이션하는 방법
 
-#### 1. Remove all `:dialect` prefixes from your drizzle-kit commands.
-Example: Change `drizzle-kit push:mysql` to `drizzle-kit push`.
+#### 1. drizzle-kit 명령어에서 모든 `:dialect` 접두사를 제거합니다.
+예시: `drizzle-kit push:mysql`을 `drizzle-kit push`로 변경합니다.
 
-#### 2. Update your `drizzle.config.ts` file:
- - Add `dialect` to `drizzle.config.ts`. It is now mandatory and can be `postgresql`, `mysql`, or `sqlite`.
- - Add `driver` to `drizzle.config.ts` ONLY if you are using `aws-data-api`, `turso`, `d1-http`(WIP), or `expo`. Otherwise, you can remove the `driver` from `drizzle.config.ts`.
- - If you were using `connectionString` or `uri` in `dbCredentials`, you should now use `url`.
+#### 2. `drizzle.config.ts` 파일을 업데이트합니다:
+ - `drizzle.config.ts`에 `dialect`를 추가합니다. 이제 필수 항목이며 `postgresql`, `mysql`, 또는 `sqlite` 중 하나를 사용할 수 있습니다.
+ - `aws-data-api`, `turso`, `d1-http`(WIP), 또는 `expo`를 사용하는 경우에만 `driver`를 `drizzle.config.ts`에 추가합니다. 그렇지 않으면 `driver`를 `drizzle.config.ts`에서 제거할 수 있습니다.
+ - `dbCredentials`에서 `connectionString` 또는 `uri`를 사용하고 있었다면, 이제 `url`을 사용해야 합니다.
     
 ```ts
 import { defineConfig } from "drizzle-kit"
@@ -22,42 +22,42 @@ export default defineConfig({
 })
 ```
 
-#### 3. If you are using PostgreSQL or SQLite and had migrations generated in your project, please run `drizzle-kit up` so Drizzle can upgrade all the snapshots to version 6.
+#### 3. PostgreSQL 또는 SQLite를 사용 중이고 프로젝트에 마이그레이션이 생성되어 있는 경우, Drizzle이 모든 스냅샷을 버전 6으로 업그레이드할 수 있도록 `drizzle-kit up`을 실행해주세요.
 
 <Callout>
-  You can check everything that was changed in `0.21.0` in details here
+  `0.21.0`에서 변경된 모든 내용은 여기에서 자세히 확인할 수 있습니다
 </Callout>
 
-## Changelog
+## 변경사항
 
-**❗ Snapshots Upgrade**
+**❗ 스냅샷 업그레이드**
 
-All PostgreSQL and SQLite-generated snapshots will be upgraded to version 6. You will be prompted to upgrade them by running `drizzle-kit up`
+PostgreSQL 및 SQLite로 생성된 모든 스냅샷이 버전 6으로 업그레이드됩니다. `drizzle-kit up`을 실행하여 업그레이드하라는 메시지가 표시됩니다.
 
-**❗ Removing :dialect from `drizzle-kit` cli commands**
+**❗ `drizzle-kit` CLI 명령어에서 :dialect 제거**
 
-You can now just use commands, like:
+이제 다음과 같은 명령어를 사용할 수 있습니다:
 
 - `drizzle-kit generate`
 - `drizzle-kit push`
-- etc.
+- 등등
 
-without specifying dialect. This param is moved to `drizzle.config.ts`
+dialect를 지정하지 않아도 됩니다. 이 매개변수는 `drizzle.config.ts`로 이동되었습니다.
 
-**❗ `drizzle.config` update**
+**❗ `drizzle.config` 업데이트**
 
-- `dialect` is now mandatory; specify which database dialect you are connecting to. Options include `mysql`, `postgresql`, or `sqlite`.
-- `driver` has become optional and will have a specific driver, each with a different configuration of `dbCredentials`. Available drivers are:
+- `dialect`은 이제 필수입니다. 연결하려는 데이터베이스 dialect를 지정하세요. 옵션은 `mysql`, `postgresql`, 또는 `sqlite`입니다.
+- `driver`는 선택 사항이 되었으며, 각각 다른 `dbCredentials` 설정을 가진 특정 드라이버를 갖게 됩니다. 사용 가능한 드라이버는:
   - `aws-data-api`
   - `turso`
-  - `d1-http` - currently WIP
+  - `d1-http` - 현재 작업 중
   - `expo`
-- `url` - a unified parameter for the previously existing `connectionString` and `uri`.
-- `migrations` - a new object parameter to specify a custom table and schema for the migrate command:
-  - `table` - the custom table where drizzle will store migrations.
-  - `schema` - the custom schema where drizzle will store migrations (Postgres only).
+- `url` - 기존의 `connectionString` 및 `uri`를 통합한 매개변수입니다.
+- `migrations` - migrate 명령어를 위한 커스텀 테이블과 스키마를 지정하는 새로운 객체 매개변수입니다:
+  - `table` - drizzle이 마이그레이션을 저장할 커스텀 테이블입니다.
+  - `schema` - drizzle이 마이그레이션을 저장할 커스텀 스키마입니다 (PostgreSQL만 해당).
 
-Usage examples for all new and updated commands
+모든 신규 및 업데이트된 명령어의 사용 예시
 ```ts
 import { defineConfig } from "drizzle-kit"
 
@@ -74,61 +74,61 @@ export default defineConfig({
 })
 ```
 
-Drizzle driver selection follows the current strategy:
+Drizzle 드라이버 선택은 다음 전략을 따릅니다:
 
-If a `driver` is specified, use this driver for querying.
+`driver`가 지정된 경우, 쿼리에 이 드라이버를 사용합니다.
 
-If no driver is specified:
+driver가 지정되지 않은 경우:
 
-- For `postgresql` dialect, Drizzle will:
-  - Check if the `pg` driver is installed and use it.
-  - If not, try to find the `postgres` driver and use it.
-  - If still not found, try to find `@vercel/postgres`.
-  - Then try `@neondatabase/serverless`.
-  - If nothing is found, an error will be thrown.
+- `postgresql` dialect의 경우, Drizzle은:
+  - `pg` 드라이버가 설치되어 있는지 확인하고 사용합니다.
+  - 없으면 `postgres` 드라이버를 찾아서 사용합니다.
+  - 여전히 찾지 못하면 `@vercel/postgres`를 찾습니다.
+  - 그 다음 `@neondatabase/serverless`를 시도합니다.
+  - 아무것도 찾지 못하면 오류가 발생합니다.
 
-- For `mysql` dialect, Drizzle will:
-  - Check if the `mysql2` driver is installed and use it.
-  - If not, try to find `@planetscale/database` and use it.
-  - If nothing is found, an error will be thrown.
+- `mysql` dialect의 경우, Drizzle은:
+  - `mysql2` 드라이버가 설치되어 있는지 확인하고 사용합니다.
+  - 없으면 `@planetscale/database`를 찾아서 사용합니다.
+  - 아무것도 찾지 못하면 오류가 발생합니다.
 
-- For `sqlite` dialect, Drizzle will:
-  - Check if the `@libsql/client` driver is installed and use it.
-  - If not, try to find `better-sqlite3` and use it.
-  - If nothing is found, an error will be thrown
+- `sqlite` dialect의 경우, Drizzle은:
+  - `@libsql/client` 드라이버가 설치되어 있는지 확인하고 사용합니다.
+  - 없으면 `better-sqlite3`를 찾아서 사용합니다.
+  - 아무것도 찾지 못하면 오류가 발생합니다.
 
-**❗ MySQL schemas/database are no longer supported by drizzle-kit**
+**❗ MySQL 스키마/데이터베이스는 더 이상 drizzle-kit에서 지원되지 않습니다**
 
-Drizzle Kit won't handle any schema changes for additional schemas/databases in your drizzle schema file
+Drizzle Kit은 drizzle 스키마 파일에 있는 추가 스키마/데이터베이스에 대한 스키마 변경을 처리하지 않습니다.
 
-# New Features
+# 새로운 기능
 
-**🎉 Pull relations**
+**🎉 풀 관계**
 
-Drizzle will now pull `relations` from the database by extracting foreign key information and translating it into a `relations` object. You can view the `relations.ts` file in the `out` folder after introspection is complete
+Drizzle은 이제 외래 키 정보를 추출하여 `relations` 객체로 변환하여 데이터베이스에서 `relations`를 가져옵니다. 인트로스펙션이 완료된 후 `out` 폴더에서 `relations.ts` 파일을 볼 수 있습니다.
 
-For more info about relations, please check [the docs](/docs/rqb#declaring-relations)
+관계에 대한 자세한 내용은 [문서](/docs/rqb#declaring-relations)를 확인하세요.
 
 
-**🎉 Custom name for generated migrations**
+**🎉 생성된 마이그레이션의 커스텀 이름**
 
-To specify a name for your migration you should use `--name <name>`
+마이그레이션 이름을 지정하려면 `--name <name>`을 사용해야 합니다.
 
-Usage
+사용법
 ```
 drizzle-kit generate --name init_db
 ```
 
-**🎉 New command `migrate`**
+**🎉 새로운 명령어 `migrate`**
 
-You can now apply generated migrations to your database directly from `drizzle-kit`
+이제 `drizzle-kit`에서 직접 생성된 마이그레이션을 데이터베이스에 적용할 수 있습니다.
 
-Usage
+사용법
 ```
 drizzle-kit migrate
 ```
 
-By default, drizzle-kit will store migration data entries in the `__drizzle_migrations` table and, in the case of PostgreSQL, in a `drizzle` schema. If you want to change this, you will need to specify the modifications in `drizzle.config.ts`.
+기본적으로 drizzle-kit은 마이그레이션 데이터 항목을 `__drizzle_migrations` 테이블에 저장하며, PostgreSQL의 경우 `drizzle` 스키마에 저장합니다. 이를 변경하려면 `drizzle.config.ts`에서 수정 사항을 지정해야 합니다.
 
 ```ts
 import { defineConfig } from "drizzle-kit"

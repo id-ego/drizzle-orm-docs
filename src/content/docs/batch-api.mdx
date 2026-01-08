@@ -3,24 +3,23 @@ import Tabs from '@mdx/Tabs.astro';
 
 # Batch API
 
-**LibSQL Batch API explanation**:
-_[source](https://docs.turso.tech/sdk/ts/reference#batch-transactions)_
+**LibSQL Batch API 설명**:
+_[출처](https://docs.turso.tech/sdk/ts/reference#batch-transactions)_
 
-> With the libSQL client library, a batch is one or more SQL statements executed in order in an implicit transaction. 
-The transaction is controlled by the libSQL backend. If all of the statements are successful, 
-the transaction is committed. If any of the statements fail, the entire transaction is rolled back and no changes are made.
+> libSQL 클라이언트 라이브러리에서 배치는 암묵적 트랜잭션에서 순서대로 실행되는 하나 이상의 SQL 문입니다.
+트랜잭션은 libSQL 백엔드에서 제어됩니다. 모든 문이 성공하면
+트랜잭션이 커밋됩니다. 문 중 하나라도 실패하면 전체 트랜잭션이 롤백되며 변경 사항이 적용되지 않습니다.
 
-**D1 Batch API explanation**:
-_[source](https://developers.cloudflare.com/d1/worker-api/d1-database/#batch)_
+**D1 Batch API 설명**:
+_[출처](https://developers.cloudflare.com/d1/worker-api/d1-database/#batch)_
 
-> Batching sends multiple SQL statements inside a single call to the database. 
-This can have a huge performance impact as it reduces latency from network round trips to D1. 
-D1 operates in auto-commit. Our implementation guarantees that each statement in the list will execute and commit,
-sequentially, non-concurrently.
-Batched statements are SQL transactions. If a statement in the sequence fails, 
-then an error is returned for that specific statement, and it aborts or rolls back the entire sequence.
+> 배치는 단일 호출로 여러 SQL 문을 데이터베이스에 전송합니다.
+이는 D1로의 네트워크 왕복 지연 시간을 줄여주므로 성능에 큰 영향을 미칠 수 있습니다.
+D1은 자동 커밋 모드로 작동합니다. 우리의 구현은 목록의 각 문이 순차적으로, 비동시적으로 실행되고 커밋됨을 보장합니다.
+배치된 문은 SQL 트랜잭션입니다. 순서에서 문이 실패하면
+해당 특정 문에 대한 오류가 반환되고 전체 순서가 중단되거나 롤백됩니다.
 
-Drizzle ORM provides APIs to run SQL statements in batch for `LibSQL`, `Neon` and `D1`:
+Drizzle ORM은 `LibSQL`, `Neon`, `D1`에 대해 SQL 문을 배치로 실행하는 API를 제공합니다:
 ```ts
 const batchResponse: BatchResponse = await db.batch([
 	db.insert(usersTable).values({ id: 1, name: 'John' }).returning({ id: usersTable.id }),
@@ -30,7 +29,7 @@ const batchResponse: BatchResponse = await db.batch([
 	db.select({ id: usersTable.id, invitedBy: usersTable.invitedBy }).from(usersTable),
 ]);
 ```
-Type for `batchResponse` in this example would be:
+이 예제에서 `batchResponse`의 타입은 다음과 같습니다:
 <Tabs items={["libSQL", "Neon", "D1"]}>
 <Tab>
 ```ts
@@ -112,7 +111,7 @@ type BatchResponse = [
 </Tab>
 </Tabs>
 
-All possible builders that can be used inside `db.batch`:
+`db.batch` 내에서 사용할 수 있는 모든 쿼리 메서드:
 ```ts
 db.all(),
 db.get(),

@@ -1,27 +1,27 @@
 ---
-title: SQLite column types
+title: SQLite 컬럼 타입
 ---
 
 import Section from '@mdx/Section.astro';
 import Callout from '@mdx/Callout.astro';
 
-Based on the official **[SQLite docs](https://www.sqlite.org/datatype3.html)**,
-each value stored in an SQLite database (or manipulated by the database engine)
-has one of the following storage classes `NULL`, `INTEGER`, `REAL`, `TEXT` and `BLOB`.
+공식 **[SQLite 문서](https://www.sqlite.org/datatype3.html)**에 따르면,
+SQLite 데이터베이스에 저장되거나 데이터베이스 엔진에 의해 조작되는 각 값은
+다음의 저장 클래스 중 하나를 가집니다: `NULL`, `INTEGER`, `REAL`, `TEXT`, `BLOB`.
 
-We have native support for all of them, yet if that's not enough for you, feel free to create **[custom types](/docs/custom-types)**.
+Drizzle은 이들을 모두 기본적으로 지원하지만, 충분하지 않다면 **[커스텀 타입](/docs/custom-types)**을 자유롭게 생성할 수 있습니다.
 
 <Callout title='important' type='warning'>
-All examples in this part of the documentation do not use database column name aliases, and column names are generated from TypeScript keys. 
+이 문서의 모든 예제는 데이터베이스 컬럼명 별칭을 사용하지 않으며, 컬럼명은 TypeScript 키로부터 생성됩니다.
 
-You can use database aliases in column names if you want, and you can also use the `casing` parameter to define a mapping strategy for Drizzle. 
+원한다면 컬럼명에 데이터베이스 별칭을 사용할 수 있으며, `casing` 파라미터를 사용하여 Drizzle의 매핑 전략을 정의할 수도 있습니다.
 
-You can read more about it [here](/docs/sql-schema-declaration#shape-your-data-schema)
+자세한 내용은 [여기](/docs/sql-schema-declaration#shape-your-data-schema)에서 확인하세요.
 </Callout>
 
 ### Integer
 
-A signed integer, stored in `0`, `1`, `2`, `3`, `4`, `6`, or `8` bytes depending on the magnitude of the value.
+부호 있는 정수로, 값의 크기에 따라 `0`, `1`, `2`, `3`, `4`, `6`, 또는 `8` 바이트로 저장됩니다.
 
 <Section>
 ```typescript
@@ -31,7 +31,7 @@ const table = sqliteTable('table', {
 	id: integer()
 });
 
-// you can customize integer mode to be number, boolean, timestamp, timestamp_ms
+// integer 모드를 number, boolean, timestamp, timestamp_ms로 커스터마이징할 수 있습니다
 integer({ mode: 'number' })
 integer({ mode: 'boolean' })
 integer({ mode: 'timestamp_ms' })
@@ -49,7 +49,7 @@ CREATE TABLE `table` (
 
 <Section>
 ```typescript
-// to make integer primary key auto increment
+// integer를 자동 증가 기본 키로 만들기
 integer({ mode: 'number' }).primaryKey({ autoIncrement: true })
 ```
 ```sql
@@ -61,7 +61,7 @@ CREATE TABLE `table` (
 
 ### Real
 
-A floating point value, stored as an `8-byte IEEE` floating point number.
+부동 소수점 값으로, `8바이트 IEEE` 부동 소수점 숫자로 저장됩니다.
 
 <Section>
 ```typescript
@@ -83,10 +83,10 @@ CREATE TABLE `table` (
 
 ### Text
 
-A text string, stored using the database encoding (`UTF-8`, `UTF-16BE` or `UTF-16LE`).  
+텍스트 문자열로, 데이터베이스 인코딩(`UTF-8`, `UTF-16BE` 또는 `UTF-16LE`)을 사용하여 저장됩니다.
 
 <Callout type="info" emoji="ℹ️">
-	You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+	`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert` 및 `select` 타입을 추론할 수 있으며, 런타임 값은 **검사하지 않습니다**.
 </Callout>
 
 <Section>
@@ -97,7 +97,7 @@ const table = sqliteTable('table', {
 	text: text()
 });
 
-// will be inferred as text: "value1" | "value2" | null
+// text: "value1" | "value2" | null 로 추론됩니다
 text({ enum: ["value1", "value2"] })
 text({ mode: 'json' })
 text({ mode: 'json' }).$type<{ foo: string }>()
@@ -113,16 +113,15 @@ CREATE TABLE `table` (
 
 ### Blob
 
-A blob of data, stored exactly as it was input.
+데이터의 blob으로, 입력된 그대로 정확히 저장됩니다.
 
 <Callout type="info" emoji="ℹ️">
-	It's recommended to use `text('', { mode: 'json' })` instead of `blob('', { mode: 'json' })`, 
-	because it supports JSON functions:
+	`blob('', { mode: 'json' })` 대신 `text('', { mode: 'json' })`을 사용하는 것을 권장합니다.
+	JSON 함수를 지원하기 때문입니다:
 
-	All JSON functions currently throw an error if any of their arguments are BLOBs because BLOBs 
-	are reserved for a future enhancement in which BLOBs will store the binary encoding for JSON.
+	현재 모든 JSON 함수는 인수가 BLOB인 경우 오류를 발생시킵니다. BLOB은 JSON의 바이너리 인코딩을 저장할 향후 개선 사항을 위해 예약되어 있기 때문입니다.
 
-	See **https://www.sqlite.org/json1.html**.
+	자세한 내용은 **https://www.sqlite.org/json1.html**을 참조하세요.
 </Callout>
 
 <Section>
@@ -148,17 +147,17 @@ CREATE TABLE `table` (
 );
 ```
 
-You can specify `.$type<..>()` for blob inference, it **won't** check runtime values. 
-It provides compile time protection for default values, insert and select schemas.  
+blob 추론을 위해 `.$type<..>()`을 지정할 수 있으며, 런타임 값은 **검사하지 않습니다**.
+이는 기본값, 삽입 및 조회 스키마에 대한 컴파일 타임 보호를 제공합니다.
 
 ```typescript
-// will be inferred as { foo: string }
+// { foo: string }로 추론됩니다
 json: blob({ mode: 'json' }).$type<{ foo: string }>();
 
-// will be inferred as string[]
+// string[]로 추론됩니다
 json: blob({ mode: 'json' }).$type<string[]>();
 
-// won't compile
+// 컴파일되지 않습니다
 json: blob({ mode: 'json' }).$type<string[]>().default({});
 ```
 
@@ -166,9 +165,8 @@ json: blob({ mode: 'json' }).$type<string[]>().default({});
 
 ### Boolean
 
-SQLite does not have native `boolean` data type, yet you can specify `integer` column to be in a `boolean` mode. 
-This allows you to operate boolean values in your code and Drizzle stores them as 0 and 1 integer
-values in the database.
+SQLite는 네이티브 `boolean` 데이터 타입이 없지만, `integer` 컬럼을 `boolean` 모드로 지정할 수 있습니다.
+이를 통해 코드에서 boolean 값을 사용할 수 있으며, Drizzle은 이를 데이터베이스에 0과 1의 정수 값으로 저장합니다.
 
 
 <Section>
@@ -190,8 +188,8 @@ CREATE TABLE `table` (
 
 ### Bigint
 
-Since there is no `bigint` data type in SQLite, Drizzle offers a special `bigint` mode for `blob` columns. 
-This mode allows you to work with BigInt instances in your code, and Drizzle stores them as blob values in the database.
+SQLite에는 `bigint` 데이터 타입이 없기 때문에, Drizzle은 `blob` 컬럼에 대한 특별한 `bigint` 모드를 제공합니다.
+이 모드를 사용하면 코드에서 BigInt 인스턴스로 작업할 수 있으며, Drizzle은 이를 데이터베이스에 blob 값으로 저장합니다.
 
 
 <Section>
@@ -236,8 +234,8 @@ CREATE TABLE `table` (
 
 ## ---
 
-### Customizing data type
-Every column builder has a `.$type()` method, which allows you to customize the data type of the column. This is useful, for example, with unknown or branded types.
+### 데이터 타입 커스터마이징
+모든 컬럼 빌더는 `.$type()` 메서드를 가지고 있으며, 이를 통해 컬럼의 데이터 타입을 커스터마이징할 수 있습니다. 예를 들어, unknown 또는 브랜드 타입과 함께 사용할 때 유용합니다.
 ```ts
 type UserId = number & { __brand: 'user_id' };
 type Data = {
@@ -252,7 +250,7 @@ const users = sqliteTable('users', {
 ```
 
 ### Not null
-`NOT NULL` constraint dictates that the associated column may not contain a `NULL` value.
+`NOT NULL` 제약조건은 연결된 컬럼이 `NULL` 값을 포함할 수 없음을 지정합니다.
 <Section>
 ```typescript
 const table = sqliteTable('table', { 
@@ -267,15 +265,12 @@ CREATE TABLE table (
 ```
 </Section>
 
-### Default value
+### 기본값
 
-The `DEFAULT` clause specifies a default value to use for the column if no value
-is explicitly provided by the user when doing an `INSERT`.
-If there is no explicit `DEFAULT` clause attached to a column definition,
-then the default value of the column is `NULL`.
+`DEFAULT` 절은 `INSERT` 수행 시 사용자가 명시적으로 값을 제공하지 않을 경우 컬럼에 사용할 기본값을 지정합니다.
+컬럼 정의에 명시적인 `DEFAULT` 절이 없으면, 컬럼의 기본값은 `NULL`입니다.
 
-An explicit `DEFAULT` clause may specify that the default value is `NULL`,
-a string constant, a blob constant, a signed-number, or any constant expression enclosed in parentheses.
+명시적인 `DEFAULT` 절은 기본값이 `NULL`, 문자열 상수, blob 상수, 부호 있는 숫자 또는 괄호로 묶인 상수 표현식임을 지정할 수 있습니다.
 
 <Section>
 ```typescript
@@ -296,7 +291,7 @@ CREATE TABLE `table` (
 ```
 </Section>
 
-A default value may also be one of the special case-independent keywords `CURRENT_TIME`, `CURRENT_DATE` or `CURRENT_TIMESTAMP`.
+기본값은 특수 대소문자 구분 없는 키워드 `CURRENT_TIME`, `CURRENT_DATE` 또는 `CURRENT_TIMESTAMP` 중 하나일 수도 있습니다.
 
 <Section>
 ```typescript
@@ -319,12 +314,12 @@ CREATE TABLE `table` (
 ```
 </Section>
 
-When using `$default()` or `$defaultFn()`, which are simply different aliases for the same function, 
-you can generate defaults at runtime and use these values in all insert queries. 
-These functions can assist you in utilizing various implementations such as `uuid`, `cuid`, `cuid2`, and many more.
+동일한 함수의 다른 별칭인 `$default()` 또는 `$defaultFn()`을 사용할 때,
+런타임에 기본값을 생성하고 모든 삽입 쿼리에서 이 값을 사용할 수 있습니다.
+이러한 함수는 `uuid`, `cuid`, `cuid2` 등 다양한 구현을 활용하는 데 도움이 됩니다.
 
 <Callout type="info" emoji="ℹ️">
-	Note: This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`
+	참고: 이 값은 `drizzle-kit` 동작에 영향을 주지 않으며, `drizzle-orm`에서 런타임에만 사용됩니다.
 </Callout>
 
 ```ts
@@ -336,16 +331,16 @@ const table = sqliteTable('table', {
 });
 ```
 
-When using `$onUpdate()` or `$onUpdateFn()`, which are simply different aliases for the same function, 
-you can generate defaults at runtime and use these values in all update queries. 
+동일한 함수의 다른 별칭인 `$onUpdate()` 또는 `$onUpdateFn()`을 사용할 때,
+런타임에 기본값을 생성하고 모든 업데이트 쿼리에서 이 값을 사용할 수 있습니다.
 
-Adds a dynamic update value to the column. The function will be called when the row is updated, 
-and the returned value will be used as the column value if none is provided.
-If no default (or $defaultFn) value is provided, the function will be called
-when the row is inserted as well, and the returned value will be used as the column value.
+컬럼에 동적 업데이트 값을 추가합니다. 행이 업데이트될 때 함수가 호출되며,
+값이 제공되지 않은 경우 반환된 값이 컬럼 값으로 사용됩니다.
+기본값(또는 $defaultFn)이 제공되지 않은 경우, 행이 삽입될 때도 함수가 호출되고
+반환된 값이 컬럼 값으로 사용됩니다.
 
 <Callout type="info" emoji="ℹ️">
-	Note: This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`
+	참고: 이 값은 `drizzle-kit` 동작에 영향을 주지 않으며, `drizzle-orm`에서 런타임에만 사용됩니다.
 </Callout>
 
 ```ts

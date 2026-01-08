@@ -9,29 +9,29 @@ import CodeTabs from "@mdx/CodeTabs.astro";
 # Drizzle \<\> Cloudflare D1
 
 <Prerequisites>
-- Database [connection basics](/docs/connect-overview) with Drizzle
-- D1 Database - [website](https://developers.cloudflare.com/d1/)
-- D1 driver - [website](https://developers.cloudflare.com/d1/build-with-d1/d1-client-api/)
+- Drizzle과 함께 사용하는 데이터베이스 [연결 기초](/docs/connect-overview)
+- D1 Database - [공식 문서](https://developers.cloudflare.com/d1/)
+- D1 driver - [공식 문서](https://developers.cloudflare.com/d1/build-with-d1/d1-client-api/)
 </Prerequisites>
 
-According to the **[official website](https://developers.cloudflare.com/d1/)**, 
-D1 is Cloudflare's first queryable relational database.  
-  
-Drizzle ORM fully supports the Cloudflare D1 database and Cloudflare Workers environment.
-We embrace SQL dialects and dialect specific drivers and syntax and mirror most popular 
-SQLite-like `all`, `get`, `values` and `run` query methods syntax.
+**[공식 문서](https://developers.cloudflare.com/d1/)**에 따르면,
+D1은 Cloudflare의 첫 번째 쿼리 가능한 관계형 데이터베이스입니다.
 
-To setup project for your Cloudflare D1 please refer to **[official docs.](https://developers.cloudflare.com/d1/)**
+Drizzle ORM은 Cloudflare D1 데이터베이스와 Cloudflare Workers 환경을 완벽하게 지원합니다.
+SQL 방언과 방언별 드라이버 및 문법을 지원하며, 가장 널리 사용되는
+SQLite 스타일의 `all`, `get`, `values`, `run` 쿼리 메서드 문법을 제공합니다.
 
-#### Step 1 - Install packages
+Cloudflare D1용 프로젝트 설정 방법은 **[공식 문서](https://developers.cloudflare.com/d1/)**를 참조하세요.
+
+#### Step 1 - 패키지 설치
 <Npm>
 drizzle-orm
 -D drizzle-kit
 </Npm>
 
-#### Step 2 - Initialize the driver and make a query
+#### Step 2 - 드라이버 초기화 및 쿼리 실행
 
-You would need to have either a `wrangler.json` or a `wrangler.toml` file for D1 database and will look something like this:
+D1 데이터베이스를 위해서는 `wrangler.json` 또는 `wrangler.toml` 파일이 필요하며, 다음과 같은 형태를 가집니다:
 <CodeTabs items={["wrangler.json", "wrangler.toml"]}>
 ```json
 {
@@ -65,7 +65,7 @@ migrations_dir = "drizzle/migrations"
 ```
 </CodeTabs>
 
-Make your first D1 query:
+첫 번째 D1 쿼리를 작성합니다:
 ```typescript copy
 import { drizzle } from 'drizzle-orm/d1';
 
@@ -82,6 +82,6 @@ export default {
 };
 ```
 
-#### What's next?
+#### 다음 단계
 
 <WhatsNextPostgres/>

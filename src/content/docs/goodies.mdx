@@ -1,4 +1,10 @@
 
+---
+title: "유용한 기능들"
+description: "Drizzle ORM의 유용한 유틸리티 기능과 헬퍼 함수들을 살펴봅니다"
+slug: "goodies"
+---
+
 import Tab from '@mdx/Tab.astro';
 import Tabs from '@mdx/Tabs.astro';
 import Callout from '@mdx/Callout.astro';
@@ -6,7 +12,7 @@ import Section from '@mdx/Section.astro';
 import CodeTabs from '@mdx/CodeTabs.astro';
 
 ## Type API
-To retrieve a type from your table schema for `select` and `insert` queries, you can make use of our type helpers.
+테이블 스키마에서 `select`와 `insert` 쿼리를 위한 타입을 가져오려면 타입 헬퍼를 사용할 수 있습니다.
 
 <Tabs items={["PostgreSQL", "MySQL", "SQLite", "SingleStore", "MSSQL", "CockroachDB"]}>
 <Tab>
@@ -133,14 +139,14 @@ type InsertUser = InferInsertModel<typeof users>;
 
 
 ## Logging
-To enable default query logging, just pass `{ logger: true }` to the `drizzle` initialization function:
+기본 쿼리 로깅을 활성화하려면 `drizzle` 초기화 함수에 `{ logger: true }`를 전달하면 됩니다:
 ```typescript copy
 import { drizzle } from 'drizzle-orm/...'; // driver specific
 
 const db = drizzle({ logger: true });
 ```
 
-You can change the logs destination by creating a `DefaultLogger` instance and providing a custom `writer` to it:
+로그 대상을 변경하려면 `DefaultLogger` 인스턴스를 생성하고 커스텀 `writer`를 제공하면 됩니다:
 ```typescript copy
 import { DefaultLogger, LogWriter } from 'drizzle-orm/logger';
 import { drizzle } from 'drizzle-orm/...'; // driver specific
@@ -155,7 +161,7 @@ const logger = new DefaultLogger({ writer: new MyLogWriter() });
 const db = drizzle({ logger });
 ```
 
-You can also create a custom logger:
+커스텀 로거를 직접 만들 수도 있습니다:
 ```typescript copy
 import { Logger } from 'drizzle-orm/logger';
 import { drizzle } from 'drizzle-orm/...'; // driver specific
@@ -171,8 +177,8 @@ const db = drizzle({ logger: new MyLogger() });
 
 
 ## Multi-project schema
-**Table creator** API lets you define customize table names.  
-It's very useful when you need to keep schemas of different projects in one database.
+**Table creator** API를 사용하면 테이블 이름을 커스터마이징할 수 있습니다.
+하나의 데이터베이스에서 여러 프로젝트의 스키마를 관리해야 할 때 유용합니다.
 
 <CodeTabs items={["PostgreSQL", "MySQL", "SQLite", "SingleStore", "MSSQL", "CockroachDB"]}>
 ```ts {3}
@@ -250,14 +256,14 @@ export default defineConfig({
 });
 ```
 
-You can apply multiple `or` filters:
+여러 `or` 필터를 적용할 수 있습니다:
 ```ts
 tablesFilter: ["project1_*", "project2_*"]
 ```
 
 
 ## Printing SQL query
-You can print SQL queries with `db` instance or by using **[`standalone query builder`](#standalone-query-builder)**.
+`db` 인스턴스 또는 **[`standalone query builder`](#standalone-query-builder)**를 사용하여 SQL 쿼리를 출력할 수 있습니다.
 ```typescript copy
 const query = db
   .select({ id: users.id, name: users.name })
@@ -272,8 +278,8 @@ const query = db
 ```
 
 ## Raw SQL queries execution
-If you have some complex queries to execute and `drizzle-orm` can't handle them yet,
-you can use the `db.execute` method to execute raw `parametrized` queries.
+실행해야 할 복잡한 쿼리가 있는데 `drizzle-orm`이 아직 지원하지 않는 경우,
+`db.execute` 메서드를 사용하여 raw `parametrized` 쿼리를 실행할 수 있습니다.
 
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'SingleStore', 'MSSQL', 'CockroachDB']}>
     <Tab>
@@ -326,8 +332,8 @@ you can use the `db.execute` method to execute raw `parametrized` queries.
 
 
 ## Standalone query builder
-Drizzle ORM provides a standalone query builder that allows you to build queries
-without creating a database instance and get generated SQL.
+Drizzle ORM은 데이터베이스 인스턴스를 생성하지 않고도 쿼리를 구성하고
+생성된 SQL을 가져올 수 있는 독립 실행형 쿼리 빌더를 제공합니다.
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', "SingleStore", "MSSQL", "CockroachDB"]}>
     <Tab>
         ```typescript copy
@@ -392,13 +398,13 @@ without creating a database instance and get generated SQL.
 </Tabs>
 
 ## Get typed columns
-You can get a typed columns map,
-very useful when you need to omit certain columns upon selection.
+타입이 지정된 컬럼 맵을 가져올 수 있습니다.
+조회 시 특정 컬럼을 제외해야 할 때 유용합니다.
 
 <Callout type='warning'>
-`getColumns` available starting from `drizzle-orm@1.0.0-beta.2`(read more [here](/docs/upgrade-v1))
+`getColumns`는 `drizzle-orm@1.0.0-beta.2`부터 사용 가능합니다 (자세한 내용은 [여기](/docs/upgrade-v1) 참조)
 
-If you are on pre-1 version(like `0.45.1`) then use `getTableColumns`
+pre-1 버전(예: `0.45.1`)을 사용 중이라면 `getTableColumns`를 사용하세요
 </Callout>
 
 
@@ -651,14 +657,14 @@ If you are on pre-1 version(like `0.45.1`) then use `getTableColumns`
 
 ## Compare objects types (instanceof alternative)
 
-You can check if an object is of a specific Drizzle type using the `is()` function. 
-You can use it with any available type in Drizzle.
+`is()` 함수를 사용하여 객체가 특정 Drizzle 타입인지 확인할 수 있습니다.
+Drizzle에서 사용 가능한 모든 타입과 함께 사용할 수 있습니다.
 
 <Callout type="warning" emoji="⭐️">
-  You should always use `is()` instead of `instanceof`
+  `instanceof` 대신 항상 `is()`를 사용해야 합니다
 </Callout>
 
-**Few examples**
+**몇 가지 예제**
 ```ts
 import { Column, is } from 'drizzle-orm';
 
@@ -668,16 +674,16 @@ if (is(value, Column)) {
 ```
 
 ### Mock Driver
-This API is a successor to an undefined `drizzle({} as any)` API which we've used internally in Drizzle tests and rarely recommended to external developers. 
+이 API는 Drizzle 테스트에서 내부적으로 사용했던 `drizzle({} as any)` API의 후속 버전이며, 외부 개발자에게는 권장되지 않았습니다.
 
-We decided to build and expose a proper API, every `drizzle` driver now has `drizzle.mock()`:
+적절한 API를 구축하여 공개하였으며, 이제 모든 `drizzle` 드라이버는 `drizzle.mock()`을 지원합니다:
 ```ts
 import { drizzle } from "drizzle-orm/...";
 
 const db = drizzle.mock();
 ```
 
-you can provide schema if necessary for types
+타입이 필요한 경우 스키마를 제공할 수 있습니다
 ```ts
 import { drizzle } from "drizzle-orm/...";
 import * as schema from "./schema"

@@ -19,23 +19,23 @@ import ConnectLibsql from '@mdx/get-started/sqlite/ConnectLibsql.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and SQLite Durable Objects
+# Drizzle과 SQLite Durable Objects 시작하기
 
-<Prerequisites>  
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **Cloudflare SQLite Durable Objects** - SQLite database embedded within a Durable Object - [read here](https://developers.cloudflare.com/durable-objects/api/sql-storage/)
-  - **wrangler** - Cloudflare Developer Platform command-line interface - [read here](https://developers.cloudflare.com/workers/wrangler)
+<Prerequisites>
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **Cloudflare SQLite Durable Objects** - Durable Object 내에 내장된 SQLite 데이터베이스 - [자세히 보기](https://developers.cloudflare.com/durable-objects/api/sql-storage/)
+  - **wrangler** - Cloudflare Developer Platform 커맨드라인 인터페이스 - [자세히 보기](https://developers.cloudflare.com/workers/wrangler)
 </Prerequisites>
 
 <FileStructure />
 
-#### Step 1 - Install required packages
+#### 1단계 - 필수 패키지 설치
 <InstallPackages lib='wrangler'/>
 
-#### Step 2 - Setup wrangler.toml
+#### 2단계 - wrangler.toml 설정
 
-You would need to have a `wrangler.toml` file for D1 database and will look something like this:
+D1 데이터베이스를 위한 `wrangler.toml` 파일이 필요하며 다음과 같은 형태입니다:
 ```toml
 #:schema node_modules/wrangler/config-schema.json
 name = "sqlite-durable-objects"
@@ -63,7 +63,7 @@ globs = ["**/*.sql"]
 fallthrough = true
 ```
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### 3단계 - Drizzle ORM을 데이터베이스에 연결
 
 ```ts
 import { drizzle, type DrizzleSqliteDODatabase } from 'drizzle-orm/durable-sqlite';
@@ -81,25 +81,25 @@ export class MyDurableObject extends DurableObject {
 }
 ```
 
-#### Step 4 - Generate wrangler types 
+#### 4단계 - wrangler 타입 생성
 
 <Npx>
 wrangler types
 </Npx>
 
 <Callout>
-The output of this command will be a `worker-configuration.d.ts` file.
+이 명령어의 출력 결과는 `worker-configuration.d.ts` 파일입니다.
 </Callout>
 
-#### Step 5 - Create a table
+#### 5단계 - 테이블 생성
 
 <CreateTable/>
 
-#### Step 6 - Setup Drizzle config file
+#### 6단계 - Drizzle 설정 파일 구성
 
-**Drizzle config** - a configuration file that is used by [Drizzle Kit](/docs/kit-overview) and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config** - [Drizzle Kit](/docs/kit-overview)에서 사용하는 설정 파일이며, 데이터베이스 연결, 마이그레이션 폴더 및 스키마 파일에 대한 모든 정보를 포함합니다.
 
-Create a `drizzle.config.ts` file in the root of your project and add the following content:
+프로젝트 루트에 `drizzle.config.ts` 파일을 생성하고 다음 내용을 추가합니다:
 
 ```typescript copy filename="drizzle.config.ts"
 import 'dotenv/config';
@@ -113,15 +113,15 @@ export default defineConfig({
 });
 ```
 
-#### Step 7 - Applying changes to the database
+#### 7단계 - 데이터베이스에 변경사항 적용
 
-Generate migrations:
+마이그레이션 생성:
 ```bash copy
 npx drizzle-kit generate
 ```
 
-You can apply migrations only from Cloudflare Workers. 
-To achieve this, let's define the migrate functionality in MyDurableObject:
+마이그레이션은 Cloudflare Workers에서만 적용할 수 있습니다.
+이를 위해 MyDurableObject에 마이그레이션 기능을 정의합니다:
 ```ts copy {4-5,17-19}
 import { drizzle, type DrizzleSqliteDODatabase } from 'drizzle-orm/durable-sqlite';
 import { DurableObject } from 'cloudflare:workers'
@@ -144,7 +144,7 @@ export class MyDurableObject extends DurableObject {
 }
 ```
 
-#### Step 8 - Migrate and Query the database
+#### 8단계 - 데이터베이스 마이그레이션 및 쿼리
 
 ```typescript copy
 import { drizzle, DrizzleSqliteDODatabase } from 'drizzle-orm/durable-sqlite';
@@ -162,9 +162,9 @@ export class MyDurableObject extends DurableObject {
 		this.storage = ctx.storage;
 		this.db = drizzle(this.storage, { logger: false });
 
-		// Make sure all migrations complete before accepting queries.
-		// Otherwise you will need to run `this.migrate()` in any function
-		// that accesses the Drizzle database `this.db`.
+		// 쿼리를 수락하기 전에 모든 마이그레이션이 완료되었는지 확인합니다.
+		// 그렇지 않으면 Drizzle 데이터베이스 `this.db`에 접근하는 모든 함수에서
+		// `this.migrate()`를 실행해야 합니다.
 		ctx.blockConcurrencyWhile(async () => {
 			await this._migrate();
 		});
@@ -190,20 +190,20 @@ export class MyDurableObject extends DurableObject {
 
 export default {
 	/**
-	 * This is the standard fetch handler for a Cloudflare Worker
+	 * Cloudflare Worker의 표준 fetch 핸들러
 	 *
-	 * @param request - The request submitted to the Worker from the client
-	 * @param env - The interface to reference bindings declared in wrangler.toml
-	 * @param ctx - The execution context of the Worker
-	 * @returns The response to be sent back to the client
+	 * @param request - 클라이언트에서 Worker로 제출된 요청
+	 * @param env - wrangler.toml에 선언된 바인딩을 참조하는 인터페이스
+	 * @param ctx - Worker의 실행 컨텍스트
+	 * @returns 클라이언트에 전송될 응답
 	 */
 	async fetch(request: Request, env: Env): Promise<Response> {
 		const id: DurableObjectId = env.MY_DURABLE_OBJECT.idFromName('durable-object');
 		const stub = env.MY_DURABLE_OBJECT.get(id);
 
-		// Option A - Maximum performance.
-		// Prefer to bundle all the database interaction within a single Durable Object call
-		// for maximum performance, since database access is fast within a DO.
+		// 옵션 A - 최대 성능.
+		// DO 내에서 데이터베이스 접근이 빠르기 때문에,
+		// 모든 데이터베이스 상호작용을 하나의 Durable Object 호출로 묶는 것이 최대 성능을 위해 권장됩니다.
 		const usersAll = await stub.insertAndList({
 			name: 'John',
 			age: 30,
@@ -211,16 +211,16 @@ export default {
 		});
 		console.log('New user created. Getting all users from the database: ', users);
 
-		// Option B - Slow but maybe useful sometimes for debugging.
-		// You can also directly call individual Drizzle queries if they are exposed
-		// but keep in mind every query is a round-trip to the Durable Object instance.
+		// 옵션 B - 느리지만 디버깅에 유용할 수 있습니다.
+		// 노출된 개별 Drizzle 쿼리를 직접 호출할 수도 있지만,
+		// 모든 쿼리가 Durable Object 인스턴스로의 왕복임을 유의하세요.
 		await stub.insert({
 			name: 'John',
 			age: 30,
 			email: 'john@example.com',
 		});
 		console.log('New user created!');
-	
+
 		const users = await stub.select();
 		console.log('Getting all users from the database: ', users);
 

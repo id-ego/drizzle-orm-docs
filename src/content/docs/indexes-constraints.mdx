@@ -3,22 +3,21 @@ import Tabs from '@mdx/Tabs.astro';
 import Callout from '@mdx/Callout.astro';
 import Section from '@mdx/Section.astro';
 
-# Indexes & Constraints
+# 인덱스 & 제약조건
 
-## Constraints
+## 제약조건
 
-SQL constraints are the rules enforced on table columns. They are used to prevent invalid data from being entered into the database.
+SQL 제약조건은 테이블 컬럼에 적용되는 규칙입니다. 데이터베이스에 유효하지 않은 데이터가 입력되는 것을 방지하는 데 사용됩니다.
 
-This ensures the accuracy and reliability of your data in the database.
+이를 통해 데이터베이스에 저장된 데이터의 정확성과 신뢰성을 보장할 수 있습니다.
 
 ### Default
 
-The `DEFAULT` clause specifies a default value to use for the column if no value provided by the user when doing an `INSERT`.
-If there is no explicit `DEFAULT` clause attached to a column definition,
-then the default value of the column is `NULL`.
+`DEFAULT` 절은 `INSERT` 시 사용자가 값을 제공하지 않을 때 컬럼에 사용할 기본값을 지정합니다.
+컬럼 정의에 명시적인 `DEFAULT` 절이 없으면,
+컬럼의 기본값은 `NULL`이 됩니다.
 
-An explicit `DEFAULT` clause may specify that the default value is `NULL`,
-a string constant, a blob constant, a signed-number, or any constant expression enclosed in parentheses.
+명시적인 `DEFAULT` 절은 기본값을 `NULL`, 문자열 상수, blob 상수, 부호 있는 숫자, 또는 괄호로 묶인 상수 표현식으로 지정할 수 있습니다.
 
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'SingleStore', 'MSSQL', 'CockroachDB']}>
   <Tab>
@@ -153,10 +152,9 @@ a string constant, a blob constant, a signed-number, or any constant expression 
 
 ### Not null
 
-By default, a column can hold **NULL** values. The `NOT NULL` constraint enforces a column to **NOT** accept **NULL** values.  
+기본적으로 컬럼은 **NULL** 값을 가질 수 있습니다. `NOT NULL` 제약조건은 컬럼이 **NULL** 값을 받지 **않도록** 강제합니다.
 
-This enforces a field to always contain a value, which means that you cannot insert a new record,
-or update a record without adding a value to this field.
+이는 필드가 항상 값을 포함하도록 강제하며, 이는 이 필드에 값을 추가하지 않고는 새 레코드를 삽입하거나 레코드를 업데이트할 수 없음을 의미합니다.
 
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'SingleStore', 'MSSQL', 'CockroachDB']}>
   <Tab>
@@ -266,14 +264,14 @@ or update a record without adding a value to this field.
 
 ### Unique
 
-The `UNIQUE` constraint ensures that all values in a column are different.  
+`UNIQUE` 제약조건은 컬럼의 모든 값이 서로 다르도록 보장합니다.
 
-Both the `UNIQUE` and `PRIMARY KEY` constraints provide a guarantee for uniqueness for a column or set of columns.
+`UNIQUE`와 `PRIMARY KEY` 제약조건 모두 컬럼 또는 컬럼 집합의 고유성을 보장합니다.
 
-A `PRIMARY KEY` constraint automatically has a `UNIQUE` constraint.  
+`PRIMARY KEY` 제약조건은 자동으로 `UNIQUE` 제약조건을 포함합니다.
 
 <Callout type="info" emoji="ℹ️">
-  You can have many `UNIQUE` constraints per table, but only one `PRIMARY KEY` constraint per table.
+  테이블당 여러 개의 `UNIQUE` 제약조건을 가질 수 있지만, `PRIMARY KEY` 제약조건은 테이블당 하나만 가질 수 있습니다.
 </Callout>
 
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'SingleStore', 'MSSQL', 'CockroachDB']}>
@@ -466,7 +464,7 @@ A `PRIMARY KEY` constraint automatically has a `UNIQUE` constraint.
   </Tab>
   <Tab>
     <Callout type='warning'>
-    With MSSQL you can't create unique constraint on `text`, `ntext`, `varchar(max)`, `nvarchar(max)`
+    MSSQL에서는 `text`, `ntext`, `varchar(max)`, `nvarchar(max)` 타입에 unique 제약조건을 생성할 수 없습니다
     </Callout>
     <Section>
       ```typescript
@@ -555,11 +553,11 @@ A `PRIMARY KEY` constraint automatically has a `UNIQUE` constraint.
 
 ### Check
 
-The `CHECK` constraint is used to limit the value range that can be placed in a column.
+`CHECK` 제약조건은 컬럼에 저장할 수 있는 값의 범위를 제한하는 데 사용됩니다.
 
-If you define a `CHECK` constraint on a column it will allow only certain values for this column.  
+컬럼에 `CHECK` 제약조건을 정의하면 해당 컬럼에 특정 값만 허용됩니다.
 
-If you define a `CHECK` constraint on a table it can limit the values in certain columns based on values in other columns in the row.
+테이블에 `CHECK` 제약조건을 정의하면 행의 다른 컬럼 값을 기반으로 특정 컬럼의 값을 제한할 수 있습니다.
 
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'SingleStore', 'MSSQL', 'CockroachDB']}>
   <Tab>
@@ -650,7 +648,7 @@ If you define a `CHECK` constraint on a table it can limit the values in certain
 
   </Tab>
   <Tab>
-    Currently not supported in SingleStore
+    현재 SingleStore에서 지원되지 않습니다
   </Tab>
 <Tab>
     <Section>
@@ -714,10 +712,10 @@ If you define a `CHECK` constraint on a table it can limit the values in certain
 
 ### Primary Key
 
-The `PRIMARY KEY` constraint uniquely identifies each record in a table.  
-Primary keys must contain `UNIQUE` values, and cannot contain `NULL` values.  
+`PRIMARY KEY` 제약조건은 테이블의 각 레코드를 고유하게 식별합니다.
+기본 키는 `UNIQUE` 값을 포함해야 하며, `NULL` 값을 포함할 수 없습니다.
 
-A table can have only **ONE** primary key; and in the table, this primary key can consist of single or multiple columns (fields).
+테이블은 **하나**의 기본 키만 가질 수 있으며, 이 기본 키는 단일 컬럼 또는 여러 컬럼(필드)으로 구성될 수 있습니다.
 
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'SingleStore', 'MSSQL', 'CockroachDB']}>
   <Tab>
@@ -873,9 +871,9 @@ A table can have only **ONE** primary key; and in the table, this primary key ca
 
 ### Composite Primary Key
 
-Just like `PRIMARY KEY`, composite primary key uniquely identifies each record in a table using multiple fields.
+`PRIMARY KEY`와 마찬가지로, 복합 기본 키는 여러 필드를 사용하여 테이블의 각 레코드를 고유하게 식별합니다.
 
-Drizzle ORM provides a standalone `primaryKey` operator for that:
+Drizzle ORM은 이를 위한 독립적인 `primaryKey` 연산자를 제공합니다:
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'SingleStore', 'MSSQL', 'CockroachDB']}>
   <Tab>
     <Section>
@@ -1105,12 +1103,12 @@ Drizzle ORM provides a standalone `primaryKey` operator for that:
 
 ### Foreign key
 
-The `FOREIGN KEY` constraint is used to prevent actions that would destroy links between tables.
-A `FOREIGN KEY` is a field (or collection of fields) in one table, that refers to the `PRIMARY KEY` in another table.
-The table with the foreign key is called the child table, and the table with the primary key is called the referenced or parent table.
+`FOREIGN KEY` 제약조건은 테이블 간의 연결을 파괴하는 작업을 방지하는 데 사용됩니다.
+`FOREIGN KEY`는 한 테이블의 필드(또는 필드 집합)로, 다른 테이블의 `PRIMARY KEY`를 참조합니다.
+외래 키를 가진 테이블을 자식 테이블이라고 하며, 기본 키를 가진 테이블을 참조 테이블 또는 부모 테이블이라고 합니다.
 
-Drizzle ORM provides several ways to declare foreign keys.
-You can declare them in a column declaration statement:
+Drizzle ORM은 외래 키를 선언하는 여러 가지 방법을 제공합니다.
+컬럼 선언문에서 외래 키를 선언할 수 있습니다:
 
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'SingleStore', 'MSSQL', 'CockroachDB']}>
   <Tab>
@@ -1165,7 +1163,7 @@ You can declare them in a column declaration statement:
 
   </Tab>
   <Tab>
-    Currently not supported in SingleStore
+    현재 SingleStore에서 지원되지 않습니다
   </Tab>
   <Tab>
     ```typescript {11}
@@ -1202,8 +1200,7 @@ You can declare them in a column declaration statement:
   </Tab>
 </Tabs>
 
-If you want to do a self reference, due to a TypeScript limitations you will have to either explicitly
-set return type for reference callback or use a standalone `foreignKey` operator.
+자기 참조를 하려면 TypeScript 제한사항으로 인해 참조 콜백의 반환 타입을 명시적으로 설정하거나 독립적인 `foreignKey` 연산자를 사용해야 합니다.
 
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'SingleStore', 'MSSQL', 'CockroachDB']}>
   <Tab>
@@ -1282,7 +1279,7 @@ set return type for reference callback or use a standalone `foreignKey` operator
 
   </Tab>
   <Tab>
-    Currently not supported in SingleStore
+    현재 SingleStore에서 지원되지 않습니다
   </Tab>
     <Tab>
     ```typescript {6,16-19}
@@ -1334,7 +1331,7 @@ set return type for reference callback or use a standalone `foreignKey` operator
 
   </Tab>
 </Tabs>
-To declare multi-column foreign keys you can use a dedicated `foreignKey` operator:
+다중 컬럼 외래 키를 선언하려면 전용 `foreignKey` 연산자를 사용할 수 있습니다:
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'SingleStore', 'MSSQL', 'CockroachDB']}>
   <Tab>
     ```typescript copy {4-5,14-15,18-21}
@@ -1412,7 +1409,7 @@ To declare multi-column foreign keys you can use a dedicated `foreignKey` operat
 
   </Tab>
   <Tab>
-    Currently not supported in SingleStore
+    현재 SingleStore에서 지원되지 않습니다
   </Tab>
   <Tab>
     ```typescript copy {4-5,14-15,18-21}
@@ -1465,9 +1462,9 @@ To declare multi-column foreign keys you can use a dedicated `foreignKey` operat
   </Tab>
 </Tabs>
 
-## Indexes
+## 인덱스
 
-Drizzle ORM provides API for both `index` and `unique index` declaration:
+Drizzle ORM은 `index`와 `unique index` 선언을 위한 API를 제공합니다:
 
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'SingleStore', 'MSSQL', 'CockroachDB']}>
   <Tab>
@@ -1494,13 +1491,13 @@ Drizzle ORM provides API for both `index` and `unique index` declaration:
     ```
     </Section>
     <Callout type="warning" emoji="⚠️">
-      For versions before `drizzle-kit@0.22.0` and `drizzle-orm@0.31.0` `drizzle-kit` only supports index `name` and `on()` param.
+      `drizzle-kit@0.22.0` 및 `drizzle-orm@0.31.0` 이전 버전에서는 `drizzle-kit`이 인덱스 `name`과 `on()` 파라미터만 지원합니다.
 
-      After versions `drizzle-kit@0.22.0` and `drizzle-orm@0.31.0` all fields are supported in drizzle-kit!
+      `drizzle-kit@0.22.0` 및 `drizzle-orm@0.31.0` 버전 이후부터는 drizzle-kit에서 모든 필드가 지원됩니다!
     </Callout>
 
 
-    Starting from 0.31.0 a new index api for Drizzle ORM provides set of all params for index creation:
+    0.31.0부터 Drizzle ORM의 새로운 인덱스 API는 인덱스 생성을 위한 모든 파라미터를 제공합니다:
 
 ```ts
 // First example, with `.on()`
@@ -1542,10 +1539,10 @@ index('name')
     ```
     </Section>
     <Callout type="warning" emoji="⚠️">
-      As of now `drizzle-kit` only supports index `name` and `on()` param.
+      현재 `drizzle-kit`은 인덱스 `name`과 `on()` 파라미터만 지원합니다.
     </Callout>
 
-     Drizzle ORM provides set of all params for index creation:
+     Drizzle ORM은 인덱스 생성을 위한 모든 파라미터를 제공합니다:
 
     ```typescript
     // Index declaration reference
@@ -1580,8 +1577,8 @@ index('name')
     ```
     </Section>
 
-     Drizzle ORM provides set of all params for index creation:
-     
+     Drizzle ORM은 인덱스 생성을 위한 모든 파라미터를 제공합니다:
+
     ```typescript
     // Index declaration reference
     index("name")
@@ -1638,10 +1635,10 @@ index('name')
     </Section>
 
     <Callout type='warning'>
-    With MSSQL you can't create unique index on `text`, `ntext`, `varchar(max)`, `nvarchar(max)`
+    MSSQL에서는 `text`, `ntext`, `varchar(max)`, `nvarchar(max)` 타입에 unique 인덱스를 생성할 수 없습니다
     </Callout>
 
-    Drizzle ORM provides set of params for index creation:
+    Drizzle ORM은 인덱스 생성을 위한 파라미터를 제공합니다:
 
     ```typescript
     // Index declaration reference

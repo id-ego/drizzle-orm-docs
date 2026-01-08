@@ -1,5 +1,5 @@
 ---
-title: Full-text search with Generated Columns
+title: 생성된 컬럼을 사용한 전체 텍스트 검색
 slug: full-text-search-with-generated-columns
 ---
 
@@ -17,7 +17,7 @@ import CodeTab from '@mdx/CodeTab.astro';
 - [Generated columns](/docs/generated-columns)
 </Prerequisites>
 
-This guide demonstrates how to implement full-text search in PostgreSQL with Drizzle and generated columns. A generated column is a special column that is always computed from other columns. It is useful because you don't have to compute the value of the column every time you query the table:
+이 가이드는 Drizzle과 생성된 컬럼을 사용하여 PostgreSQL에서 전체 텍스트 검색을 구현하는 방법을 설명합니다. 생성된 컬럼은 항상 다른 컬럼으로부터 계산되는 특수한 컬럼입니다. 테이블을 쿼리할 때마다 컬럼의 값을 계산할 필요가 없기 때문에 유용합니다:
 
 <CodeTabs items={["schema.ts", "migration.sql"]}>
   <CodeTab>
@@ -61,7 +61,7 @@ CREATE INDEX "idx_body_search" ON "posts" USING gin ("body_search");
   ```
 </CodeTabs>
 
-When you insert a row into a table, the value of a generated column is computed from an expression that you provide when you create the column:
+테이블에 행을 삽입할 때, 생성된 컬럼의 값은 컬럼을 생성할 때 제공한 표현식으로부터 계산됩니다:
 
 <Section>
 ```ts 
@@ -90,7 +90,7 @@ await db.insert(posts).values({
 ```
 </Section>
 
-This is how you can implement full-text search with generated columns in PostgreSQL with Drizzle ORM.  The `@@` operator is used for direct matches:
+다음은 Drizzle ORM으로 PostgreSQL에서 생성된 컬럼을 사용하여 전체 텍스트 검색을 구현하는 방법입니다. `@@` 연산자는 직접 일치를 위해 사용됩니다:
 
 <Section>
 ```ts copy {6}
@@ -107,8 +107,8 @@ select * from posts where body_search @@ to_tsquery('english', 'bring');
 ```
 </Section>
 
-This is more advanced schema with a generated column. The `search` column is generated from the `title` and `body` columns and `setweight()` function is used to assign different weights to the columns for full-text search.
-This is typically used to mark entries coming from different parts of a document, such as title versus body.
+다음은 생성된 컬럼을 사용한 더 고급 스키마입니다. `search` 컬럼은 `title`과 `body` 컬럼으로부터 생성되며, `setweight()` 함수는 전체 텍스트 검색을 위해 컬럼에 서로 다른 가중치를 할당하는 데 사용됩니다.
+이는 일반적으로 제목과 본문과 같이 문서의 다른 부분에서 오는 항목을 표시하는 데 사용됩니다.
 
 <CodeTabs items={["schema.ts", "migration.sql"]}>
   <CodeTab>
@@ -159,7 +159,7 @@ CREATE INDEX "idx_search" ON "posts" USING gin ("search");
   ```
 </CodeTabs>
 
-This is how you can query the table with full-text search:
+다음은 전체 텍스트 검색으로 테이블을 쿼리하는 방법입니다:
 
 <Section>
 ```ts copy {6}

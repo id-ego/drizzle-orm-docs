@@ -20,16 +20,16 @@ import SetupEnv from '@mdx/get-started/SetupEnv.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and Gel
+# Drizzle과 Gel 시작하기
 
 <Prerequisites>
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **gel-js** - package for querying your Gel database - [read here](https://github.com/geldata/gel-js)
+  - **tsx** - TypeScript 파일을 실행하는 패키지 - [자세히 보기](https://tsx.is/)
+  - **gel-js** - Gel 데이터베이스를 쿼리하는 패키지 - [자세히 보기](https://github.com/geldata/gel-js)
 </Prerequisites>
 
-Drizzle has native support for Gel connections with the `gel` client.
+Drizzle은 `gel` 클라이언트를 통해 Gel 연결을 기본적으로 지원합니다.
 
-This is the basic file structure of the project. In the `src` directory, we have table definition in `index.ts`. In `drizzle` folder there are generated Gel to Drizzle schema
+이것은 프로젝트의 기본 파일 구조입니다. `src` 디렉토리에는 `index.ts`에 테이블 정의가 있습니다. `drizzle` 폴더에는 Gel에서 Drizzle 스키마로 생성된 파일이 있습니다
 
 ```plaintext
 📦 <project root>
@@ -41,15 +41,15 @@ This is the basic file structure of the project. In the `src` directory, we have
  └ 📜 tsconfig.json
 ```
 
-#### Step 1 - Install and init **Gel** project
+#### Step 1 - **Gel** 프로젝트 설치 및 초기화
 
 <Npx>
 gel project init
 </Npx>
 
-#### Step 2 - Define basic Gel schema
+#### Step 2 - 기본 Gel 스키마 정의
 
-In `dbschema/default.esdl` file add a basic Gel schema
+`dbschema/default.esdl` 파일에 기본 Gel 스키마를 추가합니다
 
 ```esdl
 module default {
@@ -61,20 +61,20 @@ module default {
 }
 ```
 
-#### Step 3 - Push Gel schema to the database
+#### Step 3 - Gel 스키마를 데이터베이스에 푸시
 
-Generate Gel migration file:
+Gel 마이그레이션 파일 생성:
 ```bash
 gel migration create
 ```
 
-Apply Gel migrations to the database
+Gel 마이그레이션을 데이터베이스에 적용
 ```bash
 gel migration apply
 ```
 
 <Callout>
-Now you should have this file structure
+이제 다음과 같은 파일 구조를 갖게 됩니다
 
 ```plaintext
 📦 <project root>
@@ -91,17 +91,17 @@ Now you should have this file structure
 ```
 </Callout>
 
-#### Step 4 - Install required packages
+#### Step 4 - 필수 패키지 설치
 <Npm>
   drizzle-orm gel
   -D drizzle-kit tsx
 </Npm>
 
-#### Step 5 - Setup Drizzle config file
+#### Step 5 - Drizzle 설정 파일 설정
 
-**Drizzle config** - a configuration file that is used by [Drizzle Kit](/docs/kit-overview) and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config** - [Drizzle Kit](/docs/kit-overview)에서 사용하는 설정 파일로, 데이터베이스 연결, 마이그레이션 폴더 및 스키마 파일에 대한 모든 정보를 포함합니다.
 
-Create a `drizzle.config.ts` file in the root of your project and add the following content:
+프로젝트 루트에 `drizzle.config.ts` 파일을 생성하고 다음 내용을 추가합니다:
 
 ```typescript copy filename="drizzle.config.ts"
 import { defineConfig } from 'drizzle-kit';
@@ -111,14 +111,14 @@ export default defineConfig({
 });
 ```
 
-#### Step 6 - Pull Gel types to Drizzle schema
+#### Step 6 - Gel 타입을 Drizzle 스키마로 풀
 
-Pull your database schema:
+데이터베이스 스키마를 풀합니다:
 <Npx>
 drizzle-kit pull
 </Npx>
 
-Here is an example of the generated schema.ts file:
+다음은 생성된 schema.ts 파일의 예제입니다:
 
 ```typescript filename="drizzle/schema.ts"
 import { gelTable, uniqueIndex, uuid, smallint, text } from "drizzle-orm/gel-core"
@@ -134,9 +134,9 @@ export const users = gelTable("users", {
 ]);
 ```
 
-#### Step 7 - Connect Drizzle ORM to the database
+#### Step 7 - Drizzle ORM을 데이터베이스에 연결
 
-Create a `index.ts` file in the `src` directory and initialize the connection:
+`src` 디렉토리에 `index.ts` 파일을 생성하고 연결을 초기화합니다:
 
 ```typescript copy filename="src/index.ts"
 import { drizzle } from "drizzle-orm/gel";
@@ -146,7 +146,7 @@ const gelClient = createClient();
 const db = drizzle({ client: gelClient });
 ```
 
-#### Step 8 - Query the database
+#### Step 8 - 데이터베이스 쿼리
 
 ```typescript copy filename="src/index.ts"
 import { eq } from "drizzle-orm";
@@ -193,6 +193,6 @@ async function main() {
 main();
 ```
 
-#### Step 9 - Run index.ts file
+#### Step 9 - index.ts 파일 실행
 
 <RunFile/>

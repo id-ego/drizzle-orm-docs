@@ -20,56 +20,56 @@ import TransferCode from '@mdx/get-started/TransferCode.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and MySQL in existing project
+# 기존 프로젝트에서 Drizzle과 MySQL 시작하기
 
-<Prerequisites>  
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **mysql2** - package for querying your MySQL database - [read here](https://github.com/sidorares/node-mysql2)
+<Prerequisites>
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **mysql2** - MySQL 데이터베이스 쿼리 패키지 - [자세히 보기](https://github.com/sidorares/node-mysql2)
 </Prerequisites>
 
 <FileStructure/>
 
-#### Step 1 - Install the `mysql2` package
+#### 1단계 - `mysql2` 패키지 설치
 
 <InstallPackages lib='mysql2'/>
 
-#### Step 2 - Setup connection variables
+#### 2단계 - 연결 변수 설정
 
 <SetupEnv env_variable='DATABASE_URL' />
 
-#### Step 3 - Setup Drizzle config file
+#### 3단계 - Drizzle 설정 파일 구성
 
 <SetupConfig dialect='mysql' env_variable='DATABASE_URL'/>
 
-#### Step 4 - Introspect your database
+#### 4단계 - 데이터베이스 인트로스펙트
 
 <IntrospectMySQL/>
 
-#### Step 5 - Transfer code to your actual schema file
+#### 5단계 - 실제 스키마 파일로 코드 이동
 
 <TransferCode/>
 
-#### Step 6 - Connect Drizzle ORM to the database
+#### 6단계 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectMySQL/>
 
-#### Step 7 - Query the database
+#### 7단계 - 데이터베이스 쿼리
 
 <QueryDatabase dialect='mysql2' env_variable='DATABASE_URL'/>
 
-#### Step 8 - Run index.ts file
+#### 8단계 - index.ts 파일 실행
 
 <RunFile/>
 
-#### Step 9 - Update your table schema (optional)
+#### 9단계 - 테이블 스키마 업데이트 (선택사항)
 
 <UpdateSchema/>
 
-#### Step 10 - Applying changes to the database (optional)
+#### 10단계 - 데이터베이스에 변경사항 적용 (선택사항)
 
 <ApplyChanges/>
 
-#### Step 11 - Query the database with a new field (optional)
+#### 11단계 - 새 필드로 데이터베이스 쿼리 (선택사항)
 
 <QueryDatabaseUpdated dialect='mysql2' env_variable='DATABASE_URL' />

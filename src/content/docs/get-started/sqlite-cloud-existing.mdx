@@ -22,44 +22,44 @@ import UpdateSchema from '@mdx/get-started/sqlite/UpdateSchema.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and SQLite Cloud in existing project
+# 기존 프로젝트에서 Drizzle과 SQLite Cloud 시작하기
 
 <Prerequisites>
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **SQLite Cloud database** - [read here](https://docs.sqlitecloud.io/docs/overview)
-  - **SQLite Cloud driver** - [read here](https://docs.sqlitecloud.io/docs/sdk-js-introduction) & [GitHub](https://github.com/sqlitecloud/sqlitecloud-js)
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **SQLite Cloud 데이터베이스** - [자세히 보기](https://docs.sqlitecloud.io/docs/overview)
+  - **SQLite Cloud 드라이버** - [자세히 보기](https://docs.sqlitecloud.io/docs/sdk-js-introduction) & [GitHub](https://github.com/sqlitecloud/sqlitecloud-js)
 </Prerequisites>
 
 <FileStructure/>
 
-#### Step 1 - Install required package
+#### 1단계 - 필수 패키지 설치
 <Npm>
   drizzle-orm@beta @sqlitecloud/drivers dotenv
   -D drizzle-kit@beta tsx
 </Npm>
 
-#### Step 2 - Setup connection variables
+#### 2단계 - 연결 변수 설정
 
 <SetupEnv env_variable='SQLITE_CLOUD_CONNECTION_STRING' />
 
-#### Step 3 - Setup Drizzle config file
+#### 3단계 - Drizzle 설정 파일 설정
 
 <SetupConfig dialect='sqlite' env_variable='SQLITE_CLOUD_CONNECTION_STRING'/>
 
-#### Step 4 - Introspect your database
+#### 4단계 - 데이터베이스 인트로스펙션
 
 <IntrospectSQLite/>
 
-#### Step 5 - Transfer code to your actual schema file
+#### 5단계 - 실제 스키마 파일로 코드 이동
 
 <TransferCode/>
 
-#### Step 6 - Connect Drizzle ORM to the database
+#### 6단계 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectSQLiteCloud/>
 
-#### Step 7 - Query the database
+#### 7단계 - 데이터베이스 쿼리
 
 ```typescript copy filename="src/index.ts"
 import 'dotenv/config';
@@ -105,19 +105,19 @@ async function main() {
 main();
 ```
 
-#### Step 8 - Run index.ts file
+#### 8단계 - index.ts 파일 실행
 
 <RunFile/>
 
-#### Step 9 - Update your table schema (optional)
+#### 9단계 - 테이블 스키마 업데이트 (선택사항)
 
 <UpdateSchema/>
 
-#### Step 10 - Applying changes to the database (optional)
+#### 10단계 - 데이터베이스에 변경사항 적용 (선택사항)
 
 <ApplyChanges />
 
-#### Step 11 - Query the database with a new field (optional)
+#### 11단계 - 새 필드로 데이터베이스 쿼리 (선택사항)
 
 ```typescript copy filename="src/index.ts"
 import 'dotenv/config';

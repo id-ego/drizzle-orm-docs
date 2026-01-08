@@ -7,16 +7,16 @@ import Section from '@mdx/Section.astro';
 # Views
 
 <IsSupportedChipGroup chips={{ 'PostgreSQL': true, 'SQLite': true, 'MySQL': true, 'SingleStore': false, 'MSSQL': true, 'CockroachDB': true }} />
-There're several ways you can declare views with Drizzle ORM.  
+Drizzle ORM에서 뷰를 선언하는 방법은 여러 가지가 있습니다.
 
-You can declare views that have to be created or you can declare views that already exist in the database. 
+생성해야 하는 뷰를 선언할 수도 있고, 데이터베이스에 이미 존재하는 뷰를 선언할 수도 있습니다.
 
-You can declare views statements with an inline `query builder` syntax, with `standalone query builder` and with raw `sql` operators. 
+인라인 `query builder` 문법, `standalone query builder`, 그리고 raw `sql` 연산자를 사용하여 뷰 문을 선언할 수 있습니다.
 
-When views are created with either inlined or standalone query builders, view columns schema will be automatically inferred, 
-yet when you use `sql` you have to explicitly declare view columns schema.
+인라인 또는 standalone query builder로 뷰를 생성할 때는 뷰 컬럼 스키마가 자동으로 추론되지만,
+`sql`을 사용할 때는 뷰 컬럼 스키마를 명시적으로 선언해야 합니다.
 
-### Declaring views
+### 뷰 선언하기
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'MSSQL', 'CockroachDB']}>
   <Tab>
     <Section>
@@ -113,7 +113,7 @@ yet when you use `sql` you have to explicitly declare view columns schema.
       CREATE VIEW [customers_view] AS (SELECT * FROM "user" WHERE "role" = 'customer');
       ```
     </Section>
-    If you need a subset of columns you can use `.select({ ... })` method in query builder, like this:
+    컬럼의 일부만 필요한 경우 query builder에서 `.select({ ... })` 메서드를 사용할 수 있습니다:
 <Section>
   ```ts {4-6}
   export const customersView = mssqlView("customers_view").as((qb) => {
@@ -157,7 +157,7 @@ yet when you use `sql` you have to explicitly declare view columns schema.
   </Tab>
 </Tabs>
 
-You can also declare views using `standalone query builder`, it works exactly the same way:
+`standalone query builder`를 사용하여 뷰를 선언할 수도 있으며, 동일한 방식으로 작동합니다:
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'MSSQL', 'CockroachDB']}>
   <Tab>
     <Section>
@@ -291,9 +291,9 @@ You can also declare views using `standalone query builder`, it works exactly th
   </Tab>
 </Tabs>
 
-### Declaring views with raw SQL
-Whenever you need to declare view using a syntax that is not supported by the query builder, 
-you can directly use `sql` operator and explicitly specify view columns schema.
+### raw SQL로 뷰 선언하기
+query builder에서 지원하지 않는 문법을 사용하여 뷰를 선언해야 하는 경우,
+`sql` 연산자를 직접 사용하고 뷰 컬럼 스키마를 명시적으로 지정할 수 있습니다.
 
 ```ts copy
 // regular view
@@ -311,9 +311,9 @@ const newYorkers = pgMaterializedView('new_yorkers', {
 }).as(sql`select * from ${users} where ${eq(users.cityId, 1)}`);
 ```
 
-### Declaring existing views
-When you're provided with a read only access to an existing view in the database you should use `.existing()` view configuration, 
-`drizzle-kit` will ignore and will not generate a `create view` statement in the generated migration.
+### 기존 뷰 선언하기
+데이터베이스에 이미 존재하는 뷰에 대한 읽기 전용 액세스가 제공된 경우 `.existing()` 뷰 설정을 사용해야 합니다.
+`drizzle-kit`는 이를 무시하고 생성된 마이그레이션에 `create view` 문을 생성하지 않습니다.
 ```ts
 export const user = pgTable("user", {
   id: serial(),
@@ -332,7 +332,7 @@ export const trimmedUser = pgView("trimmed_user", {
   email: text("email"),
 }).existing();
 
-// materialized view won't make any difference, yet you can use it for consistency
+// materialized view는 차이가 없지만, 일관성을 위해 사용할 수 있습니다
 export const trimmedUser = pgMaterializedView("trimmed_user", {
   id: serial("id"),
   name: text("name"),
@@ -340,13 +340,13 @@ export const trimmedUser = pgMaterializedView("trimmed_user", {
 }).existing();
 ```
 
-### Materialized views
+### Materialized 뷰
 <IsSupportedChipGroup chips={{ 'PostgreSQL': true, 'MySQL': false, 'SQLite': false, 'MSSQL': false, 'Cockroach': true }} />
 
-According to the official docs, PostgreSQL and CockroachDB have both **[`regular`](https://www.postgresql.org/docs/current/sql-createview.html)**
-and **[`materialized`](https://www.postgresql.org/docs/current/sql-creatematerializedview.html)** views.
-  
-Materialized views in PostgreSQL and CockroachDB use the rule system like views do, but persist the results in a table-like form.
+공식 문서에 따르면 PostgreSQL과 CockroachDB는 **[`regular`](https://www.postgresql.org/docs/current/sql-createview.html)** 뷰와
+**[`materialized`](https://www.postgresql.org/docs/current/sql-creatematerializedview.html)** 뷰를 모두 가지고 있습니다.
+
+PostgreSQL과 CockroachDB의 Materialized 뷰는 뷰처럼 rule 시스템을 사용하지만, 결과를 테이블과 유사한 형태로 저장합니다.
 {/* This means that when a query is executed against a materialized view, the results are returned directly from the materialized view,
 like from a table, rather than being reconstructed by executing the query against the underlying base tables that make up the view. */}
 
@@ -362,7 +362,7 @@ CREATE MATERIALIZED VIEW "new_yorkers" AS SELECT * FROM "users";
 ```
 </Section>
 
-You can then refresh materialized views in the application runtime:
+애플리케이션 런타임에서 materialized 뷰를 새로고침할 수 있습니다:
 ```ts copy
 await db.refreshMaterializedView(newYorkers);
 
@@ -381,7 +381,7 @@ CREATE MATERIALIZED VIEW "new_yorkers" AS SELECT * FROM "users";
 ```
 </Section>
 
-You can then refresh materialized views in the application runtime:
+애플리케이션 런타임에서 materialized 뷰를 새로고침할 수 있습니다:
 ```ts copy
 await db.refreshMaterializedView(newYorkers);
 
@@ -392,9 +392,9 @@ await db.refreshMaterializedView(newYorkers).withNoData();
 </Tab>
 </Tabs>
 
-### Extended example
+### 확장 예제
 <Callout type="info" emoji="ℹ️">
-All the parameters inside the query will be inlined, instead of replaced by `$1`, `$2`, etc.
+쿼리 내의 모든 파라미터는 `$1`, `$2` 등으로 대체되지 않고 인라인 처리됩니다.
 </Callout>
 
 <Tabs items={['PostgreSQL', 'CockroachDB']}>

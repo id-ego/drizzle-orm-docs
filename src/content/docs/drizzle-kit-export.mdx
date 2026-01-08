@@ -9,33 +9,33 @@ import Npx from "@mdx/Npx.astro";
 import SchemaFilePaths from "@mdx/SchemaFilePaths.mdx"
 import Dialects from "@mdx/Dialects.mdx"
 
-# `drizzle-kit export` 
+# `drizzle-kit export`
 
 <Prerequisites>
-- Get started with Drizzle and `drizzle-kit` - [read here](/docs/get-started)
-- Drizzle schema fundamentals - [read here](/docs/sql-schema-declaration)
-- Database connection basics - [read here](/docs/connect-overview)
-- Drizzle migrations fundamentals - [read here](/docs/migrations)
-- Drizzle Kit [overview](/docs/kit-overview) and [config file](/docs/drizzle-config-file)
+- Drizzle과 `drizzle-kit` 시작하기 - [여기에서 읽기](/docs/get-started)
+- Drizzle 스키마 기초 - [여기에서 읽기](/docs/sql-schema-declaration)
+- 데이터베이스 연결 기본 사항 - [여기에서 읽기](/docs/connect-overview)
+- Drizzle 마이그레이션 기초 - [여기에서 읽기](/docs/migrations)
+- Drizzle Kit [개요](/docs/kit-overview) 및 [설정 파일](/docs/drizzle-config-file)
 </Prerequisites>
 
 
 <br/>
 
-`drizzle-kit export` lets you export SQL representation of Drizzle schema and print in console SQL DDL representation on it.
-<Callout collapsed="How it works under the hood?">
-Drizzle Kit `export` command triggers a sequence of events:
-1. It will read through your Drizzle schema file(s) and compose a json snapshot of your schema
-3. Based on json differences it will generate SQL DDL statements
-4. Output SQL DDL statements to console
+`drizzle-kit export`는 Drizzle 스키마의 SQL 표현을 내보내고 콘솔에 SQL DDL 표현을 출력합니다.
+<Callout collapsed="내부 동작 방식">
+Drizzle Kit `export` 명령어는 다음과 같은 이벤트 시퀀스를 실행합니다:
+1. Drizzle 스키마 파일을 읽고 스키마의 JSON 스냅샷을 생성합니다
+2. JSON 차이를 기반으로 SQL DDL 문을 생성합니다
+3. SQL DDL 문을 콘솔에 출력합니다
 </Callout>
 
-It's designed to cover [codebase first](/docs/migrations) approach of managing Drizzle migrations. 
-You can export the SQL representation of the Drizzle schema, allowing external tools like Atlas to handle all the migrations for you
+이 명령어는 Drizzle 마이그레이션을 관리하는 [코드베이스 우선](/docs/migrations) 접근 방식을 지원하도록 설계되었습니다.
+Drizzle 스키마의 SQL 표현을 내보내 Atlas와 같은 외부 도구가 모든 마이그레이션을 처리하도록 할 수 있습니다
 
-`drizzle-kit export` command requires you to provide both `dialect` and `schema` path options, 
-you can set them either via [drizzle.config.ts](/docs/drizzle-config-file) config file or via CLI options
-<CodeTabs items={["With config file", "As CLI options"]}>
+`drizzle-kit export` 명령어는 `dialect`와 `schema` 경로 옵션을 모두 제공해야 하며,
+[drizzle.config.ts](/docs/drizzle-config-file) 설정 파일 또는 CLI 옵션을 통해 설정할 수 있습니다
+<CodeTabs items={["설정 파일 사용", "CLI 옵션 사용"]}>
 <Section>
 ```ts
 // drizzle.config.ts
@@ -56,14 +56,14 @@ npx drizzle-kit export --dialect=postgresql --schema=./src/schema.ts
 ```
 </CodeTabs>
 
-### Schema files path
-You can have a single `schema.ts` file or as many schema files as you want spread out across the project. 
-Drizzle Kit requires you to specify path(s) to them as a [glob](https://www.digitalocean.com/community/tools/glob?comments=true&glob=/**/*.js&matches=false&tests=//%20This%20will%20match%20as%20it%20ends%20with%20'.js'&tests=/hello/world.js&tests=//%20This%20won't%20match!&tests=/test/some/globs) via `schema` configuration option.
+### 스키마 파일 경로
+단일 `schema.ts` 파일을 사용하거나 프로젝트 전체에 여러 스키마 파일을 분산시킬 수 있습니다.
+Drizzle Kit은 `schema` 설정 옵션을 통해 [glob](https://www.digitalocean.com/community/tools/glob?comments=true&glob=/**/*.js&matches=false&tests=//%20This%20will%20match%20as%20it%20ends%20with%20'.js'&tests=/hello/world.js&tests=//%20This%20won't%20match!&tests=/test/some/globs) 형식으로 경로를 지정해야 합니다.
 
 <SchemaFilePaths/>
 
-### Multiple configuration files in one project
-You can have multiple config files in the project, it's very useful when you have multiple database stages or multiple databases or different databases on the same project:
+### 하나의 프로젝트에 여러 설정 파일 사용
+프로젝트에 여러 설정 파일을 가질 수 있으며, 이는 여러 데이터베이스 단계, 여러 데이터베이스 또는 같은 프로젝트에서 다른 데이터베이스를 사용할 때 매우 유용합니다:
 <Npx>
   drizzle-kit export --config=drizzle-dev.config.ts
   drizzle-kit export --config=drizzle-prod.config.ts
@@ -79,16 +79,16 @@ You can have multiple config files in the project, it's very useful when you hav
  └ 📜 tsconfig.json
 ```
 
-### Extended list of available configurations
-`drizzle-kit export` has a list of cli-only options
+### 사용 가능한 설정 전체 목록
+`drizzle-kit export`에는 CLI 전용 옵션 목록이 있습니다
 
 <rem025/>
 
 |               |                                                      |
 | :--------     | :--------------------------------------------------- |
-| `--sql`       | generating SQL representation of Drizzle Schema               |
+| `--sql`       | Drizzle 스키마의 SQL 표현 생성               |
 
-By default, Drizzle Kit outputs SQL files, but in the future, we want to support different formats
+기본적으로 Drizzle Kit은 SQL 파일을 출력하지만, 향후 다양한 형식을 지원할 예정입니다
 
 <rem025/>
 
@@ -100,21 +100,21 @@ drizzle-kit push --name=seed_users --custom
 <br/>
 <hr/>
 <br/>
-We recommend configuring `drizzle-kit` through [drizzle.config.ts](/docs/drizzle-config-file) file, 
-yet you can provide all configuration options through CLI if necessary, e.g. in CI/CD pipelines, etc.
+[drizzle.config.ts](/docs/drizzle-config-file) 파일을 통해 `drizzle-kit`을 설정하는 것을 권장하지만,
+필요한 경우(예: CI/CD 파이프라인 등) CLI를 통해 모든 설정 옵션을 제공할 수 있습니다.
 
 |               |            |                                                                            |
 | :------------ | :-------   | :----------------------------------------------------------------------    |
-| `dialect`     | `required` | Database dialect, one of <Dialects/>                                       |
-| `schema`      | `required` | Path to typescript schema file(s) or folder(s) with multiple schema files  |
-| `config`      |            | Configuration file path, default is `drizzle.config.ts`                    |
+| `dialect`     | `required` | 데이터베이스 dialect, <Dialects/> 중 하나                                       |
+| `schema`      | `required` | TypeScript 스키마 파일 또는 여러 스키마 파일이 있는 폴더의 경로  |
+| `config`      |            | 설정 파일 경로, 기본값은 `drizzle.config.ts`                    |
 
-### Example
-Example of how to export drizzle schema to console with Drizzle schema located in `./src/schema.ts`
+### 예제
+`./src/schema.ts`에 위치한 Drizzle 스키마를 콘솔에 내보내는 방법의 예제입니다
 
-We will also place drizzle config file in the `configs` folder.
+또한 drizzle 설정 파일을 `configs` 폴더에 배치하겠습니다.
 
-Let's create config file:
+설정 파일을 생성해 보겠습니다:
 
 ```plaintext {4}
 📦 <project root>
@@ -143,11 +143,11 @@ export const users = pgTable('users', {
 });
 ```
 
-Now let's run
+이제 다음을 실행해 보겠습니다
 ```shell
 npx drizzle-kit export --config=./configs/drizzle.config.ts
 ```
-And it will successfully output SQL representation of drizzle schema
+그러면 drizzle 스키마의 SQL 표현이 성공적으로 출력됩니다
 ```bash
 CREATE TABLE "users" (
         "id" serial PRIMARY KEY NOT NULL,

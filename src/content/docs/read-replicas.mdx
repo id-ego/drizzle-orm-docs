@@ -3,9 +3,9 @@ import Tabs from '@mdx/Tabs.astro';
 
 # Read Replicas
 
-When your project involves a set of read replica instances, and you require a convenient method for managing 
-SELECT queries from read replicas, as well as performing create, delete, and update operations on the primary 
-instance, you can leverage the `withReplicas()` function within Drizzle
+프로젝트에서 읽기 전용 복제본(read replica) 인스턴스 세트를 사용하고, 읽기 전용 복제본에서 SELECT 쿼리를 관리하고
+기본 인스턴스에서 생성, 삭제, 업데이트 작업을 수행하는 편리한 방법이 필요한 경우,
+Drizzle의 `withReplicas()` 함수를 활용할 수 있습니다
 
 <Tabs items={["PostgreSQL", "MySQL", "SQLite", "SingleStore", "MSSQL", "CockroachDB"]}>
 <Tab>
@@ -163,31 +163,30 @@ const db = withReplicas(primaryDb, [read1, read2]);
 </Tab>
 </Tabs>
 
-You can now use the `db` instance the same way you did before. Drizzle will 
-handle the choice between read replica and the primary instance automatically
+이제 이전과 동일한 방식으로 `db` 인스턴스를 사용할 수 있습니다. Drizzle은
+읽기 전용 복제본과 기본 인스턴스 중 자동으로 선택을 처리합니다
 
 ```ts
-// Read from either the read1 connection or the read2 connection
+// read1 연결 또는 read2 연결에서 읽기
 await db.select().from(usersTable)
 
-// Use the primary database for the delete operation
+// 삭제 작업에는 기본 데이터베이스 사용
 await db.delete(usersTable).where(eq(usersTable.id, 1))
 ```
 
-You can use the `$primary` key to force using primary instances even for read operations
+읽기 작업에서도 기본 인스턴스를 강제로 사용하려면 `$primary` 키를 사용할 수 있습니다
 
 ```ts
-// read from primary
+// 기본 인스턴스에서 읽기
 await db.$primary.select().from(usersTable);
 ```
 
-With Drizzle, you can also specify custom logic for choosing read replicas. 
-You can make a weighted decision or any other custom selection method for random read replica choice. 
-Here is an implementation example of custom logic for selecting read replicas, 
-where the first replica has a 70% chance of being chosen, and the second replica has a 30% 
-chance of being selected.
+Drizzle을 사용하면 읽기 전용 복제본 선택을 위한 사용자 정의 로직을 지정할 수도 있습니다.
+가중치 기반 결정이나 임의의 읽기 전용 복제본 선택을 위한 기타 사용자 정의 선택 방법을 만들 수 있습니다.
+다음은 읽기 전용 복제본 선택을 위한 사용자 정의 로직의 구현 예시로,
+첫 번째 복제본은 70%의 확률로 선택되고 두 번째 복제본은 30%의 확률로 선택됩니다.
 
-Keep in mind that you can implement any type of random selection method for read replicas
+읽기 전용 복제본에 대한 모든 유형의 임의 선택 방법을 구현할 수 있습니다
 
 ```ts
 const db = withReplicas(primaryDb, [read1, read2], (replicas) => {

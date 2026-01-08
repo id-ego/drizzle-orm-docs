@@ -1,6 +1,6 @@
 import Section from '@mdx/Section.astro';
 
-`db.$count()` is a utility wrapper of `count(*)`, it is a very flexible operator which can be used as is or as a subquery, more details in our [GitHub discussion](https://github.com/drizzle-team/drizzle-orm/discussions/3119).
+`db.$count()`는 `count(*)`의 유틸리티 래퍼로, 단독으로 사용하거나 서브쿼리로 사용할 수 있는 매우 유연한 연산자입니다. 자세한 내용은 [GitHub discussion](https://github.com/drizzle-team/drizzle-orm/discussions/3119)에서 확인할 수 있습니다.
 
 <Section>
 ```ts
@@ -15,7 +15,7 @@ select count(*) from "users" where "name" = 'Dan';
 ```
 </Section>
 
-It is exceptionally useful in [subqueries](/docs/select#select-from-subquery):
+[서브쿼리](/docs/select#select-from-subquery)에서 특히 유용합니다:
 
 ```ts
 const users = await db.select({
@@ -24,7 +24,7 @@ const users = await db.select({
 }).from(users);
 ```
 
-usage example with [relational queries](/docs/rqb)
+[관계형 쿼리](/docs/rqb) 사용 예제
 ```ts 
 const users = await db.query.users.findMany({
   extras: {

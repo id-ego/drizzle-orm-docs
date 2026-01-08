@@ -10,22 +10,22 @@ import WhatsNextPostgres from "@mdx/WhatsNextPostgres.astro";
 # Drizzle \<\> Supabase
 
 <Prerequisites>
-- Database [connection basics](/docs/connect-overview) with Drizzle
-- Drizzle PostgreSQL drivers - [docs](/docs/get-started-postgresql)
+- Drizzle [데이터베이스 연결 기초](/docs/connect-overview)
+- Drizzle PostgreSQL 드라이버 - [문서](/docs/get-started-postgresql)
 </Prerequisites>
 
-According to the **[official website](https://supabase.com/docs)**, Supabase is an open source Firebase alternative for building secure and performant Postgres backends with minimal configuration.
+**[공식 웹사이트](https://supabase.com/docs)**에 따르면, Supabase는 최소한의 설정으로 안전하고 성능 좋은 Postgres 백엔드를 구축할 수 있는 오픈 소스 Firebase 대안입니다.
 
-Checkout official **[Supabase + Drizzle](https://supabase.com/docs/guides/database/connecting-to-postgres#connecting-with-drizzle)** docs.
+공식 **[Supabase + Drizzle](https://supabase.com/docs/guides/database/connecting-to-postgres#connecting-with-drizzle)** 문서를 확인하세요.
 
-#### Step 1 - Install packages
+#### Step 1 - 패키지 설치
 
 <Npm>
 drizzle-orm postgres
 -D drizzle-kit
 </Npm>
 
-#### Step 2 - Initialize the driver and make a query
+#### Step 2 - 드라이버 초기화 및 쿼리 실행
 
 ```typescript copy filename="index.ts"
 import { drizzle } from 'drizzle-orm/postgres-js'
@@ -35,7 +35,7 @@ const db = drizzle(process.env.DATABASE_URL);
 const allUsers = await db.select().from(...);
 ```
 
-If you need to provide your existing driver:
+기존 드라이버를 제공해야 하는 경우:
 ```typescript copy filename="index.ts"
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
@@ -46,22 +46,22 @@ const db = drizzle({ client });
 const allUsers = await db.select().from(...);
 ```
 
-If you decide to use connection pooling via Supabase (described [here](https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pooler)), and have "Transaction" pool mode enabled, then ensure to turn off prepare, as prepared statements are not supported. 
+Supabase를 통해 연결 풀링을 사용하기로 결정하고([여기](https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pooler) 참조) "Transaction" 풀 모드를 활성화한 경우, prepared statement가 지원되지 않으므로 prepare를 비활성화해야 합니다.
 
 ```typescript copy filename="index.ts"
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 
-// Disable prefetch as it is not supported for "Transaction" pool mode 
+// "Transaction" 풀 모드에서는 prefetch가 지원되지 않으므로 비활성화
 const client = postgres(process.env.DATABASE_URL, { prepare: false })
 const db = drizzle({ client });
 
 const allUsers = await db.select().from(...);
 ```
 
-Connect to your database using the Connection Pooler for **serverless environments**, and the Direct Connection for **long-running servers**.
+**서버리스 환경**에서는 Connection Pooler를, **장기 실행 서버**에서는 Direct Connection을 사용하여 데이터베이스에 연결하세요.
 
-#### What's next?
+#### 다음 단계
 
 <WhatsNextPostgres/>
 

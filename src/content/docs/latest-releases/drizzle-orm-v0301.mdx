@@ -1,14 +1,14 @@
 ---
-title: DrizzleORM v0.30.1 release
+title: DrizzleORM v0.30.1 릴리스
 pubDate: 2024-03-08
-description: Added support for op-sqlite driver and fixed migration hook for Expo driver. 
+description: op-sqlite 드라이버 지원이 추가되고 Expo 드라이버의 마이그레이션 훅이 수정되었습니다.
 ---
 
-## New Features
+## 새로운 기능
 
-### 🎉 OP-SQLite driver Support
+### 🎉 OP-SQLite 드라이버 지원
 
-Usage Example
+사용 예제
 
 ```ts copy {4,5,6,8}
 import { open } from '@op-engineering/op-sqlite';
@@ -23,8 +23,8 @@ const db = drizzle(opsqlite);
 await db.select().from(users);
 ```
 
-For more usage and setup details, please check our [op-sqlite docs](http://orm.drizzle.team/docs/get-started-sqlite#op-sqlite)
+자세한 사용법과 설정 방법은 [op-sqlite 문서](http://orm.drizzle.team/docs/get-started-sqlite#op-sqlite)를 참조하세요.
 
-## Fixes
+## 수정 사항
 
-- Migration hook fixed for Expo driver
+- Expo 드라이버의 마이그레이션 훅 수정

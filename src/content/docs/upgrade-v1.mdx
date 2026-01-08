@@ -2,51 +2,50 @@ import Npm from "@mdx/Npm.astro";
 import Npx from "@mdx/Npx.astro";
 import Prerequisites from "@mdx/Prerequisites.astro";
 
-# Upgrading to Drizzle v1 RC
+# Drizzle v1 RC로 업그레이드하기
 
 <Prerequisites>
-  - **beta.1** release notes - a set of changes between `latest` and `beta` versions - [read here](https://github.com/drizzle-team/drizzle-orm/blob/beta/changelogs/drizzle-orm/1.0.0-beta.1.md)
-  - **beta.2** release notes - additional set of changes between `latest` and `beta` versions - [read here](https://github.com/drizzle-team/drizzle-orm/releases/tag/v1.0.0-beta.2)
-  - Ideally read all other `beta.X` changes to be familiar with everything that was fixed and changed
+  - **beta.1** 릴리스 노트 - `latest`와 `beta` 버전 간의 변경 사항 - [여기서 읽기](https://github.com/drizzle-team/drizzle-orm/blob/beta/changelogs/drizzle-orm/1.0.0-beta.1.md)
+  - **beta.2** 릴리스 노트 - `latest`와 `beta` 버전 간의 추가 변경 사항 - [여기서 읽기](https://github.com/drizzle-team/drizzle-orm/releases/tag/v1.0.0-beta.2)
+  - 수정 및 변경된 모든 내용을 숙지하기 위해 다른 모든 `beta.X` 변경 사항도 읽어보는 것이 좋습니다
 </Prerequisites>
 
-Drizzle release candidate is living on [`beta` branch](https://github.com/drizzle-team/drizzle-orm/tree/beta) in drizzle repository and under the `beta` tag on npm. So to install
-it you would need to run:
+Drizzle 릴리스 후보 버전은 drizzle 저장소의 [`beta` 브랜치](https://github.com/drizzle-team/drizzle-orm/tree/beta)와 npm의 `beta` 태그에서 제공됩니다. 설치하려면 다음 명령어를 실행해야 합니다:
 
 <Npm>
 drizzle-orm@beta
 -D drizzle-kit@beta
 </Npm>
 
-It follows the `1.0.0-beta.x` release pattern, so you'll see versions such as `1.0.0-beta.7`, `1.0.0-beta.8`, and so on. 
-Release notes for each beta update are available on [GitHub releases](https://github.com/drizzle-team/drizzle-orm/tags)
+`1.0.0-beta.x` 릴리스 패턴을 따르므로 `1.0.0-beta.7`, `1.0.0-beta.8`과 같은 버전을 볼 수 있습니다.
+각 베타 업데이트의 릴리스 노트는 [GitHub releases](https://github.com/drizzle-team/drizzle-orm/tags)에서 확인할 수 있습니다.
 
-#### Step 1 - Run `drizzle-kit up`
+#### Step 1 - `drizzle-kit up` 실행
 
-> Linked discussion: https://github.com/drizzle-team/drizzle-orm/discussions/2832
+> 관련 논의: https://github.com/drizzle-team/drizzle-orm/discussions/2832
 
-We've updated the migrations folder structure by:
-- removing `journal.json`
-- grouping SQL files and snapshots into separate migration folders
-- removing the `drizzle-kit drop` command
+마이그레이션 폴더 구조를 다음과 같이 업데이트했습니다:
+- `journal.json` 제거
+- SQL 파일과 스냅샷을 별도의 마이그레이션 폴더로 그룹화
+- `drizzle-kit drop` 명령어 제거
 
-These changes eliminate potential Git conflicts with the journal file and simplify the process of dropping or fixing conflicted migrations
+이러한 변경 사항은 저널 파일과의 Git 충돌 가능성을 제거하고 충돌된 마이그레이션을 삭제하거나 수정하는 프로세스를 단순화합니다.
 
-In upcoming `beta` releases, we'll introduce commutativity checks to help guide you through team migration conflicts, detect possible collisions, and suggest ways to resolve them
-> Commutativity discussion: https://github.com/drizzle-team/drizzle-orm/discussions/5005
+향후 `beta` 릴리스에서는 팀 마이그레이션 충돌을 안내하고 충돌 가능성을 감지하며 해결 방법을 제안하는 교환성 검사를 도입할 예정입니다.
+> 교환성 논의: https://github.com/drizzle-team/drizzle-orm/discussions/5005
 
-To migrate previous folders to a new format you would need to run
+이전 폴더를 새로운 형식으로 마이그레이션하려면 다음을 실행해야 합니다:
 
 <Npx>
 drizzle-kit up
 </Npx>
 
-#### Step 2 - Update Relational Queries to v2
+#### Step 2 - Relational Queries를 v2로 업데이트
 
-We've explained all the RQBv2 changes in detail, along with options for updating your codebase:
+코드베이스를 업데이트하는 옵션과 함께 모든 RQBv2 변경 사항을 자세히 설명했습니다:
 
-- [How to migrate relations definition from v1 to v2](/docs/relations-v1-v2#how-to-migrate-relations-schema-definition-from-v1-to-v2)  
-- [How to migrate queries from v1 to v2](/docs/relations-v1-v2#how-to-migrate-queries-from-v1-to-v2)  
-- [Partial upgrade, or how to stay on v1 even after an upgrade?](/docs/relations-v1-v2#partial-upgrade-or-how-to-stay-on-rqb-v1-even-after-an-upgrade)  
+- [v1에서 v2로 관계 정의를 마이그레이션하는 방법](/docs/relations-v1-v2#how-to-migrate-relations-schema-definition-from-v1-to-v2)
+- [v1에서 v2로 쿼리를 마이그레이션하는 방법](/docs/relations-v1-v2#how-to-migrate-queries-from-v1-to-v2)
+- [부분 업그레이드, 또는 업그레이드 후에도 v1에 머무르는 방법은?](/docs/relations-v1-v2#partial-upgrade-or-how-to-stay-on-rqb-v1-even-after-an-upgrade)
 
-#### Step 3 - Done ✅
+#### Step 3 - 완료 ✅

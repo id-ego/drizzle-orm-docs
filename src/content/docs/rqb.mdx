@@ -6,19 +6,19 @@ import CodeTab from '@mdx/CodeTab.astro';
 import Section from '@mdx/Section.astro';
 import IsSupportedChipGroup from '@mdx/IsSupportedChipGroup.astro';
 
-# Drizzle Queries
+# Drizzle 쿼리
 
 <IsSupportedChipGroup chips={{ 'PostgreSQL': true, 'SQLite': true, 'MySQL': true, 'SingleStore': true }} />
 
-Drizzle ORM is designed to be a thin typed layer on top of SQL. 
-We truly believe we've designed the best way to operate an SQL database from TypeScript and it's time to make it better.  
-  
-Relational queries are meant to provide you with a great developer experience for querying 
-nested relational data from an SQL database, avoiding multiple joins and complex data mappings.  
+Drizzle ORM은 SQL 위에 얇은 타입 레이어로 설계되었습니다.
+우리는 TypeScript에서 SQL 데이터베이스를 운영하는 가장 좋은 방법을 설계했다고 확신하며, 이제 더 나아질 때입니다.
 
-It is an extension to the existing schema definition and query builder. 
-You can opt-in to use it based on your needs. 
-We've made sure you have both the best-in-class developer experience and performance.  
+관계형 쿼리는 SQL 데이터베이스에서 중첩된 관계형 데이터를 쿼리할 때 여러 조인과 복잡한 데이터 매핑을 피하면서
+훌륭한 개발자 경험을 제공하기 위한 것입니다.
+
+이것은 기존 스키마 정의와 쿼리 빌더의 확장입니다.
+필요에 따라 선택적으로 사용할 수 있습니다.
+우리는 최고 수준의 개발자 경험과 성능을 모두 제공할 수 있도록 했습니다.  
 
 <CodeTabs items={["index.ts", "schema.ts"]}>
 	<CodeTab>
@@ -80,7 +80,7 @@ We've made sure you have both the best-in-class developer experience and perform
 	```
 </CodeTabs>
 
-⚠️ If you have SQL schema declared in multiple files you can do it like that
+⚠️ SQL 스키마가 여러 파일에 선언되어 있다면 다음과 같이 할 수 있습니다
 <CodeTabs items={["index.ts", "schema1.ts", "schema2.ts"]}>
 	```typescript copy /schema/3
 	import * as schema1 from './schema1';
@@ -97,22 +97,22 @@ We've made sure you have both the best-in-class developer experience and perform
 	```
 	
 	```ts
-	// schema declaration in the first file
+	// 첫 번째 파일의 스키마 정의
 	```
 	```ts
-	// schema declaration in the second file
+	// 두 번째 파일의 스키마 정의
 	```
 </CodeTabs>
 
 
-## Modes
-Drizzle relational queries always generate exactly one SQL statement to run on the database and it has certain caveats. 
-To have best in class support for every database out there we've introduced **`modes`**.  
+## 모드
+Drizzle 관계형 쿼리는 데이터베이스에서 실행할 정확히 하나의 SQL 문을 항상 생성하며, 특정한 주의사항이 있습니다.
+모든 데이터베이스에 대한 최고 수준의 지원을 제공하기 위해 **`모드`**를 도입했습니다.
 
-Drizzle relational queries use lateral joins of subqueries under the hood and for now PlanetScale does not support them.
+Drizzle 관계형 쿼리는 내부적으로 서브쿼리의 lateral 조인을 사용하며, 현재 PlanetScale은 이를 지원하지 않습니다.
 
-When using **mysql2** driver with regular **MySQL** database — you should specify `mode: "default"`
-When using **mysql2** driver with **PlanetScale** — you need to specify `mode: "planetscale"`
+일반 **MySQL** 데이터베이스에서 **mysql2** 드라이버를 사용할 때 — `mode: "default"`를 지정해야 합니다
+**PlanetScale**에서 **mysql2** 드라이버를 사용할 때 — `mode: "planetscale"`을 지정해야 합니다
 
 ```ts copy
 import * as schema from './schema';
@@ -126,12 +126,12 @@ const connection = await mysql.createConnection({
 const db = drizzle({ client: connection, schema, mode: 'planetscale' });
 ```
 
-## Querying
-Relational queries are an extension to Drizzle's original **[query builder](/docs/select)**.
-You need to provide all `tables` and `relations` from your schema file/files upon `drizzle()` 
-initialization and then just use the `db._query` API.
+## 쿼리
+관계형 쿼리는 Drizzle의 기존 **[쿼리 빌더](/docs/select)**의 확장입니다.
+`drizzle()` 초기화 시 스키마 파일에서 모든 `tables`와 `relations`를 제공해야 하며,
+그런 다음 `db._query` API를 사용하면 됩니다.
 <Callout type="info" emoji="ℹ️">
-	`drizzle` import path depends on the **[database driver](/docs/connect-overview)** you're using.
+	`drizzle` import 경로는 사용하는 **[데이터베이스 드라이버](/docs/connect-overview)**에 따라 달라집니다.
 </Callout>
 <CodeTabs items={["index.ts", "schema.ts"]}>
 <CodeTab>
@@ -144,7 +144,7 @@ const db = drizzle({ schema });
 await db._query.users.findMany(...);
 ```
 ```ts
-// if you have schema in multiple files
+// 여러 파일에 스키마가 있는 경우
 import * as schema1 from './schema1';
 import * as schema2 from './schema2';
 import { drizzle } from 'drizzle-orm/...';
@@ -235,14 +235,14 @@ await db._query.users.findMany(...);
 ```
 </CodeTabs>
 
-Drizzle provides `.findMany()` and `.findFirst()` APIs.
-### Find many
+Drizzle은 `.findMany()`와 `.findFirst()` API를 제공합니다.
+### 여러 개 찾기
 <Section>
 ```typescript copy
 const users = await db._query.users.findMany();
 ```
 ```ts
-// result type
+// 결과 타입
 const result: {
 	id: number;
 	name: string;
@@ -252,16 +252,16 @@ const result: {
 ```
 </Section>
 
-### Find first
+### 첫 번째 찾기
 <Callout>
-  `.findFirst()` will add `limit 1` to the query.
+  `.findFirst()`는 쿼리에 `limit 1`을 추가합니다.
 </Callout>
 <Section>
 ```typescript copy
 const user = await db._query.users.findFirst();
 ```
 ```ts
-// result type
+// 결과 타입
 const result: {
 	id: number;
 	name: string;
@@ -271,11 +271,11 @@ const result: {
 ```
 </Section>
 
-### Include relations
+### 관계 포함
 
-`With` operator lets you combine data from multiple related tables and properly aggregate results.
+`With` 연산자를 사용하면 여러 관련 테이블의 데이터를 결합하고 결과를 적절히 집계할 수 있습니다.
 
-**Getting all posts with comments:**
+**모든 게시글과 댓글 가져오기:**
 ```typescript copy
 const posts = await db._query.posts.findMany({
 	with: {
@@ -284,7 +284,7 @@ const posts = await db._query.posts.findMany({
 });
 ```
 
-**Getting first post with comments:**
+**첫 번째 게시글과 댓글 가져오기:**
 ```typescript copy
 const post = await db._query.posts.findFirst({
 	with: {
@@ -293,10 +293,10 @@ const post = await db._query.posts.findFirst({
 });
 ```
 
-You can chain nested with statements as much as necessary.  
-For any nested `with` queries Drizzle will infer types using [Core Type API](/docs/goodies#type-api).
-  
-**Get all users with posts. Each post should contain a list of comments:**
+필요한 만큼 중첩된 with 문을 체이닝할 수 있습니다.
+중첩된 `with` 쿼리의 경우 Drizzle은 [Core Type API](/docs/goodies#type-api)를 사용하여 타입을 추론합니다.
+
+**모든 사용자와 게시글 가져오기. 각 게시글은 댓글 목록을 포함해야 합니다:**
 ```typescript copy
 const users = await db._query.users.findMany({
 	with: {
@@ -309,16 +309,16 @@ const users = await db._query.users.findMany({
 });
 ```
 
-### Partial fields select
-`columns` parameter lets you include or omit columns you want to get from the database.
+### 부분 필드 선택
+`columns` 매개변수를 사용하면 데이터베이스에서 가져올 컬럼을 포함하거나 제외할 수 있습니다.
 
 <Callout type="info" emoji="ℹ️">
-  Drizzle performs partial selects on the query level, no additional data is transferred from the database.
+  Drizzle은 쿼리 수준에서 부분 선택을 수행하므로 데이터베이스에서 추가 데이터가 전송되지 않습니다.
 
-  Keep in mind that **a single SQL statement is outputted by Drizzle.**
+  **Drizzle은 단일 SQL 문을 출력한다는 점**을 명심하세요.
 </Callout>
 
-**Get all posts with just `id`, `content` and include `comments`:**
+**`id`, `content`만 포함하고 `comments`를 포함하여 모든 게시글 가져오기:**
 ```typescript copy
 const posts = await db._query.posts.findMany({
 	columns: {
@@ -331,7 +331,7 @@ const posts = await db._query.posts.findMany({
 });
 ```
 
-**Get all posts without `content`:**
+**`content` 없이 모든 게시글 가져오기:**
 ```typescript copy
 const posts = await db._query.posts.findMany({
 	columns: {
@@ -341,13 +341,13 @@ const posts = await db._query.posts.findMany({
 ```
 
 <Callout type="info" emoji="ℹ️">
-When both `true` and `false` select options are present, all `false` options are ignored.
+`true`와 `false` 선택 옵션이 모두 있으면 모든 `false` 옵션은 무시됩니다.
 </Callout>
 
-If you include the `name` field and exclude the `id` field, `id` exclusion will be redundant, 
-all fields apart from `name` would be excluded anyways.  
-  
-**Exclude and Include fields in the same query:**
+`name` 필드를 포함하고 `id` 필드를 제외하면, `id` 제외는 중복됩니다.
+`name`을 제외한 모든 필드는 어차피 제외됩니다.
+
+**동일한 쿼리에서 필드 제외 및 포함:**
 <Section>
 ```typescript copy
 const users = await db._query.users.findMany({
@@ -358,14 +358,14 @@ const users = await db._query.users.findMany({
 });
 ```
 ```ts
-// result type
+// 결과 타입
 const users: {
 	name: string;
 };
 ```
 </Section>
 
-**Only include columns from nested relations:**
+**중첩된 관계의 컬럼만 포함:**
 <Section>
 ```typescript copy
 const res = await db._query.users.findMany({
@@ -376,7 +376,7 @@ const res = await db._query.users.findMany({
 });
 ```
 ```ts
-// result type
+// 결과 타입
 const res: {
 	posts: {
 		id: number,
@@ -386,8 +386,8 @@ const res: {
 ```
 </Section>
 
-### Nested partial fields select
-Just like with **[`partial select`](#partial-select)**, you can include or exclude columns of nested relations:
+### 중첩 부분 필드 선택
+**[`부분 선택`](#partial-select)**과 마찬가지로, 중첩된 관계의 컬럼을 포함하거나 제외할 수 있습니다:
 ```typescript copy
 const posts = await db._query.posts.findMany({
 	columns: {
@@ -404,11 +404,11 @@ const posts = await db._query.posts.findMany({
 });
 ```
 
-### Select filters
-Just like in our SQL-like query builder, 
-relational queries API lets you define filters and conditions with the list of our **[`operators`](/docs/operators)**.  
+### 필터 선택
+SQL과 유사한 쿼리 빌더와 마찬가지로,
+관계형 쿼리 API를 사용하면 **[`연산자`](/docs/operators)** 목록으로 필터와 조건을 정의할 수 있습니다.
 
-You can either import them from `drizzle-orm` or use from the callback syntax:
+`drizzle-orm`에서 import하거나 콜백 구문에서 사용할 수 있습니다:
 <Section>
 ```typescript copy
 import { eq } from 'drizzle-orm';
@@ -424,7 +424,7 @@ const users = await db._query.users.findMany({
 ```
 </Section>
 
-Find post with `id=1` and comments that were created before particular date:
+`id=1`인 게시글과 특정 날짜 이전에 생성된 댓글 찾기:
 ```typescript copy
 await db._query.posts.findMany({
 	where: (posts, { eq }) => (eq(posts.id, 1)),
@@ -437,16 +437,16 @@ await db._query.posts.findMany({
 ```
 
 ### Limit & Offset
-Drizzle ORM provides `limit` & `offset` API for queries and for the nested entities.
-  
-**Find 5 posts:**
+Drizzle ORM은 쿼리와 중첩된 엔티티에 대한 `limit`와 `offset` API를 제공합니다.
+
+**5개의 게시글 찾기:**
 ```typescript copy
 await db._query.posts.findMany({
 	limit: 5,
 });
 ```
 
-**Find posts and get 3 comments at most:**
+**게시글 찾기 및 댓글 최대 3개 가져오기:**
 ```typescript copy
 await db._query.posts.findMany({
 	with: {
@@ -458,7 +458,7 @@ await db._query.posts.findMany({
 ```
 
 <Callout type="warning" emoji="⚠️">
-  `offset` is only available for top level query.
+  `offset`은 최상위 쿼리에서만 사용할 수 있습니다.
 </Callout>
 ```typescript 
 await db._query.posts.findMany({
@@ -473,7 +473,7 @@ await db._query.posts.findMany({
 });
 ```
 
-Find posts with comments from the 5th to the 10th post:
+5번째부터 10번째 게시글까지 댓글과 함께 찾기:
 ```typescript copy
 await db._query.posts.findMany({
 	limit: 5,
@@ -485,10 +485,10 @@ await db._query.posts.findMany({
 ```
 
 ### Order By
-Drizzle provides API for ordering in the relational query builder.  
+Drizzle은 관계형 쿼리 빌더에서 정렬을 위한 API를 제공합니다.
 
-You can use same ordering **[core API](/docs/select#order-by)** or use
-`order by` operator from the callback with no imports.  
+동일한 정렬 **[core API](/docs/select#order-by)**를 사용하거나
+import 없이 콜백에서 `order by` 연산자를 사용할 수 있습니다.  
 
 <Section>
 ```typescript copy
@@ -505,7 +505,7 @@ await db._query.posts.findMany({
 ```
 </Section>
 
-**Order by `asc` + `desc`:**
+**`asc` + `desc`로 정렬:**
 ```typescript copy
 await db._query.posts.findMany({
 	orderBy: (posts, { asc }) => [asc(posts.id)],
@@ -517,11 +517,11 @@ await db._query.posts.findMany({
 });
 ```
 
-### Include custom fields
-Relational query API lets you add custom additional fields. 
-It's useful when you need to retrieve data and apply additional functions to it.
+### 사용자 정의 필드 포함
+관계형 쿼리 API를 사용하면 사용자 정의 추가 필드를 추가할 수 있습니다.
+데이터를 조회하고 추가 함수를 적용해야 할 때 유용합니다.
 <Callout type="warning" emoji="⚠️">
-	As of now aggregations are not supported in `extras`, please use **[`core queries`](/docs/select)** for that.
+	현재 `extras`에서 집계는 지원되지 않습니다. 집계가 필요한 경우 **[`core 쿼리`](/docs/select)**를 사용하세요.
 </Callout>
 
 <Section>
@@ -543,14 +543,14 @@ await db._query.users.findMany({
 ```
 </Section>
 
-`lowerName` as a key will be included to all fields in returned object.
+`lowerName`이 키로 반환된 객체의 모든 필드에 포함됩니다.
 
 <Callout type="warning" emoji="⚠️">
-  You have to explicitly specify `.as("<name_for_column>")`
+  `.as("<name_for_column>")`을 명시적으로 지정해야 합니다.
 </Callout>
 
-To retrieve all users with groups, but with the fullName field included (which is a concatenation of firstName and lastName), 
-you can use the following query with the Drizzle relational query builder.
+모든 사용자를 그룹과 함께 조회하되, fullName 필드를 포함하려면 (firstName과 lastName의 연결),
+Drizzle 관계형 쿼리 빌더로 다음 쿼리를 사용할 수 있습니다.
 
 <Section>
 ```typescript copy
@@ -568,7 +568,7 @@ const res = await db._query.users.findMany({
 });
 ```
 ```ts
-// result type
+// 결과 타입
 const res: {
 	id: number;
 	name: string;
@@ -588,7 +588,7 @@ const res: {
 </Section>
 
 
-To retrieve all posts with comments and add an additional field to calculate the size of the post content and the size of each comment content:
+모든 게시글과 댓글을 조회하고 게시글 내용의 크기와 각 댓글 내용의 크기를 계산하는 추가 필드를 추가하려면:
 <Section>
 ```typescript copy
 const res = await db._query.posts.findMany({
@@ -605,7 +605,7 @@ const res = await db._query.posts.findMany({
 });
 ```
 ```ts
-// result type
+// 결과 타입
 const res: {
 	id: number;
 	createdAt: Date;
@@ -624,13 +624,13 @@ const res: {
 ```
 </Section>
 
-### Prepared statements
-Prepared statements are designed to massively improve query performance — [see here.](/docs/perf-queries)
+### Prepared 문
+Prepared 문은 쿼리 성능을 대폭 향상시키도록 설계되었습니다 — [여기를 참조하세요.](/docs/perf-queries)
 
-In this section, you can learn how to define placeholders and execute prepared statements 
-using the Drizzle relational query builder.
+이 섹션에서는 Drizzle 관계형 쿼리 빌더를 사용하여
+플레이스홀더를 정의하고 prepared 문을 실행하는 방법을 배울 수 있습니다.
 
-##### **Placeholder in `where`**
+##### **`where`에서 플레이스홀더**
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
 <Tab>
 <Section>
@@ -683,7 +683,7 @@ const usersWithPosts = await prepared.execute({ id: 1 });
 </Tabs>
 
 
-##### **Placeholder in `limit`**
+##### **`limit`에서 플레이스홀더**
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
 <Tab>
 <Section>
@@ -733,7 +733,7 @@ const usersWithPosts = await prepared.execute({ limit: 1 });
 </Tabs>
 
 
-##### **Placeholder in `offset`**
+##### **`offset`에서 플레이스홀더**
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
 <Tab>
 <Section>
@@ -779,7 +779,7 @@ const usersWithPosts = await prepared.execute({ offset: 1 });
 </Tab>
 </Tabs>
 
-##### **Multiple placeholders**
+##### **여러 플레이스홀더**
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
 <Tab>
 <Section>

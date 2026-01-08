@@ -1,5 +1,5 @@
 ---
-title: PostgreSQL extensions
+title: PostgreSQL 확장
 ---
 
 import Callout from '@mdx/Callout.astro';
@@ -8,25 +8,24 @@ import Section from '@mdx/Section.astro';
 ### `pg_vector`
 
 <Callout>
-There is no specific code to create an extension inside the Drizzle schema. We assume that if you are using vector types, 
-indexes, and queries, you have a PostgreSQL database with the pg_vector extension installed.
+Drizzle 스키마 내에서 확장을 생성하는 특정 코드는 없습니다. vector 타입, 인덱스, 쿼리를 사용하는 경우 PostgreSQL 데이터베이스에 pg_vector 확장이 설치되어 있다고 가정합니다.
 </Callout>
 
-[`pg_vector`](https://github.com/pgvector/pgvector) is open-source vector similarity search for Postgres
+[`pg_vector`](https://github.com/pgvector/pgvector)는 Postgres를 위한 오픈소스 벡터 유사도 검색입니다.
 
-Store your vectors with the rest of your data. Supports:
+벡터를 나머지 데이터와 함께 저장합니다. 지원하는 기능:
 
-- exact and approximate nearest neighbor search
-- single-precision, half-precision, binary, and sparse vectors
-- L2 distance, inner product, cosine distance, L1 distance, Hamming distance, and Jaccard distance
+- 정확 및 근사 최근접 이웃 검색
+- 단정밀도, 반정밀도, 이진, 희소 벡터
+- L2 거리, 내적, 코사인 거리, L1 거리, 해밍 거리, 자카드 거리
 
-#### Column Types
+#### 컬럼 타입
 
 **`vector`**
 
-Store your vectors with the rest of your data
+벡터를 나머지 데이터와 함께 저장합니다
 
-For more info please refer to the official pg_vector docs **[docs.](https://github.com/pgvector/pgvector)**
+자세한 내용은 공식 pg_vector **[문서](https://github.com/pgvector/pgvector)**를 참조하세요.
 
 
 <Section>
@@ -43,13 +42,13 @@ CREATE TABLE IF NOT EXISTS "table" (
 ```
 </Section>
 
-#### Indexes
+#### 인덱스
 
-You can now specify indexes for `pg_vector` and utilize `pg_vector` functions for querying, ordering, etc.
+이제 `pg_vector`를 위한 인덱스를 지정하고 쿼리, 정렬 등을 위해 `pg_vector` 함수를 활용할 수 있습니다.
 
-Let's take a few examples of `pg_vector` indexes from the `pg_vector` docs and translate them to Drizzle
+`pg_vector` 문서에서 몇 가지 `pg_vector` 인덱스 예제를 가져와 Drizzle로 변환해 보겠습니다.
 
-#### L2 distance, Inner product and Cosine distance
+#### L2 거리, 내적, 코사인 거리
 
 ```ts
 // CREATE INDEX ON items USING hnsw (embedding vector_l2_ops);
@@ -65,7 +64,7 @@ const table = pgTable('items', {
 ])
 ```
 
-#### L1 distance, Hamming distance and Jaccard distance - added in pg_vector 0.7.0 version
+#### L1 거리, 해밍 거리, 자카드 거리 - pg_vector 0.7.0 버전에서 추가됨
 
 ```ts
 // CREATE INDEX ON items USING hnsw (embedding vector_l1_ops);
@@ -81,11 +80,11 @@ const table = pgTable('table', {
 ])
 ```
 
-#### Helper Functions
+#### 헬퍼 함수
 
-For queries, you can use predefined functions for vectors or create custom ones using the SQL template operator.
+쿼리를 위해 벡터를 위한 사전 정의된 함수를 사용하거나 SQL 템플릿 연산자를 사용하여 커스텀 함수를 생성할 수 있습니다.
 
-You can also use the following helpers:
+다음 헬퍼들도 사용할 수 있습니다:
 
 ```ts
 import { l2Distance, l1Distance, innerProduct, 
@@ -101,7 +100,7 @@ hammingDistance(table.column, '101') // table.column <~> '101'
 jaccardDistance(table.column, '101') // table.column <%> '101'
 ```
 
-If `pg_vector` has some other functions to use, you can replicate implementation from existing one we have. Here is how it can be done
+`pg_vector`에 사용할 다른 함수가 있다면 기존에 우리가 가지고 있는 것에서 구현을 복제할 수 있습니다. 다음과 같이 할 수 있습니다:
 
 ```ts
 export function l2Distance(
@@ -115,11 +114,11 @@ export function l2Distance(
 }
 ```
 
-Name it as you wish and change the operator. This example allows for a numbers array, strings array, string, or even a select query. Feel free to create any other type you want or even contribute and submit a PR
+원하는 대로 이름을 짓고 연산자를 변경하세요. 이 예제는 숫자 배열, 문자열 배열, 문자열 또는 심지어 select 쿼리도 허용합니다. 원하는 다른 타입을 자유롭게 만들거나 기여하여 PR을 제출하세요.
 
-#### Examples
+#### 예제
 
-Let's take a few examples of `pg_vector` queries from the `pg_vector` docs and translate them to Drizzle
+`pg_vector` 문서에서 몇 가지 `pg_vector` 쿼리 예제를 가져와 Drizzle로 변환해 보겠습니다.
 
 ```ts
 import { l2Distance } from 'drizzle-orm';
@@ -143,24 +142,24 @@ db.select({ innerProduct: sql`(${maxInnerProduct(items.embedding, [3,1,2])}) * -
 ### `postgis`
 
 <Callout>
-There is no specific code to create an extension inside the Drizzle schema. We assume that if you are using postgis types, indexes, and queries, you have a PostgreSQL database with the `postgis` extension installed.
+Drizzle 스키마 내에서 확장을 생성하는 특정 코드는 없습니다. postgis 타입, 인덱스, 쿼리를 사용하는 경우 PostgreSQL 데이터베이스에 `postgis` 확장이 설치되어 있다고 가정합니다.
 </Callout>
 
-As [PostGIS](https://postgis.net/) website mentions:
+[PostGIS](https://postgis.net/) 웹사이트에서 언급하듯이:
 
-> PostGIS extends the capabilities of the PostgreSQL relational database by adding support for storing, indexing, and querying geospatial data.
+> PostGIS는 지리공간 데이터의 저장, 인덱싱, 쿼리 지원을 추가하여 PostgreSQL 관계형 데이터베이스의 기능을 확장합니다.
 
 <Callout type="info">
-If you are using the `introspect` or `push` commands with the PostGIS extension and don't want PostGIS tables to be included, you can use [`extensionsFilters`](/docs/drizzle-config-file#extensionsfilters) to ignore all the PostGIS tables
+PostGIS 확장과 함께 `introspect` 또는 `push` 명령어를 사용하고 PostGIS 테이블을 포함하고 싶지 않다면, [`extensionsFilters`](/docs/drizzle-config-file#extensionsfilters)를 사용하여 모든 PostGIS 테이블을 무시할 수 있습니다.
 </Callout>
 
-#### Column Types
+#### 컬럼 타입
 
 **`geometry`**
 
-Store your geometry data with the rest of your data
+지오메트리 데이터를 나머지 데이터와 함께 저장합니다
 
-For more info please refer to the official PostGIS docs **[docs.](https://postgis.net/workshops/postgis-intro/geometries.html)**
+자세한 내용은 공식 PostGIS **[문서](https://postgis.net/workshops/postgis-intro/geometries.html)**를 참조하세요.
 
 ```ts
 const items = pgTable('items', {
@@ -172,20 +171,20 @@ const items = pgTable('items', {
 
 **mode**
 
-Type `geometry` has 2 modes for mappings from the database: `tuple` and `xy`.
+`geometry` 타입은 데이터베이스에서의 매핑을 위한 2가지 모드를 가지고 있습니다: `tuple`과 `xy`.
 
-- `tuple` will be accepted for insert and mapped on select to a tuple. So, the database geometry will be typed as [1,2] with drizzle.
-- `xy` will be accepted for insert and mapped on select to an object with x, y coordinates. So, the database geometry will be typed as `{ x: 1, y: 2 }` with drizzle
+- `tuple`은 삽입 시 허용되며 조회 시 튜플로 매핑됩니다. 따라서 데이터베이스의 geometry는 drizzle에서 [1,2]로 타입이 지정됩니다.
+- `xy`는 삽입 시 허용되며 조회 시 x, y 좌표를 가진 객체로 매핑됩니다. 따라서 데이터베이스의 geometry는 drizzle에서 `{ x: 1, y: 2 }`로 타입이 지정됩니다.
 
 **type**
 
-The current release has a predefined type: `point`, which is the `geometry(Point)` type in the PostgreSQL PostGIS extension. You can specify any string there if you want to use some other type
+현재 릴리즈는 PostgreSQL PostGIS 확장의 `geometry(Point)` 타입인 `point`라는 사전 정의된 타입을 가지고 있습니다. 다른 타입을 사용하고 싶다면 원하는 문자열을 지정할 수 있습니다.
 
-#### Indexes
+#### 인덱스
 
-With the available Drizzle indexes API, you should be able to write any indexes for PostGIS
+사용 가능한 Drizzle 인덱스 API를 사용하여 PostGIS를 위한 모든 인덱스를 작성할 수 있습니다.
 
-**Examples**
+**예제**
 
 ```ts
 // CREATE INDEX custom_idx ON table USING GIST (geom);

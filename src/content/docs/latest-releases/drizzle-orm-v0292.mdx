@@ -1,16 +1,16 @@
 ---
-title: DrizzleORM v0.29.2 release
+title: DrizzleORM v0.29.2 릴리스
 pubDate: 2023-12-25
-description: Implemented enhancements in the planescale relational tests. Corrected string escaping for empty PgArrays. Rectified syntax error for the exists function in SQLite. Ensured proper handling of dates in AWS Data API. Resolved the Hermes mixins constructor issue.
+description: Planescale 관계형 테스트 개선을 구현했습니다. 빈 PgArrays의 문자열 이스케이프를 수정했습니다. SQLite exists 함수의 구문 오류를 수정했습니다. AWS Data API의 날짜 처리를 개선했습니다. Hermes mixins 생성자 문제를 해결했습니다.
 ---
 
-## Fixes: 
+## 수정 사항
 
-- Added improvements to the planescale relational tests ([#1579](https://github.com/drizzle-team/drizzle-orm/pull/1579))
-- FIX: correct string escaping for empty PgArrays ([#1640](https://github.com/drizzle-team/drizzle-orm/pull/1640))
-- Fix wrong syntax for exists fn in sqlite ([#1647](https://github.com/drizzle-team/drizzle-orm/pull/1647))
-- Properly handle dates in AWS Data API
-- Fix Hermes mixins constructor issue
+- Planescale 관계형 테스트 개선 추가 ([#1579](https://github.com/drizzle-team/drizzle-orm/pull/1579))
+- 수정: 빈 PgArrays의 올바른 문자열 이스케이프 ([#1640](https://github.com/drizzle-team/drizzle-orm/pull/1640))
+- SQLite exists 함수의 잘못된 구문 수정 ([#1647](https://github.com/drizzle-team/drizzle-orm/pull/1647))
+- AWS Data API의 날짜 처리 개선
+- Hermes mixins 생성자 이슈 수정
 
 ## ESLint Drizzle Plugin, v0.2.3
 
@@ -18,23 +18,23 @@ description: Implemented enhancements in the planescale relational tests. Correc
 npm i eslint-plugin-drizzle@0.2.3
 ```
 
-🎉 [ESLint] Add support for functions and improve error messages
+🎉 [ESLint] 함수 지원 추가 및 오류 메시지 개선
 
-- Allowed Drizzle object to be or to be retrieved from a function, e.g.
-- Added better context to the suggestion in the error message.
+- Drizzle 객체가 함수에서 반환되거나 검색될 수 있도록 허용
+- 오류 메시지의 제안에 더 나은 컨텍스트 추가
 
-For more info you can check [docs](/docs/eslint-plugin)
-## New Drivers
+자세한 내용은 [문서](/docs/eslint-plugin)를 확인하세요.
+## 새로운 드라이버
 
-**🎉 Expo SQLite Driver is available**
+**🎉 Expo SQLite Driver 사용 가능**
 
-For starting with [Expo SQLite Driver](/docs/get-started-sqlite#expo-sqlite), you need to install `expo-sqlite` and `drizzle-orm` packages.
+[Expo SQLite Driver](/docs/get-started-sqlite#expo-sqlite)를 사용하려면 `expo-sqlite`와 `drizzle-orm` 패키지를 설치해야 합니다.
 
 ```bash copy
 npm install drizzle-orm expo-sqlite@next
 ```
 
-Then, you can use it like this:
+그런 다음 다음과 같이 사용할 수 있습니다:
 
 ```ts copy {4,6}
 import { drizzle } from "drizzle-orm/expo-sqlite";
@@ -55,15 +55,15 @@ db.select().from(...).then(...);
 db.select().from(...).all();
 ```
 
-If you want to use Drizzle Migrations, you need to update babel and metro configuration files.
+Drizzle 마이그레이션을 사용하려면 babel 및 metro 설정 파일을 업데이트해야 합니다.
 
-1. Install `babel-plugin-inline-import` package.
+1. `babel-plugin-inline-import` 패키지를 설치합니다.
 
 ```bash copy
 npm install babel-plugin-inline-import
 ```
 
-2. Update `babel.config.js` and `metro.config.js` files.
+2. `babel.config.js`와 `metro.config.js` 파일을 업데이트합니다.
 
 ```ts filename="babel.config.js" copy {6}
 module.exports = function(api) {
@@ -87,7 +87,7 @@ const config = getDefaultConfig(__dirname);
 module.exports = config;
 ```
 
-3. Create `drizzle.config.ts` file in your project root folder.
+3. 프로젝트 루트 폴더에 `drizzle.config.ts` 파일을 생성합니다.
 
 ```ts copy
 import type { Config } from 'drizzle-kit';
@@ -100,13 +100,13 @@ export default {
 } satisfies Config;
 ```
 
-After creating schema file and drizzle.config.ts file, you can generate migrations like this:
+스키마 파일과 drizzle.config.ts 파일을 생성한 후 다음과 같이 마이그레이션을 생성할 수 있습니다:
 
 ```bash copy
 npx drizzle-kit generate
 ```
 
-Then you need to import `migrations.js` file in your `App.tsx` file from `./drizzle` folder and use hook `useMigrations` or `migrate` function.
+그런 다음 `./drizzle` 폴더에서 `App.tsx` 파일로 `migrations.js` 파일을 가져오고 `useMigrations` 훅 또는 `migrate` 함수를 사용해야 합니다.
 
 ```ts copy {4,11}
 import { drizzle } from "drizzle-orm/expo-sqlite";

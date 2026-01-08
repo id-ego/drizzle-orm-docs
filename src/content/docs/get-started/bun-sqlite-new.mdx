@@ -19,55 +19,55 @@ import ConnectBun from '@mdx/get-started/sqlite/ConnectBun.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and Bun:SQLite
+# Drizzle과 Bun:SQLite 시작하기
 
-<Prerequisites>  
-  - **bun** - javaScript all-in-one toolkit - [read here](https://bun.sh/)
-  - **bun:sqlite** - native implementation of a high-performance SQLite3 driver - [read here](https://bun.sh/docs/api/sqlite)
+<Prerequisites>
+  - **bun** - JavaScript 올인원 툴킷 - [자세히 보기](https://bun.sh/)
+  - **bun:sqlite** - 고성능 SQLite3 드라이버의 네이티브 구현 - [자세히 보기](https://bun.sh/docs/api/sqlite)
 </Prerequisites>
 
 <FileStructure />
 
-#### Step 1 - Install required packages
+#### Step 1 - 필수 패키지 설치
 <Npm>
   drizzle-orm
   -D drizzle-kit @types/bun
 </Npm>
 
-#### Step 2 - Setup connection variables
+#### Step 2 - 연결 변수 설정
 
 <SetupEnv env_variable='DB_FILE_NAME' />
 
-<Callout type='info' title='important'>
-For example, if you want to create an SQLite database file in the root of your project for testing purposes, you can use this example:
+<Callout type='info' title='중요'>
+예를 들어, 테스트 목적으로 프로젝트 루트에 SQLite 데이터베이스 파일을 생성하려면 다음 예제를 사용할 수 있습니다:
 ```plaintext copy
 DB_FILE_NAME=mydb.sqlite
 ```
 </Callout>
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### Step 3 - 데이터베이스에 Drizzle ORM 연결
 
 <ConnectBun/>
 
-#### Step 4 - Create a table
+#### Step 4 - 테이블 생성
 
 <CreateTable/>
 
-#### Step 5 - Setup Drizzle config file
+#### Step 5 - Drizzle 설정 파일 구성
 
 <SetupConfig dialect='sqlite' env_variable='DB_FILE_NAME'/>
 
-#### Step 6 - Applying changes to the database
+#### Step 6 - 데이터베이스에 변경사항 적용
 
 <ApplyChanges />
 
-#### Step 7 - Seed and Query the database
+#### Step 7 - 데이터베이스 시드 및 쿼리
 
 <QueryDatabase dialect='bun-sqlite' env_variable='DB_FILE_NAME'/>
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
-To run a script with `bun`, use the following command:
+`bun`으로 스크립트를 실행하려면 다음 명령어를 사용합니다:
 ```bash copy
 bun src/index.ts
 ```

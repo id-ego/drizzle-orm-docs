@@ -20,67 +20,67 @@ import UpdateSchema from '@mdx/get-started/postgresql/UpdateSchema.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and SQLite in existing project
+# 기존 프로젝트에서 Drizzle과 SQLite 시작하기
 
-<Prerequisites>  
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **bun** - javaScript all-in-one toolkit - [read here](https://bun.sh/)
-  - **Bun SQL** - native bindings for working with PostgreSQL databases - [read here](https://bun.sh/docs/api/sql)
+<Prerequisites>
+  - **dotenv** - 환경 변수 관리 패키지 - [여기에서 읽기](https://www.npmjs.com/package/dotenv)
+  - **bun** - JavaScript 올인원 툴킷 - [여기에서 읽기](https://bun.sh/)
+  - **Bun SQL** - PostgreSQL 데이터베이스 작업을 위한 네이티브 바인딩 - [여기에서 읽기](https://bun.sh/docs/api/sql)
 </Prerequisites>
 
 <Callout type='error'>
-In version `1.2.0`, Bun has issues with executing concurrent statements, which may lead to errors if you try to run several queries simultaneously.
-We've created a [github issue](https://github.com/oven-sh/bun/issues/16774) that you can track. Once it's fixed, you should no longer encounter any such errors on Bun's SQL side
+버전 `1.2.0`에서 Bun은 동시 문(concurrent statements) 실행에 문제가 있으며, 여러 쿼리를 동시에 실행하려고 하면 오류가 발생할 수 있습니다.
+이에 대한 [GitHub 이슈](https://github.com/oven-sh/bun/issues/16774)를 생성했습니다. 수정되면 Bun의 SQL 측에서 더 이상 이러한 오류가 발생하지 않습니다.
 </Callout>
 
 <FileStructure />
 
-#### Step 1 - Install required packages
+#### Step 1 - 필요한 패키지 설치
 
 <Npm>
   drizzle-orm dotenv
   -D drizzle-kit @types/bun
 </Npm>
 
-#### Step 2 - Setup connection variables
+#### Step 2 - 연결 변수 설정
 
 <SetupEnv env_variable='DATABASE_URL' />
 
-#### Step 3 - Setup Drizzle config file
+#### Step 3 - Drizzle 설정 파일 설정
 
 <SetupConfig dialect='postgresql' env_variable='DATABASE_URL'/>
 
-#### Step 4 - Introspect your database
+#### Step 4 - 데이터베이스 인트로스펙션
 
 <IntrospectPostgreSQL/>
 
-#### Step 5 - Transfer code to your actual schema file
+#### Step 5 - 실제 스키마 파일로 코드 이동
 
 <TransferCode/>
 
-#### Step 6 - Connect Drizzle ORM to the database
+#### Step 6 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectBun/>
 
-#### Step 7 - Query the database
+#### Step 7 - 데이터베이스 쿼리
 
 <QueryDatabase dialect='bun-sql' env_variable='DATABASE_URL' />
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
-To run a script with `bun`, use the following command:
+`bun`으로 스크립트를 실행하려면 다음 명령어를 사용합니다:
 ```bash copy
 bun src/index.ts
 ```
 
-#### Step 9 - Update your table schema (optional)
+#### Step 9 - 테이블 스키마 업데이트 (선택사항)
 
 <UpdateSchema/>
 
-#### Step 9 - Applying changes to the database (optional)
+#### Step 10 - 데이터베이스에 변경사항 적용 (선택사항)
 
 <ApplyChanges/>
 
-#### Step 10 - Query the database with a new field (optional)
+#### Step 11 - 새 필드로 데이터베이스 쿼리 (선택사항)
 
 <QueryDatabaseUpdated dialect='bun-sql' env_variable='DATABASE_URL' />

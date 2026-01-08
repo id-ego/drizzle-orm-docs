@@ -22,51 +22,51 @@ import UpdateSchema from '@mdx/get-started/sqlite/UpdateSchema.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and Turso Database in existing project
+# 기존 프로젝트에서 Drizzle과 Turso Database 시작하기
 
 <Prerequisites>
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - Turso Database - [website](https://docs.turso.tech/introduction)
-  - Turso Database driver - [website](https://docs.turso.tech/connect/javascript) & [GitHub](https://github.com/tursodatabase/turso/tree/main/bindings/javascript)
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - Turso Database - [웹사이트](https://docs.turso.tech/introduction)
+  - Turso Database 드라이버 - [웹사이트](https://docs.turso.tech/connect/javascript) & [GitHub](https://github.com/tursodatabase/turso/tree/main/bindings/javascript)
 </Prerequisites>
 
 <FileStructure/>
 
-#### Step 1 - Install required package
+#### Step 1 - 필수 패키지 설치
 <Npm>
   drizzle-orm@beta @tursodatabase/database dotenv
   -D drizzle-kit@beta tsx
 </Npm>
 
-#### Step 2 - Setup connection variables
+#### Step 2 - 연결 변수 설정
 
 <SetupEnv env_variable='DB_FILE_NAME' />
 
-<Callout type='info' title='important'>
-For example, if you want to create an SQLite database file in the root of your project for testing purposes, you can use this example:
+<Callout type='info' title='중요'>
+예를 들어, 테스트 목적으로 프로젝트 루트에 SQLite 데이터베이스 파일을 생성하려면 다음 예제를 사용할 수 있습니다:
 ```plaintext copy
 DB_FILE_NAME=mydb.sqlite
 ```
 </Callout>
 
-#### Step 3 - Setup Drizzle config file
+#### Step 3 - Drizzle 설정 파일 설정
 
 <SetupConfig dialect='sqlite' env_variable='DB_FILE_NAME'/>
 
-#### Step 4 - Introspect your database
+#### Step 4 - 데이터베이스 인트로스펙션
 
 <IntrospectSQLite/>
 
-#### Step 5 - Transfer code to your actual schema file
+#### Step 5 - 실제 스키마 파일로 코드 전송
 
 <TransferCode/>
 
-#### Step 6 - Connect Drizzle ORM to the database
+#### Step 6 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectTursoDatabase/>
 
-#### Step 7 - Query the database
+#### Step 7 - 데이터베이스 쿼리
 
 ```typescript copy filename="src/index.ts"
 import 'dotenv/config';
@@ -112,19 +112,19 @@ async function main() {
 main();
 ```
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
 <RunFile/>
 
-#### Step 9 - Update your table schema (optional)
+#### Step 9 - 테이블 스키마 업데이트 (선택사항)
 
 <UpdateSchema/>
 
-#### Step 10 - Applying changes to the database (optional)
+#### Step 10 - 데이터베이스에 변경사항 적용 (선택사항)
 
 <ApplyChanges />
 
-#### Step 11 - Query the database with a new field (optional)
+#### Step 11 - 새 필드로 데이터베이스 쿼리 (선택사항)
 
 ```typescript copy filename="src/index.ts"
 import 'dotenv/config';

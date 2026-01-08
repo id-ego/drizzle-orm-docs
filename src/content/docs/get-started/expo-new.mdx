@@ -19,23 +19,23 @@ import ConnectLibsql from '@mdx/get-started/sqlite/ConnectLibsql.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and Expo
+# Drizzle과 Expo 시작하기
 
-<Prerequisites>  
-  - **Expo SQLite** - A library that provides access to a database that can be queried through a SQLite API - [read here](https://docs.expo.dev/versions/latest/sdk/sqlite/)
+<Prerequisites>
+  - **Expo SQLite** - SQLite API를 통해 쿼리할 수 있는 데이터베이스에 대한 액세스를 제공하는 라이브러리 - [자세히 보기](https://docs.expo.dev/versions/latest/sdk/sqlite/)
 </Prerequisites>
 
 
-#### Step 1 - Setup a project from Expo Template
+#### Step 1 - Expo 템플릿으로 프로젝트 설정
 <Npx>
 create expo-app --template blank-typescript
 </Npx>
 
-You can read more about this template [here](https://docs.expo.dev/more/create-expo/#create-a-new-project).
+이 템플릿에 대한 자세한 내용은 [여기](https://docs.expo.dev/more/create-expo/#create-a-new-project)에서 확인할 수 있습니다.
 
-#### Basic file structure
+#### 기본 파일 구조
 
-After installing the template and adding the `db` folder, you'll find the following content: In the `db/schema.ts` file with drizzle table definitions. The `drizzle` folder contains SQL migration files and snapshots
+템플릿을 설치하고 `db` 폴더를 추가하면 다음과 같은 구조가 생성됩니다. `db/schema.ts` 파일에는 Drizzle 테이블 정의가 포함되어 있으며, `drizzle` 폴더에는 SQL 마이그레이션 파일과 스냅샷이 포함됩니다.
 
 ```plaintext
 📦 <project root>
@@ -53,20 +53,20 @@ After installing the template and adding the `db` folder, you'll find the follow
  └ 📜 tsconfig.json
 ```
 
-#### Step 2 - Install expo-sqlite package
+#### Step 2 - expo-sqlite 패키지 설치
 <Npx>
 expo install expo-sqlite
 </Npx>
 
-#### Step 3 - Install required packages
+#### Step 3 - 필수 패키지 설치
 <Npm>
   drizzle-orm
   -D drizzle-kit
 </Npm>
 
-#### Step 4 - Connect Drizzle ORM to the database
+#### Step 4 - 데이터베이스에 Drizzle ORM 연결
 
-Create a `App.tsx` file in the root directory and initialize the connection:
+루트 디렉토리에 `App.tsx` 파일을 생성하고 연결을 초기화합니다:
 
 ```ts
 import * as SQLite from 'expo-sqlite';
@@ -77,9 +77,9 @@ const expo = SQLite.openDatabaseSync('db.db');
 const db = drizzle(expo);
 ```
 
-#### Step 4 - Create a table
+#### Step 5 - 테이블 생성
 
-Create a `schema.ts` file in the `db` directory and declare your table:
+`db` 디렉토리에 `schema.ts` 파일을 생성하고 테이블을 정의합니다:
 
 ```typescript copy filename="src/db/schema.ts"
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
@@ -92,11 +92,11 @@ export const usersTable = sqliteTable("users_table", {
 });
 ```
 
-#### Step 5 - Setup Drizzle config file
+#### Step 6 - Drizzle 설정 파일 설정
 
-**Drizzle config** - a configuration file that is used by [Drizzle Kit](/docs/kit-overview) and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config** - [Drizzle Kit](/docs/kit-overview)에서 사용되는 설정 파일로, 데이터베이스 연결, 마이그레이션 폴더 및 스키마 파일에 대한 모든 정보를 포함합니다.
 
-Create a `drizzle.config.ts` file in the root of your project and add the following content:
+프로젝트 루트에 `drizzle.config.ts` 파일을 생성하고 다음 내용을 추가합니다:
 
 ```ts
 import { defineConfig } from 'drizzle-kit';
@@ -109,9 +109,9 @@ export default defineConfig({
 });
 ```
 
-#### Step 6 - Setup `metro` config
+#### Step 7 - `metro` 설정
 
-Create a file `metro.config.js` in root folder and add this code inside:
+루트 폴더에 `metro.config.js` 파일을 생성하고 다음 코드를 추가합니다:
 
 ```js copy filename="metro.config.js"
 const { getDefaultConfig } = require('expo/metro-config');
@@ -121,7 +121,7 @@ config.resolver.sourceExts.push('sql');
 module.exports = config;
 ```
 
-#### Step 7 - Update `babel` config
+#### Step 8 - `babel` 설정 업데이트
 ```js copy filename="babel.config.js"
 module.exports = function(api) {
   api.cache(true);
@@ -132,18 +132,18 @@ module.exports = function(api) {
 };
 ```
 
-#### Step 8 - Applying changes to the database
+#### Step 9 - 데이터베이스에 변경사항 적용
 
-With Expo, you would need to generate migrations using the `drizzle-kit generate` command and then apply them at runtime using the `drizzle-orm` `migrate()` function
+Expo에서는 `drizzle-kit generate` 명령으로 마이그레이션을 생성한 다음, 런타임에 `drizzle-orm`의 `migrate()` 함수를 사용하여 적용해야 합니다.
 
-Generate migrations:
+마이그레이션 생성:
 ```bash copy
 npx drizzle-kit generate
 ```
 
-#### Step 9 - Apply migrations and query your db:
+#### Step 10 - 마이그레이션 적용 및 데이터베이스 쿼리
 
-Let's **App.tsx** file with migrations and queries to create, read, update, and delete users
+사용자를 생성, 조회, 업데이트 및 삭제하는 마이그레이션과 쿼리가 포함된 **App.tsx** 파일을 작성해봅시다.
 
 ```ts copy
 import { Text, View } from 'react-native';
@@ -224,7 +224,7 @@ export default function App() {
 }
 ```
 
-#### Step 10 - Prebuild and run expo app
+#### Step 11 - Expo 앱 프리빌드 및 실행
 
 <CodeTabs items={['npm', 'yarn', 'pnpm', 'bun']}>
 ```bash copy

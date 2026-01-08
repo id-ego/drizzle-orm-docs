@@ -19,54 +19,53 @@ import SetupEnv from '@mdx/get-started/SetupEnv.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and PostgreSQL
+# Drizzle과 PostgreSQL 시작하기
 
 <Prerequisites>
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **node-postgres** - package for querying your PostgreSQL database - [read here](https://node-postgres.com/)
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **node-postgres** - PostgreSQL 데이터베이스 쿼리 패키지 - [자세히 보기](https://node-postgres.com/)
 </Prerequisites>
 
-Drizzle has native support for PostgreSQL connections with the `node-postgres` and `postgres.js` drivers.
+Drizzle은 `node-postgres`와 `postgres.js` 드라이버를 통한 PostgreSQL 연결을 기본적으로 지원합니다.
 
-We will use `node-postgres` for this get started example. But if you want to find more ways to connect to postgresql check
-our [PostgreSQL Connection](/docs/get-started-postgresql) page 
+이 시작 가이드에서는 `node-postgres`를 사용합니다. PostgreSQL에 연결하는 다양한 방법을 확인하려면 [PostgreSQL 연결](/docs/get-started-postgresql) 페이지를 참조하세요.
 
 <FileStructure/>
 
-#### Step 1 - Install **node-postgres** package
+#### Step 1 - **node-postgres** 패키지 설치
 <InstallPackages lib='pg' devlib=' @types/pg'/>
 
-#### Step 2 - Setup connection variables
+#### Step 2 - 연결 변수 설정
 
 <SetupEnv env_variable='DATABASE_URL' />
 
-<Callout title='tips'>
-If you don't have a PostgreSQL database yet and want to create one for testing, you can use our guide on how to set up PostgreSQL in Docker.
+<Callout title='팁'>
+아직 PostgreSQL 데이터베이스가 없고 테스트용으로 생성하고 싶다면, Docker에서 PostgreSQL을 설정하는 가이드를 참조하세요.
 
-The PostgreSQL in Docker guide is available [here](/docs/guides/postgresql-local-setup). Go set it up, generate a database URL (explained in the guide), and come back for the next steps
+Docker에서 PostgreSQL 설정 가이드는 [여기](/docs/guides/postgresql-local-setup)에서 확인할 수 있습니다. 가이드를 따라 설정하고 데이터베이스 URL을 생성한 후(가이드에 설명되어 있음) 다음 단계로 돌아오세요.
 </Callout>
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### Step 3 - 데이터베이스에 Drizzle ORM 연결
 
 <ConnectPostgreSQL/>
 
-#### Step 4 - Create a table
+#### Step 4 - 테이블 생성
 
 <CreateTable />
 
-#### Step 5 - Setup Drizzle config file
+#### Step 5 - Drizzle 설정 파일 설정
 
 <SetupConfig dialect='postgresql' env_variable='DATABASE_URL'/>
 
-#### Step 6 - Applying changes to the database
+#### Step 6 - 데이터베이스에 변경사항 적용
 
 <ApplyChanges />
 
-#### Step 7 - Seed and Query the database
+#### Step 7 - 데이터베이스 시딩 및 쿼리
 
 <QueryDatabase dialect='node-postgres' env_variable='DATABASE_URL'/>
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
 <RunFile/>

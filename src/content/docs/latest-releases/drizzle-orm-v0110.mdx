@@ -1,13 +1,13 @@
 ---
 pubDate: 2022-07-20
-title: DrizzleORM v0.11.0 release
-description: DrizzleORM - is an open source TypeScript ORM, supports PostgreSQL and about to have MySQL and SQLite support in couple of weeks. We've decided it's time to share it with public.
+title: DrizzleORM v0.11.0 릴리스
+description: DrizzleORM은 오픈 소스 TypeScript ORM으로, PostgreSQL을 지원하며 몇 주 내에 MySQL과 SQLite 지원이 추가될 예정입니다. 이제 공개할 때가 되었다고 판단했습니다.
 ---
 import Section from "@mdx/Section.astro";
 
-DrizzleORM - is an open source TypeScript ORM, supports PostgreSQL and about to have MySQL and SQLite support in couple of weeks. We've decided it's time to share it with public.
+DrizzleORM은 오픈 소스 TypeScript ORM으로, PostgreSQL을 지원하며 몇 주 내에 MySQL과 SQLite 지원이 추가될 예정입니다. 이제 공개할 때가 되었다고 판단했습니다.
 
-With drizzle you have a fully typed SQL schema in-code which benefits you in multiple different major ways, which I'll cover later
+Drizzle을 사용하면 코드 내에서 완전히 타입이 지정된 SQL 스키마를 가질 수 있으며, 이는 여러 가지 중요한 방식으로 이점을 제공합니다.
 
 ```ts
 // declaring enum in database
@@ -39,7 +39,7 @@ export class CitiesTable extends PgTable<CitiesTable> {
 }
 ```
 
-This is quick start example of how you connect to the database and make your first query with typed result
+다음은 데이터베이스에 연결하고 타입이 지정된 결과로 첫 번째 쿼리를 실행하는 빠른 시작 예제입니다.
 
 ```ts
 import { drizzle, PgTable } from 'drizzle-orm'
@@ -61,7 +61,7 @@ const usersTable = new UsersTable(db);
 const users: User[] = await usersTable.select().execute();
 ```
 
-This is how you use `WHERE` statement with filters, run partial select queries, use `limit/offset` and `orderBy`
+다음은 필터와 함께 `WHERE` 문을 사용하고, 부분 조회 쿼리를 실행하며, `limit/offset` 및 `orderBy`를 사용하는 방법입니다.
 
 ```ts
 await table.select().where(
@@ -90,7 +90,7 @@ await table.select().orderBy((table) => table.name, Order.ASC)
 await table.select().orderBy((table) => table.name, Order.DESC)
 ```
 
-This is how you run `inserts`, `updates` and `deletes`
+다음은 `inserts`, `updates`, `deletes`를 실행하는 방법입니다.
 
 ```ts
 const result = await usersTable.insert({
@@ -116,7 +116,7 @@ await usersTable.delete()
   .execute();
 ```
 
-One of the most powerful features we have in our ORM are fully typed joins, compiler won't let you make a mistake
+ORM의 가장 강력한 기능 중 하나는 완전히 타입이 지정된 조인입니다. 컴파일러가 실수를 방지해줍니다.
 
 ```ts
 const usersTable = new UsersTable(db);
@@ -130,7 +130,7 @@ const result = await citiesTable.select()
 const citiesWithUsers: { city: City, user: User }[] = result.map((city, user) => ({ city, user }));
 ```
 
-Here's a `many to many` relationship example
+다음은 `다대다(many to many)` 관계 예제입니다.
 
 ```ts
 export class UsersTable extends PgTable<UsersTable> {
@@ -160,9 +160,9 @@ const usersWithUserGroups = await manyToManyTable.select()
   .execute();
 ```
 
-Last but not least are migrations. We've implemented a CLI tool for automatic migrations generation, which does handle renames and deletes by prompting you to resolve.
+마지막으로 마이그레이션이 있습니다. 자동 마이그레이션 생성을 위한 CLI 도구를 구현했으며, 이름 변경 및 삭제를 처리할 때 사용자에게 확인을 요청합니다.
 
-For a typescript schema below
+아래 TypeScript 스키마에 대해
 
 <Section>
 ```ts

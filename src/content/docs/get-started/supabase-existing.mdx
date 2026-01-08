@@ -22,55 +22,55 @@ import UpdateSchema from '@mdx/get-started/postgresql/UpdateSchema.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and Supabase in existing project
+# 기존 프로젝트에서 Drizzle과 Supabase 시작하기
 
 <Prerequisites>
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **Supabase** - open source Firebase alternative - [read here](https://supabase.com/)
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **Supabase** - 오픈 소스 Firebase 대안 - [자세히 보기](https://supabase.com/)
 </Prerequisites>
 
 <FileStructure/>
 
-#### Step 1 - Install **postgres** package
+#### Step 1 - **postgres** 패키지 설치
 <InstallPackages lib='postgres'/>
 
-#### Step 2 - Setup connection variables
+#### Step 2 - 연결 변수 설정
 
 <SetupEnv env_variable='DATABASE_URL' />
 
-#### Step 3 - Setup Drizzle config file
+#### Step 3 - Drizzle 설정 파일 구성
 
 <SetupConfig dialect='postgresql' env_variable='DATABASE_URL'/>
 
-#### Step 4 - Introspect your database
+#### Step 4 - 데이터베이스 인트로스펙션
 
 <IntrospectPostgreSQL/>
 
-#### Step 5 - Transfer code to your actual schema file
+#### Step 5 - 실제 스키마 파일로 코드 이동
 
 <TransferCode/>
 
-#### Step 6 - Connect Drizzle ORM to the database
+#### Step 6 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectSupabase/>
 
-#### Step 7 - Query the database
+#### Step 7 - 데이터베이스 쿼리
 
 <QueryDatabase dialect='postgres-js' env_variable='DATABASE_URL'/>
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
 <RunFile/>
 
-#### Step 9 - Update your table schema (optional)
+#### Step 9 - 테이블 스키마 업데이트 (선택 사항)
 
 <UpdateSchema/>
 
-#### Step 10 - Applying changes to the database (optional)
+#### Step 10 - 데이터베이스에 변경사항 적용 (선택 사항)
 
 <ApplyChanges />
 
-#### Step 11 - Query the database with a new field (optional)
+#### Step 11 - 새 필드로 데이터베이스 쿼리 (선택 사항)
 
 <QueryDatabaseUpdated dialect='postgres-js' env_variable='DATABASE_URL' />

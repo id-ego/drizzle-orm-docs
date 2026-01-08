@@ -1,5 +1,5 @@
 ---
-title: Upsert Query
+title: Upsert 쿼리
 slug: upsert
 ---
 
@@ -8,19 +8,20 @@ import IsSupportedChipGroup from "@mdx/IsSupportedChipGroup.astro";
 import Prerequisites from "@mdx/Prerequisites.astro";
 import CodeTabs from '@mdx/CodeTabs.astro';
 import CodeTab from '@mdx/CodeTab.astro';
+import Callout from "@mdx/Callout.astro";
 
 <IsSupportedChipGroup chips={{PostgreSQL: true, MySQL: true, SQLite: true}}/>
 
 <Prerequisites>
-- Get started with [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql) and [SQLite](/docs/get-started-sqlite)
-- [Insert statement](/docs/insert), [onConflictDoUpdate method](/docs/insert#on-conflict-do-update) and [onDuplicateKeyUpdate method](/docs/insert#on-duplicate-key-update)
-- [Composite primary key](/docs/indexes-constraints#composite-primary-key)
-- [sql operator](/docs/sql)
+- [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql), [SQLite](/docs/get-started-sqlite) 시작하기
+- [Insert 문](/docs/insert), [onConflictDoUpdate 메서드](/docs/insert#on-conflict-do-update), [onDuplicateKeyUpdate 메서드](/docs/insert#on-duplicate-key-update)
+- [복합 기본 키](/docs/indexes-constraints#composite-primary-key)
+- [sql 연산자](/docs/sql)
 </Prerequisites>
 
-### PostgreSQL and SQLite
+### PostgreSQL과 SQLite
 
-To implement an upsert query in PostgreSQL and SQLite (skip to [MySQL](/docs/guides/upsert#mysql)) with Drizzle you can use `.onConflictDoUpdate()` method:
+PostgreSQL과 SQLite에서 Drizzle을 사용하여 upsert 쿼리를 구현하려면 ([MySQL](/docs/guides/upsert#mysql)로 건너뛰기) `.onConflictDoUpdate()` 메서드를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {8,9,10,11}
@@ -43,9 +44,9 @@ insert into users ("id", "name") values (1, 'John')
 ```
 </Section>
 
-To upsert multiple rows in one query in PostgreSQL and SQLite you can use `sql operator` and `excluded` keyword. `excluded` is a special reference that refer to the row that was proposed for insertion, but wasn't inserted because of the conflict.
+PostgreSQL과 SQLite에서 한 번의 쿼리로 여러 행을 upsert하려면 `sql operator`와 `excluded` 키워드를 사용할 수 있습니다. `excluded`는 삽입이 제안되었지만 충돌로 인해 삽입되지 않은 행을 참조하는 특수 참조입니다.
 
-This is how you can do it:
+다음과 같이 할 수 있습니다:
 
 <CodeTabs items={["index.ts", "schema.ts"]}>
   <CodeTab>
@@ -96,12 +97,12 @@ This is how you can do it:
   ```
 </CodeTabs>
 
-Drizzle has simple and flexible API, which lets you easily create custom solutions. This is how you do custom function for updating specific columns in multiple rows due to the conflict in PostgreSQL and SQLite:
+Drizzle은 간단하고 유연한 API를 가지고 있어 커스텀 솔루션을 쉽게 만들 수 있습니다. PostgreSQL과 SQLite에서 충돌로 인해 여러 행의 특정 컬럼을 업데이트하는 커스텀 함수를 만드는 방법은 다음과 같습니다:
 
 <Callout type='warning'>
-`getColumns` available starting from `drizzle-orm@1.0.0-beta.2`(read more [here](/docs/upgrade-v1))
+`getColumns`는 `drizzle-orm@1.0.0-beta.2`부터 사용 가능합니다 ([자세히 보기](/docs/upgrade-v1))
 
-If you are on pre-1 version(like `0.45.1`) then use `getTableColumns`
+버전 1 이전 버전(예: `0.45.1`)을 사용 중이라면 `getTableColumns`를 사용하세요
 </Callout>
 
 <CodeTabs items={["index.ts", "schema.ts"]}>
@@ -176,7 +177,7 @@ If you are on pre-1 version(like `0.45.1`) then use `getTableColumns`
   ```
 </CodeTabs>
 
-This is how you can implement an upsert query with multiple targets in PostgreSQL and SQLite:
+PostgreSQL과 SQLite에서 여러 타겟을 가진 upsert 쿼리를 구현하는 방법은 다음과 같습니다:
 
 <Section>
 ```ts copy {8}
@@ -198,7 +199,7 @@ insert into inventory ("warehouse_id", "product_id", "quantity") values (1, 1, 1
 ```
 </Section>
 
-If you want to implement upsert query with `where` clause for `update` statement, you can use `setWhere` property in `onConflictDoUpdate` method:
+`update` 문에 `where` 절을 포함한 upsert 쿼리를 구현하려면 `onConflictDoUpdate` 메서드의 `setWhere` 속성을 사용할 수 있습니다:
 
 <CodeTabs items={["index.ts", "schema.ts"]}>
   <CodeTab>
@@ -257,7 +258,7 @@ If you want to implement upsert query with `where` clause for `update` statement
 </CodeTabs>
 
 
-If you want to update all columns except of specific one, you can leave the previous value like this:
+특정 컬럼을 제외한 모든 컬럼을 업데이트하려면 다음과 같이 이전 값을 유지할 수 있습니다:
 
 <Section>
 ```ts copy {16}
@@ -288,9 +289,9 @@ insert into users ("id", "name", "email", "age") values (1, 'John', 'john@email.
 
 ### MySQL
 
-To implement an upsert query in MySQL with Drizzle you can use `.onDuplicateKeyUpdate()` method. MySQL will automatically determine the conflict target based on the primary key and unique indexes, and will update the row if any unique index conflicts.
+MySQL에서 Drizzle을 사용하여 upsert 쿼리를 구현하려면 `.onDuplicateKeyUpdate()` 메서드를 사용할 수 있습니다. MySQL은 기본 키와 고유 인덱스를 기반으로 충돌 타겟을 자동으로 결정하며, 고유 인덱스가 충돌하면 행을 업데이트합니다.
 
-This is how you can do it:
+다음과 같이 할 수 있습니다:
 
 <Section>
 ```ts copy {4}
@@ -306,7 +307,7 @@ insert into users (`id`, `first_name`) values (1, 'John')
 ```
 </Section>
 
-To upsert multiple rows in one query in MySQL you can use `sql operator` and `values()` function. `values()` function refers to the value of column that would be inserted if duplicate-key conflict hadn't occurred.  
+MySQL에서 한 번의 쿼리로 여러 행을 upsert하려면 `sql operator`와 `values()` 함수를 사용할 수 있습니다. `values()` 함수는 중복 키 충돌이 발생하지 않았다면 삽입되었을 컬럼의 값을 참조합니다.  
 
 <CodeTabs items={["index.ts", "schema.ts"]}>
   <CodeTab>
@@ -358,7 +359,7 @@ To upsert multiple rows in one query in MySQL you can use `sql operator` and `va
   ```
 </CodeTabs>
 
-Drizzle has simple and flexible API, which lets you easily create custom solutions. This is how you do custom function for updating specific columns in multiple rows due to the conflict in MySQL:
+Drizzle은 간단하고 유연한 API를 가지고 있어 커스텀 솔루션을 쉽게 만들 수 있습니다. MySQL에서 충돌로 인해 여러 행의 특정 컬럼을 업데이트하는 커스텀 함수를 만드는 방법은 다음과 같습니다:
 
 <CodeTabs items={["index.ts", "schema.ts"]}>
   <CodeTab>
@@ -424,7 +425,7 @@ Drizzle has simple and flexible API, which lets you easily create custom solutio
   ```
 </CodeTabs>
 
-If you want to update all columns except of specific one, you can leave the previous value like this:
+특정 컬럼을 제외한 모든 컬럼을 업데이트하려면 다음과 같이 이전 값을 유지할 수 있습니다:
 
 <Section>
 ```ts copy {15}
@@ -442,7 +443,7 @@ await db
   .insert(users)
   .values(data)
   .onDuplicateKeyUpdate({
-    set: { ...data, email: sql`${users.email}` }, // leave email as it was
+    set: { ...data, email: sql`${users.email}` }, // email은 이전 값 유지
 });
 ```
 

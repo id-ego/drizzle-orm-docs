@@ -22,71 +22,71 @@ import UpdateSchema from '@mdx/get-started/cockroach/UpdateSchema.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and CockroachDB in existing project
+# 기존 프로젝트에서 Drizzle과 CockroachDB 시작하기
 
 <Callout type='error'>
-This page explains concepts available on drizzle versions `1.0.0-beta.2` and higher.
+이 페이지는 drizzle 버전 `1.0.0-beta.2` 이상에서 사용 가능한 개념을 설명합니다.
 </Callout>
 
 <br/>
 
 <Prerequisites>
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **node-postgres** - package for querying your PostgreSQL database - [read here](https://node-postgres.com/)
+  - **dotenv** - 환경 변수 관리 패키지 - [여기서 읽기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [여기서 읽기](https://tsx.is/)
+  - **node-postgres** - PostgreSQL 데이터베이스 쿼리 패키지 - [여기서 읽기](https://node-postgres.com/)
 </Prerequisites>
 
 <FileStructure/>
 
-#### Step 1 - Install **node-postgres** package
+#### Step 1 - **node-postgres** 패키지 설치
 <Npm>
   drizzle-orm@beta pg dotenv
   -D drizzle-kit@beta tsx @types/pg
 </Npm>
 
 
-#### Step 2 - Setup connection variables
+#### Step 2 - 연결 변수 설정
 
 <SetupEnv env_variable='DATABASE_URL' />
 
-<Callout title='tips'>
-If you don't have a PostgreSQL database yet and want to create one for testing, you can use our guide on how to set up PostgreSQL in Docker.
+<Callout title='팁'>
+PostgreSQL 데이터베이스가 아직 없고 테스트용으로 생성하려면, Docker에서 PostgreSQL을 설정하는 방법에 대한 가이드를 사용할 수 있습니다.
 
-The PostgreSQL in Docker guide is available [here](/docs/guides/postgresql-local-setup). Go set it up, generate a database URL (explained in the guide), and come back for the next steps
+PostgreSQL in Docker 가이드는 [여기](/docs/guides/postgresql-local-setup)에서 확인할 수 있습니다. 가이드를 따라 설정하고, 데이터베이스 URL을 생성한 후(가이드에 설명되어 있음) 다음 단계로 돌아오세요.
 </Callout>
 
-#### Step 3 - Setup Drizzle config file
+#### Step 3 - Drizzle 설정 파일 설정
 
 <SetupConfig dialect='cockroach' env_variable='DATABASE_URL'/>
 
-#### Step 4 - Introspect your database
+#### Step 4 - 데이터베이스 인트로스펙션
 
 <IntrospectCockroach/>
 
-#### Step 5 - Transfer code to your actual schema file
+#### Step 5 - 실제 스키마 파일로 코드 전송
 
 <TransferCode/>
 
-#### Step 6 - Connect Drizzle ORM to the database
+#### Step 6 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectCockroach/>
 
-#### Step 7 - Query the database
+#### Step 7 - 데이터베이스 쿼리
 
 <QueryDatabase dialect='cockroach' env_variable='DATABASE_URL'/>
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
 <RunFile/>
 
-#### Step 9 - Update your table schema (optional)
+#### Step 9 - 테이블 스키마 업데이트 (선택사항)
 
 <UpdateSchema/>
 
-#### Step 10 - Applying changes to the database (optional)
+#### Step 10 - 데이터베이스에 변경사항 적용 (선택사항)
 
 <ApplyChanges />
 
-#### Step 11 - Query the database with a new field (optional)
+#### Step 11 - 새 필드로 데이터베이스 쿼리 (선택사항)
 
 <QueryDatabaseUpdated dialect='cockroach' env_variable='DATABASE_URL' />

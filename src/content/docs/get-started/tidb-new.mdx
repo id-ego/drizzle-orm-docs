@@ -16,50 +16,49 @@ import SetupConfig from '@mdx/get-started/SetupConfig.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and TiDB
+# Drizzle과 TiDB 시작하기
 
-<Prerequisites>  
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **TiDB** - The Distributed SQL Database by PingCAP - [read here](https://www.pingcap.com/)
-  - **serverless-js** - package for serverless and edge compute platforms that require HTTP external connections - [read here](https://github.com/tidbcloud/serverless-js)
+<Prerequisites>
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **TiDB** - PingCAP의 분산 SQL 데이터베이스 - [자세히 보기](https://www.pingcap.com/)
+  - **serverless-js** - HTTP 외부 연결이 필요한 서버리스 및 엣지 컴퓨팅 플랫폼용 패키지 - [자세히 보기](https://github.com/tidbcloud/serverless-js)
 </Prerequisites>
 
-<Callout title='important' type='warning'>
-For this tutorial, we will use the `@tidbcloud/serverless` driver to make **HTTP** calls. If you need to
-connect to TiDB through TCP, you can refer to our [MySQL Get Started](/docs/get-started/mysql-new) page
+<Callout title='중요' type='warning'>
+이 튜토리얼에서는 **HTTP** 호출을 수행하기 위해 `@tidbcloud/serverless` 드라이버를 사용합니다. TCP를 통해 TiDB에 연결해야 하는 경우 [MySQL 시작하기](/docs/get-started/mysql-new) 페이지를 참조하세요.
 </Callout>
 
 <FileStructure/>
 
-#### Step 1 - Install **@tidbcloud/serverless** package
+#### Step 1 - **@tidbcloud/serverless** 패키지 설치
 
 <InstallPackages lib='@tidbcloud/serverless'/>
 
-#### Step 2 - Setup connection variables
+#### Step 2 - 연결 변수 설정
 
 <SetupEnv env_variable='DATABASE_URL' />
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### Step 3 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectTiDB/>
 
-#### Step 4 - Create a table
+#### Step 4 - 테이블 생성
 
 <CreateTable/>
 
-#### Step 5 - Setup Drizzle config file
+#### Step 5 - Drizzle 설정 파일 설정
 
 <SetupConfig dialect='mysql' env_variable='DATABASE_URL'/>
 
-#### Step 6 - Applying changes to the database
+#### Step 6 - 데이터베이스에 변경사항 적용
 
 <ApplyChanges />
 
-#### Step 7 - Seed and Query the database
+#### Step 7 - 데이터베이스 시드 및 쿼리
 
 <QueryDatabase dialect='tidb-serverless' env_variable='DATABASE_URL'/>
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
 <RunFile/>

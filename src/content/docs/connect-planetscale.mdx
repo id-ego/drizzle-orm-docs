@@ -10,28 +10,28 @@ import CodeTabs from "@mdx/CodeTabs.astro";
 # Drizzle \<\> PlanetScale
 
 <Prerequisites>
-- Database [connection basics](/docs/connect-overview) with Drizzle
-- PlanetScale database - [website](https://planetscale.com/docs)
-- PlanetScale http driver - [GitHub](https://github.com/planetscale/database-js)
-- Drizzle MySQL drivers - [docs](/docs/get-started-mysql)
+- Drizzle을 사용한 데이터베이스 [연결 기본사항](/docs/connect-overview)
+- PlanetScale 데이터베이스 - [웹사이트](https://planetscale.com/docs)
+- PlanetScale http 드라이버 - [GitHub](https://github.com/planetscale/database-js)
+- Drizzle MySQL 드라이버 - [문서](/docs/get-started-mysql)
 </Prerequisites>
 
-According to the **[official website](https://planetscale.com)**, 
-PlanetScale is the world's most advanced serverless MySQL platform.
+**[공식 웹사이트](https://planetscale.com)**에 따르면,
+PlanetScale은 세계에서 가장 진보된 서버리스 MySQL 플랫폼입니다.
 
-With Drizzle ORM you can access PlanetScale over http
-through their official **[`database-js`](https://github.com/planetscale/database-js)**
-driver from serverless and serverfull environments with our `drizzle-orm/planetscale-serverless` package.
+Drizzle ORM을 사용하면 `drizzle-orm/planetscale-serverless` 패키지를 통해
+공식 **[`database-js`](https://github.com/planetscale/database-js)** 드라이버로
+서버리스 및 서버풀 환경에서 http를 통해 PlanetScale에 접근할 수 있습니다.
 
-You can also access PlanetScale through TCP with `mysql2` driver — **[see here.](/docs/get-started-mysql)**
+`mysql2` 드라이버를 사용하여 TCP를 통해 PlanetScale에 접근할 수도 있습니다 — **[여기를 참조하세요.](/docs/get-started-mysql)**
 
-#### Step 1 - Install packages
+#### 1단계 - 패키지 설치
 <Npm>
 drizzle-orm @planetscale/database
 -D drizzle-kit
 </Npm>
 
-#### Step 2 - Initialize the driver and make a query
+#### 2단계 - 드라이버 초기화 및 쿼리 실행
 ```typescript copy"
 import { drizzle } from "drizzle-orm/planetscale-serverless";
 
@@ -44,7 +44,7 @@ const db = drizzle({ connection: {
 const response = await db.select().from(...)
 ```
 
-If you need to provide your existing driver
+기존 드라이버를 제공해야 하는 경우
 
 ```typescript copy"
 import { drizzle } from "drizzle-orm/planetscale-serverless";
@@ -59,9 +59,9 @@ const client = new Client({
 const db = drizzle({ client });
 ```
 
-Make sure to checkout the PlanetScale official **[MySQL courses](https://planetscale.com/courses/mysql-for-developers)**, 
-we think they're outstanding 🙌
+PlanetScale 공식 **[MySQL 강좌](https://planetscale.com/courses/mysql-for-developers)**를 꼭 확인해보세요,
+정말 훌륭합니다 🙌
 
-#### What's next?
+#### 다음 단계
 
 <WhatsNextPostgres/>

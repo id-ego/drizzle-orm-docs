@@ -1,5 +1,5 @@
 ---
-title: "Todo App with Neon Postgres"
+title: "Neon Postgres로 Todo 앱 만들기"
 date: "2024-01-17"
 svgs: ['<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="9.63139" height="40.8516" rx="4.8157" transform="matrix(0.873028 0.48767 -0.497212 0.867629 43.4805 67.3037)" fill="currentColor"></rect><rect width="9.63139" height="40.8516" rx="4.8157" transform="matrix(0.873028 0.48767 -0.497212 0.867629 76.9395 46.5342)" fill="currentColor"></rect><rect width="9.63139" height="40.8516" rx="4.8157" transform="matrix(0.873028 0.48767 -0.497212 0.867629 128.424 46.5352)" fill="currentColor"></rect><rect width="9.63139" height="40.8516" rx="4.8157" transform="matrix(0.873028 0.48767 -0.497212 0.867629 94.957 67.3037)" fill="currentColor"></rect></svg>', '<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_84_2)"><path d="M128 256C198.692 256 256 198.692 256 128C256 57.3075 198.692 0 128 0C57.3075 0 0 57.3075 0 128C0 198.692 57.3075 256 128 256Z" fill="black"/><path d="M212.63 224.03L98.34 76.8H76.8V179.16H94.03V98.68L199.11 234.45C203.85 231.27 208.37 227.79 212.63 224.03Z" fill="url(#paint0_linear_84_2)"/><path d="M180.63 76.8H163.56V179.2H180.63V76.8Z" fill="url(#paint1_linear_84_2)"/></g><defs><linearGradient id="paint0_linear_84_2" x1="132.707" y1="181.561" x2="178.076" y2="237.79" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient><linearGradient id="paint1_linear_84_2" x1="172.083" y1="76.7712" x2="171.776" y2="151.973" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient><clipPath id="clip0_84_2"><rect width="256" height="256" fill="white"/></clipPath></defs></svg>', '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6.27586C2 4.46665 3.54385 3 5.44828 3H18.5517C20.4562 3 22 4.46665 22 6.27586V16.8631C22 18.7349 19.5068 19.5471 18.2976 18.0694L14.5173 13.4496V19.0517C14.5173 20.68 13.1278 22 11.4138 22H5.44828C3.54385 22 2 20.5333 2 18.7241V6.27586ZM5.44828 5.62069C5.06739 5.62069 4.75863 5.91402 4.75863 6.27586V18.7241C4.75863 19.086 5.06739 19.3793 5.44828 19.3793H11.5172C11.7077 19.3793 11.7586 19.2327 11.7586 19.0517V11.5393C11.7586 9.66758 14.2518 8.8552 15.461 10.333L19.2414 14.9528V6.27586C19.2414 5.91402 19.2774 5.62069 18.8966 5.62069H5.44828Z" fill="currentColor"/></svg>']
 ---
@@ -14,63 +14,63 @@ import Tab from "@mdx/Tab.astro";
 import Prerequisites from "@mdx/Prerequisites.astro";
 import Callout from "@mdx/Callout.astro";
 
-This tutorial demonstrates how to build `Todo app` using **Drizzle ORM** with **Neon database** and **Next.js**.
+이 튜토리얼은 **Drizzle ORM**, **Neon 데이터베이스**, **Next.js**를 사용하여 `Todo 앱`을 만드는 방법을 보여줍니다.
 
-<Prerequisites>  
-  - You should have an existing Next.js project or create a new one using the following command:
+<Prerequisites>
+  - 기존 Next.js 프로젝트가 있거나 다음 명령어로 새 프로젝트를 생성해야 합니다:
   ```bash
   npx create-next-app@latest --typescript
   ```
 
-  - You should have installed Drizzle ORM and [Drizzle kit](/docs/kit-overview). You can do this by running the following command:
+  - Drizzle ORM과 [Drizzle kit](/docs/kit-overview)을 설치해야 합니다. 다음 명령어로 설치할 수 있습니다:
   <Npm>
-    drizzle-orm 
+    drizzle-orm
     -D drizzle-kit
   </Npm>
 
-  - You should have installed the [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver). 
+  - [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver)를 설치해야 합니다.
   <Npm>
     @neondatabase/serverless
   </Npm>
 
-  - You should have installed the `dotenv` package for managing environment variables. 
+  - 환경 변수 관리를 위해 `dotenv` 패키지를 설치해야 합니다.
   <Npm>
     dotenv
-  </Npm>  
+  </Npm>
 </Prerequisites>
 
 <Callout type="warning">
-In case you face the issue with resolving dependencies during installation:
+설치 중 의존성 해결 문제가 발생하는 경우:
 
-If you're not using React Native, forcing the installation with `--force` or `--legacy-peer-deps` should resolve the issue. If you are using React Native, then you need to use the exact version of React which is compatible with your React Native version.
+React Native를 사용하지 않는다면 `--force` 또는 `--legacy-peer-deps` 옵션으로 강제 설치하면 문제가 해결됩니다. React Native를 사용하는 경우에는 React Native 버전과 호환되는 정확한 React 버전을 사용해야 합니다.
 </Callout>
 
-## Setup Neon and Drizzle ORM
+## Neon과 Drizzle ORM 설정
 
 <Steps>
-#### Create a new Neon project
+#### 새 Neon 프로젝트 생성
 
-Log in to the [Neon Console](https://console.neon.tech/app/projects) and navigate to the Projects section. Select a project or click the `New Project` button to create a new one. 
+[Neon Console](https://console.neon.tech/app/projects)에 로그인하고 Projects 섹션으로 이동합니다. 프로젝트를 선택하거나 `New Project` 버튼을 클릭하여 새 프로젝트를 생성합니다.
 
-Your Neon projects come with a ready-to-use Postgres database named `neondb`. We'll use it in this tutorial.
+Neon 프로젝트에는 `neondb`라는 이름의 바로 사용 가능한 Postgres 데이터베이스가 제공됩니다. 이 튜토리얼에서는 이 데이터베이스를 사용합니다.
 
-#### Setup connection string variable
+#### 연결 문자열 변수 설정
 
-Navigate to the **Connection Details** section in the project console to find your database connection string. It should look similar to this:
+프로젝트 콘솔의 **Connection Details** 섹션으로 이동하여 데이터베이스 연결 문자열을 확인합니다. 다음과 유사한 형태입니다:
 
 ```bash
 postgres://username:password@ep-cool-darkness-123456.us-east-2.aws.neon.tech/neondb
 ```
 
-Add the `DATABASE_URL` environment variable to your `.env` or `.env.local` file, which you'll use to connect to the Neon database.
+`.env` 또는 `.env.local` 파일에 `DATABASE_URL` 환경 변수를 추가합니다. 이 변수는 Neon 데이터베이스에 연결하는 데 사용됩니다.
 
 ```bash
 DATABASE_URL=NEON_DATABASE_CONNECTION_STRING
 ```
 
-#### Connect Drizzle ORM to your database 
+#### Drizzle ORM을 데이터베이스에 연결
 
-Create a `drizzle.ts` file in your `src/db` folder and set up your database configuration:
+`src/db` 폴더에 `drizzle.ts` 파일을 생성하고 데이터베이스 설정을 구성합니다:
 
 ```tsx copy filename="src/db/drizzle.ts"
 import { config } from "dotenv";
@@ -81,7 +81,7 @@ config({ path: ".env" }); // or .env.local
 export const db = drizzle(process.env.DATABASE_URL!);
 ```
 
-#### Declare todo schema
+#### todo 스키마 선언
 
 ```tsx copy filename="src/db/schema.ts"
 import { integer, text, boolean, pgTable } from "drizzle-orm/pg-core";
@@ -93,13 +93,13 @@ export const todo = pgTable("todo", {
 });
 ```
 
-Here we define the **`todo`** table with fields **`id`**, **`text`**, and **`done`**, using data types from Drizzle ORM.
+여기서는 Drizzle ORM의 데이터 타입을 사용하여 **`id`**, **`text`**, **`done`** 필드를 가진 **`todo`** 테이블을 정의합니다.
 
-#### Setup Drizzle config file
+#### Drizzle 설정 파일 설정
 
-**Drizzle config** - a configuration file that is used by [Drizzle Kit](/docs/kit-overview) and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config** - [Drizzle Kit](/docs/kit-overview)에서 사용하는 설정 파일로, 데이터베이스 연결, 마이그레이션 폴더, 스키마 파일에 대한 모든 정보를 포함합니다.
 
-Create a `drizzle.config.ts` file in the root of your project and add the following content:
+프로젝트 루트에 `drizzle.config.ts` 파일을 생성하고 다음 내용을 추가합니다:
 
 ```typescript copy filename="drizzle.config.ts"
 import { config } from 'dotenv';
@@ -117,19 +117,19 @@ export default defineConfig({
 });
 ```
 
-#### Applying changes to the database
+#### 데이터베이스에 변경사항 적용
 
-You can generate migrations using `drizzle-kit generate` command and then run them using the `drizzle-kit migrate` command.
+`drizzle-kit generate` 명령어로 마이그레이션을 생성하고 `drizzle-kit migrate` 명령어로 실행할 수 있습니다.
 
-Generate migrations:
+마이그레이션 생성:
 
 ```bash
 npx drizzle-kit generate
 ```
 
-These migrations are stored in the `drizzle/migrations`  directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+이 마이그레이션들은 `drizzle.config.ts`에 지정된 대로 `drizzle/migrations` 디렉토리에 저장됩니다. 이 디렉토리에는 데이터베이스 스키마를 업데이트하는 데 필요한 SQL 파일과 다양한 마이그레이션 단계의 스키마 스냅샷을 저장하는 `meta` 폴더가 포함됩니다.
 
-Example of a generated migration:
+생성된 마이그레이션 예시:
 
 ```sql
 CREATE TABLE IF NOT EXISTS "todo" (
@@ -139,38 +139,39 @@ CREATE TABLE IF NOT EXISTS "todo" (
 );
 ```
 
-Run migrations:
+마이그레이션 실행:
 
 ```bash
 npx drizzle-kit migrate
 ```
 
-Alternatively, you can push changes directly to the database using [Drizzle kit push command](/docs/kit-overview#prototyping-with-db-push):
+또는 [Drizzle kit push 명령어](/docs/kit-overview#prototyping-with-db-push)를 사용하여 데이터베이스에 변경사항을 직접 푸시할 수 있습니다:
 
 ```bash
 npx drizzle-kit push
 ```
 
-<Callout type="warning">Push command is good for situations where you need to quickly test new schema designs or changes in a local development environment, allowing for fast iterations without the overhead of managing migration files.</Callout>
+<Callout type="warning">Push 명령어는 로컬 개발 환경에서 새로운 스키마 디자인이나 변경사항을 빠르게 테스트해야 할 때 유용합니다. 마이그레이션 파일 관리 부담 없이 빠른 반복 작업이 가능합니다.</Callout>
 </Steps>
 
-#### Establish server-side functions
-In this step, we establish server-side functions in the **src/actions/todoAction.ts** file to handle crucial operations on todo items:
+#### 서버 사이드 함수 구축
+
+이 단계에서는 **src/actions/todoAction.ts** 파일에 todo 아이템에 대한 주요 작업을 처리하는 서버 사이드 함수를 구축합니다:
 
 1. **`getData`:**
-    - Fetches all existing todo items from the database.
+    - 데이터베이스에서 모든 기존 todo 아이템을 가져옵니다.
 2. **`addTodo`:**
-    - Adds a new todo item to the database with the provided text.
-    - Initiates revalidation of the home page using **`revalidatePath("/")`**.
+    - 제공된 텍스트로 새 todo 아이템을 데이터베이스에 추가합니다.
+    - **`revalidatePath("/")`**를 사용하여 홈 페이지의 재검증을 시작합니다.
 3. **`deleteTodo`:**
-    - Removes a todo item from the database based on its unique ID.
-    - Triggers a revalidation of the home page.
+    - 고유 ID를 기반으로 데이터베이스에서 todo 아이템을 제거합니다.
+    - 홈 페이지의 재검증을 트리거합니다.
 4. **`toggleTodo`:**
-    - Toggles the completion status of a todo item, updating the database accordingly.
-    - Revalidates the home page after the operation.
+    - todo 아이템의 완료 상태를 토글하고 데이터베이스를 그에 따라 업데이트합니다.
+    - 작업 후 홈 페이지를 재검증합니다.
 5. **`editTodo`:**
-    - Modifies the text of a todo item identified by its ID in the database.
-    - Initiates a revalidation of the home page.
+    - ID로 식별된 todo 아이템의 텍스트를 데이터베이스에서 수정합니다.
+    - 홈 페이지의 재검증을 시작합니다.
 
 ```tsx collapsable copy filename="src/actions/todoAction.ts"
 "use server";
@@ -220,12 +221,12 @@ export const editTodo = async (id: number, text: string) => {
 };
 ```
 
-## Setup home page with Next.js
+## Next.js로 홈 페이지 설정
 
 <Steps>
-#### Define a TypeScript type
+#### TypeScript 타입 정의
 
-Define a TypeScript type for a todo item in `src/types/todoType.ts` with three properties: **`id`** of type **`number`**, **`text`** of type **`string`**, and **`done`** of type **`boolean`**. This type, named **`todoType`**, represents the structure of a typical todo item within your application.
+`src/types/todoType.ts`에서 todo 아이템을 위한 TypeScript 타입을 정의합니다. 이 타입은 **`number`** 타입의 **`id`**, **`string`** 타입의 **`text`**, **`boolean`** 타입의 **`done`** 세 가지 속성을 가집니다. **`todoType`**이라는 이름의 이 타입은 애플리케이션 내 일반적인 todo 아이템의 구조를 나타냅니다.
 
 ```ts copy filename="src/types/todoType.ts"
 export type todoType = {
@@ -235,14 +236,14 @@ export type todoType = {
 };
 ```
 
-#### Create a home page for a to-do application
+#### To-do 애플리케이션을 위한 홈 페이지 생성
 
 1. **`src/components/todo.tsx`:**
-    Create a `Todo` component that represents a single todo item. It includes features for displaying and editing the todo text, marking it as done with a checkbox, and providing actions for editing, saving, canceling, and deleting the todo.
+    단일 todo 아이템을 나타내는 `Todo` 컴포넌트를 생성합니다. todo 텍스트를 표시하고 편집하는 기능, 체크박스로 완료 표시하는 기능, 편집, 저장, 취소, 삭제 작업을 제공하는 기능을 포함합니다.
 2. **`src/components/addTodo.tsx`:**
-    The `AddTodo` component provides a simple form for adding new todo items to the Todo app. It includes an input field for entering the todo text and a button for triggering the addition of the new todo.
+    `AddTodo` 컴포넌트는 Todo 앱에 새 todo 아이템을 추가하는 간단한 폼을 제공합니다. todo 텍스트를 입력하는 입력 필드와 새 todo 추가를 트리거하는 버튼이 포함됩니다.
 3. **`src/components/todos.tsx`:**
-    Create Todos components that represents the main interface of a Todo app. It manages the state of todo items, provides functions for creating, editing, toggling, and deleting todos, and renders the individual todo items using the `Todo` component.
+    Todo 앱의 메인 인터페이스를 나타내는 Todos 컴포넌트를 생성합니다. todo 아이템의 상태를 관리하고, todo를 생성, 편집, 토글, 삭제하는 함수를 제공하며, `Todo` 컴포넌트를 사용하여 개별 todo 아이템을 렌더링합니다.
 
 <CodeTabs items={["todo.tsx", "addTodo.tsx", "todos.tsx"]}>
 ```tsx collapsable copy
@@ -487,7 +488,7 @@ export default Todos;
     </CodeTab>
 </CodeTabs>
 
-Update the `page.tsx` file in the `src/app` folder to fetch the todo items from the database and render the `Todos` component:
+`src/app` 폴더의 `page.tsx` 파일을 업데이트하여 데이터베이스에서 todo 아이템을 가져오고 `Todos` 컴포넌트를 렌더링합니다:
 
 ```tsx copy filename="src/app/page.tsx"
 import { getData } from "@/actions/todoAction";
@@ -500,9 +501,9 @@ export default async function Home() {
 ```
 </Steps>
 
-## Basic file structure
+## 기본 파일 구조
 
-This guide uses the following file structure:
+이 가이드는 다음 파일 구조를 사용합니다:
 
 ```text
 📦 <project root>

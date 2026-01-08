@@ -19,44 +19,44 @@ import SetupEnv from '@mdx/get-started/SetupEnv.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and SQLite Cloud
+# Drizzle과 SQLite Cloud 시작하기
 
 <Prerequisites>
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **SQLite Cloud database** - [read here](https://docs.sqlitecloud.io/docs/overview)
-  - **SQLite Cloud driver** - [read here](https://docs.sqlitecloud.io/docs/sdk-js-introduction) & [GitHub](https://github.com/sqlitecloud/sqlitecloud-js)
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **SQLite Cloud 데이터베이스** - [자세히 보기](https://docs.sqlitecloud.io/docs/overview)
+  - **SQLite Cloud 드라이버** - [자세히 보기](https://docs.sqlitecloud.io/docs/sdk-js-introduction) & [GitHub](https://github.com/sqlitecloud/sqlitecloud-js)
 </Prerequisites>
 
 <FileStructure/>
 
-#### Step 1 - Install required package
+#### 1단계 - 필수 패키지 설치
 <Npm>
   drizzle-orm@beta @sqlitecloud/drivers dotenv
   -D drizzle-kit@beta tsx
 </Npm>
 
-#### Step 2 - Setup connection variables
+#### 2단계 - 연결 변수 설정
 
 <SetupEnv env_variable='SQLITE_CLOUD_CONNECTION_STRING' />
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### 3단계 - 데이터베이스에 Drizzle ORM 연결
 
 <ConnectSQLiteCloud/>
 
-#### Step 4 - Create a table
+#### 4단계 - 테이블 생성
 
 <CreateTable />
 
-#### Step 5 - Setup Drizzle config file
+#### 5단계 - Drizzle 설정 파일 구성
 
 <SetupConfig dialect='sqlite' env_variable='SQLITE_CLOUD_CONNECTION_STRING'/>
 
-#### Step 6 - Applying changes to the database
+#### 6단계 - 데이터베이스에 변경사항 적용
 
 <ApplyChanges />
 
-#### Step 7 - Seed and Query the database
+#### 7단계 - 데이터베이스 시딩 및 쿼리
 
 ```typescript copy filename="src/index.ts"
 import 'dotenv/config';
@@ -74,10 +74,10 @@ async function main() {
   };
 
   await db.insert(usersTable).values(user);
-  console.log('New user created!')
+  console.log('새 사용자 생성됨!')
 
   const users = await db.select().from(usersTable);
-  console.log('Getting all users from the database: ', users)
+  console.log('데이터베이스에서 모든 사용자 조회: ', users)
   /*
   const users: {
     id: number;
@@ -93,15 +93,15 @@ async function main() {
       age: 31,
     })
     .where(eq(usersTable.email, user.email));
-  console.log('User info updated!')
+  console.log('사용자 정보 업데이트됨!')
 
   await db.delete(usersTable).where(eq(usersTable.email, user.email));
-  console.log('User deleted!')
+  console.log('사용자 삭제됨!')
 }
 
 main();
 ```
 
-#### Step 8 - Run index.ts file
+#### 8단계 - index.ts 파일 실행
 
 <RunFile/>

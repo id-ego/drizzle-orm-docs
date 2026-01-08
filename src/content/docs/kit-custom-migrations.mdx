@@ -9,19 +9,18 @@ import Npx from '@mdx/Npx.astro';
 import Steps from '@mdx/Steps.astro';
 import Prerequisites from "@mdx/Prerequisites.astro"
 
-# Migrations with Drizzle Kit
+# Drizzle Kit으로 마이그레이션하기
 <Prerequisites>
-- Get started with Drizzle and `drizzle-kit` - [read here](/docs/get-started)
-- Drizzle schema fundamentals - [read here](/docs/sql-schema-declaration)
-- Database connection basics - [read here](/docs/connect-overview)
-- Drizzle migrations fundamentals - [read here](/docs/migrations)
-- Drizzle Kit [overview](/docs/kit-overview) and [config file](/docs/drizzle-config-file)
-- `drizzle-kit generate` command - [read here](/docs/drizzle-kit-generate)
-- `drizzle-kit migrate` command - [read here](/docs/drizzle-kit-migrate)
+- Drizzle과 `drizzle-kit` 시작하기 - [여기서 읽기](/docs/get-started)
+- Drizzle 스키마 기초 - [여기서 읽기](/docs/sql-schema-declaration)
+- 데이터베이스 연결 기본 - [여기서 읽기](/docs/connect-overview)
+- Drizzle 마이그레이션 기초 - [여기서 읽기](/docs/migrations)
+- Drizzle Kit [개요](/docs/kit-overview) 및 [설정 파일](/docs/drizzle-config-file)
+- `drizzle-kit generate` 명령어 - [여기서 읽기](/docs/drizzle-kit-generate)
+- `drizzle-kit migrate` 명령어 - [여기서 읽기](/docs/drizzle-kit-migrate)
 </Prerequisites>
 
-Drizzle lets you generate empty migration files to write your own custom SQL migrations 
-for DDL alternations currently not supported by Drizzle Kit or data seeding, which you can then run with [`drizzle-kit migrate`](/docs/drizzle-kit-migrate) command.
+Drizzle을 사용하면 빈 마이그레이션 파일을 생성하여 Drizzle Kit에서 현재 지원하지 않는 DDL 변경 작업이나 데이터 시딩을 위한 커스텀 SQL 마이그레이션을 직접 작성할 수 있으며, [`drizzle-kit migrate`](/docs/drizzle-kit-migrate) 명령어로 실행할 수 있습니다.
 
 ```shell
 drizzle-kit generate --custom --name=seed-users
@@ -44,5 +43,5 @@ INSERT INTO "users" ("name") VALUES('Dandrew');
 ```
 </Section>
 
-### Running JavaScript and TypeScript migrations
-We will add ability to run custom JavaScript and TypeScript migration/seeding scripts in the upcoming release, you can follow [github discussion](https://github.com/drizzle-team/drizzle-orm/discussions/2832).
+### JavaScript 및 TypeScript 마이그레이션 실행하기
+향후 릴리스에서 커스텀 JavaScript 및 TypeScript 마이그레이션/시딩 스크립트를 실행하는 기능을 추가할 예정입니다. [github discussion](https://github.com/drizzle-team/drizzle-orm/discussions/2832)에서 진행 상황을 확인하실 수 있습니다.

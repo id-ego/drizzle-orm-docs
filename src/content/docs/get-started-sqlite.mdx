@@ -10,51 +10,50 @@ import LibsqlTabs from '@mdx/LibsqlTabs.mdx';
 
 # Drizzle \<\> SQLite
 
-Drizzle has native support for SQLite connections with the `libsql` and `better-sqlite3` drivers.
-  
-There are a few differences between the `libsql` and `better-sqlite3` drivers that we discovered while using both and integrating them with the Drizzle ORM. For example:
+Drizzle은 `libsql`과 `better-sqlite3` 드라이버를 통한 SQLite 연결을 네이티브로 지원합니다.
 
-At the driver level, there may not be many differences between the two, but the main one is that `libSQL` can connect to both SQLite files and `Turso` remote databases. LibSQL is a fork of SQLite that offers a bit more functionality compared to standard SQLite, such as:
+두 드라이버를 사용하고 Drizzle ORM과 통합하면서 발견한 `libsql`과 `better-sqlite3` 드라이버 간의 몇 가지 차이점이 있습니다. 예를 들어:
 
-- More ALTER statements are available with the `libSQL` driver, allowing you to manage your schema more easily than with just `better-sqlite3`.
-- You can configure the encryption at rest feature natively.
-- A large set of extensions supported by the SQLite database is also supported by `libSQL`.
+드라이버 레벨에서는 두 드라이버 간에 큰 차이가 없을 수 있지만, 주요 차이점은 `libSQL`이 SQLite 파일과 `Turso` 원격 데이터베이스 모두에 연결할 수 있다는 것입니다. LibSQL은 SQLite의 포크로, 표준 SQLite에 비해 다음과 같은 추가 기능을 제공합니다:
+
+- `libSQL` 드라이버에서는 더 많은 ALTER 문을 사용할 수 있어, `better-sqlite3`만 사용할 때보다 스키마를 더 쉽게 관리할 수 있습니다.
+- 암호화 저장 기능을 네이티브로 설정할 수 있습니다.
+- SQLite 데이터베이스에서 지원하는 대부분의 확장 기능이 `libSQL`에서도 지원됩니다.
 
 ## libsql
-#### Step 1 - Install packages
+#### Step 1 - 패키지 설치
 <Npm>
 drizzle-orm @libsql/client
 -D drizzle-kit
 </Npm>
 
-#### Step 2 - Initialize the driver
-Drizzle has native support for all @libsql/client driver variations:
+#### Step 2 - 드라이버 초기화
+Drizzle은 모든 @libsql/client 드라이버 변형을 네이티브로 지원합니다:
 
 <LibsqlTable />
 <br/>
 <LibsqlTabs />
 
-#### Step 3 - make a query
+#### Step 3 - 쿼리 실행
 <CodeTabs items={["libsql", "libsql with config"]}>
 ```typescript copy
 import { drizzle } from 'drizzle-orm/libsql';
 
 const db = drizzle(process.env.DATABASE_URL);
- 
+
 const result = await db.execute('select 1');
 ```
 ```typescript copy
 import { drizzle } from 'drizzle-orm/libsql';
 
-// You can specify any property from the libsql connection options
+// libsql 연결 옵션의 모든 속성을 지정할 수 있습니다
 const db = drizzle({ connection: { url:'', authToken: '' }});
- 
+
 const result = await db.execute('select 1');
 ```
 </CodeTabs>
 
-If you need a synchronous connection, you can use our additional connection API, 
-where you specify a driver connection and pass it to the Drizzle instance.
+동기 연결이 필요한 경우, 드라이버 연결을 지정하고 Drizzle 인스턴스에 전달하는 추가 연결 API를 사용할 수 있습니다.
 
 ```typescript copy
 import { drizzle } from 'drizzle-orm/libsql';
@@ -67,13 +66,13 @@ const result = await db.execute('select 1');
 ```
 
 ## better-sqlite3
-#### Step 1 - Install packages
+#### Step 1 - 패키지 설치
 <Npm>
 drizzle-orm better-sqlite3
 -D drizzle-kit @types/better-sqlite3
 </Npm>
 
-#### Step 2 - Initialize the driver and make a query
+#### Step 2 - 드라이버 초기화 및 쿼리 실행
 <CodeTabs items={["better-sqlite3", "better-sqlite3 with config"]}>
 ```typescript copy
 import { drizzle } from 'drizzle-orm/better-sqlite3';
@@ -85,14 +84,14 @@ const result = await db.execute('select 1');
 ```typescript copy
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 
-// You can specify any property from the better-sqlite3 connection options
+// better-sqlite3 연결 옵션의 모든 속성을 지정할 수 있습니다
 const db =  drizzle({ connection: { source: process.env.DATABASE_URL }});
 
 const result = await db.execute('select 1');
 ```
 </CodeTabs>
 
-If you need to provide your existing driver:
+기존 드라이버를 제공해야 하는 경우:
 ```typescript copy
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
@@ -103,6 +102,6 @@ const db = drizzle({ client: sqlite });
 const result = await db.execute('select 1');
 ```
 
-#### What's next?
+#### 다음 단계는?
 
 <WhatsNextPostgres/>

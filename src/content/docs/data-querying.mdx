@@ -5,28 +5,28 @@ import Flex from "@mdx/Flex.astro"
 import LinksList from "@mdx/LinksList.astro"
 import Prerequisites from "@mdx/Prerequisites.astro";
 
-# Drizzle Queries + CRUD
+# Drizzle 쿼리 + CRUD
 
 <Prerequisites>
-  - How to define your schema - [Schema Fundamentals](/docs/sql-schema-declaration)
-  - How to connect to the database - [Connection Fundamentals](/docs/connect-overview)
+  - 스키마 정의 방법 - [스키마 기본](/docs/sql-schema-declaration)
+  - 데이터베이스 연결 방법 - [연결 기본](/docs/connect-overview)
 </Prerequisites>
 
-Drizzle gives you a few ways for querying your database and it's up to you to decide which one you'll need in your next project.
-It can be either SQL-like syntax or Relational Syntax. Let's check them:
+Drizzle은 데이터베이스를 쿼리하는 여러 가지 방법을 제공하며, 다음 프로젝트에서 어떤 방법을 사용할지는 여러분이 결정할 수 있습니다.
+SQL-like 문법 또는 Relational 문법 중 선택할 수 있습니다. 살펴보겠습니다:
 
-## Why SQL-like?
+## 왜 SQL-like인가?
 \
-**If you know SQL, you know Drizzle.**
+**SQL을 알면 Drizzle을 알 수 있습니다.**
 
-Other ORMs and data frameworks tend to deviate from or abstract away SQL, leading to a double learning curve: you need to learn both SQL and the framework's API.
+다른 ORM과 데이터 프레임워크는 SQL에서 벗어나거나 추상화하는 경향이 있어, SQL과 프레임워크 API를 모두 배워야 하는 이중 학습 곡선이 발생합니다.
 
-Drizzle is the opposite.
-We embrace SQL and built Drizzle to be SQL-like at its core, so you have little to no learning curve and full access to the power of SQL.
+Drizzle은 그 반대입니다.
+우리는 SQL을 받아들이고 Drizzle을 핵심적으로 SQL-like하게 구축했기 때문에, 학습 곡선이 거의 없거나 전혀 없으며 SQL의 강력한 기능에 완전히 접근할 수 있습니다.
 
 <Section>
 ```typescript copy
-// Access your data
+// 데이터 접근하기
 await db
   .select()
 	.from(posts)
@@ -41,10 +41,10 @@ WHERE posts.id = 10
 ```
 </Section>
 
-With SQL-like syntax, you can replicate much of what you can do with pure SQL and know 
-exactly what Drizzle will do and what query will be generated. You can perform a wide range of queries, 
-including select, insert, update, delete, as well as using aliases, WITH clauses, subqueries, prepared statements, 
-and more. Let's look at more examples
+SQL-like 문법을 사용하면 순수 SQL로 할 수 있는 대부분의 작업을 재현할 수 있으며,
+Drizzle이 무엇을 수행하고 어떤 쿼리가 생성될지 정확히 알 수 있습니다. select, insert, update, delete를 포함한
+다양한 쿼리를 수행할 수 있으며, 별칭(alias), WITH 절, 서브쿼리, prepared statement 등도 사용할 수 있습니다.
+더 많은 예제를 살펴보겠습니다
 
 <CodeTabs items={['insert', 'update', 'delete']}>
 <Section>
@@ -77,16 +77,15 @@ DELETE FROM users WHERE users.id = 1
 </Section>
 </CodeTabs>
 
-## Why not SQL-like?
+## 왜 SQL-like가 아닌가?
 
-We're always striving for a perfectly balanced solution. While SQL-like queries cover 100% of your needs, 
-there are certain common scenarios where data can be queried more efficiently.
+우리는 항상 완벽하게 균형 잡힌 솔루션을 위해 노력합니다. SQL-like 쿼리가 여러분의 모든 요구사항을 100% 충족시키지만,
+데이터를 더 효율적으로 쿼리할 수 있는 특정한 일반적인 시나리오가 있습니다.
 
-We've built the Queries API so you can fetch relational, nested data from the database in the most convenient 
-and performant way, without worrying about joins or data mapping.
+우리는 조인이나 데이터 매핑을 걱정하지 않고 가장 편리하고 성능이 좋은 방식으로 데이터베이스에서 관계형, 중첩 데이터를 가져올 수 있도록 Queries API를 구축했습니다.
 
-**Drizzle always outputs exactly one SQL query**. Feel free to use it with serverless databases,
-and never worry about performance or roundtrip costs!
+**Drizzle은 항상 정확히 하나의 SQL 쿼리를 출력합니다**. 서버리스 데이터베이스와 함께 자유롭게 사용하고,
+성능이나 왕복 비용에 대해 걱정하지 마세요!
 
 <Section>
 ```ts
@@ -101,12 +100,12 @@ SELECT * FROM users ...
 ``` */}
 </Section>
 
-## Advanced
-With Drizzle, queries can be composed and partitioned in any way you want. You can compose filters 
-independently from the main query, separate subqueries or conditional statements, and much more. 
-Let's check a few advanced examples:
+## 고급
+Drizzle을 사용하면 원하는 방식으로 쿼리를 구성하고 분할할 수 있습니다. 메인 쿼리와 독립적으로 필터를 구성하거나,
+서브쿼리 또는 조건문을 분리하는 등 다양한 작업이 가능합니다.
+몇 가지 고급 예제를 살펴보겠습니다:
 
-#### Compose a WHERE statement and then use it in a query
+#### WHERE 문을 구성한 다음 쿼리에서 사용하기
 ```ts
 async function getProductsBy({
   name,
@@ -130,7 +129,7 @@ async function getProductsBy({
 }
 ```
 
-#### Separate subqueries into different variables, and then use them in the main query
+#### 서브쿼리를 다른 변수로 분리한 다음 메인 쿼리에서 사용하기
 ```ts
 const subquery = db
 	.select()
@@ -144,13 +143,13 @@ const mainQuery = await db
 	.leftJoin(subquery, eq(subquery.internal_staff.userId, ticket.staffId));
 ```
 
-#### What's next?
+#### 다음 단계는?
 <br/>
 <Flex>
-  <LinksList 
-    title='Access your data'
+  <LinksList
+    title='데이터 접근하기'
     links={[
-        ["Query", "/docs/rqb"], 
+        ["Query", "/docs/rqb"],
         ["Select", "/docs/select"],
         ["Insert", "/docs/insert"],
         ["Update", "/docs/update"],
@@ -160,10 +159,10 @@ const mainQuery = await db
         ["sql`` operator", "/docs/sql"],
       ]}
   />
-  <LinksList 
-    title='Zero to Hero'
+  <LinksList
+    title='처음부터 끝까지'
     links={[
-        ["Migrations", "/docs/migrations"], 
+        ["Migrations", "/docs/migrations"],
       ]}
   />
 </Flex>

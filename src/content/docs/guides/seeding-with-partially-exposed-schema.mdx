@@ -1,5 +1,5 @@
 ---
-title: Seeding Partially Exposed Tables with Foreign Key
+title: 외래 키가 있는 부분 노출 테이블 시딩
 slug: seeding-with-partially-exposed-tables
 ---
 
@@ -12,12 +12,12 @@ import Callout from '@mdx/Callout.astro';
 <IsSupportedChipGroup chips={{PostgreSQL: true, MySQL: true, SQLite: true}}/>
 
 <Prerequisites>
-- Get started with [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql) or [SQLite](/docs/get-started-sqlite)
-- Get familiar with [Drizzle Seed](/docs/seed-overview)
+- [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql) 또는 [SQLite](/docs/get-started-sqlite) 시작하기
+- [Drizzle Seed](/docs/seed-overview) 익히기
 </Prerequisites>
 
-## Example 1
-Let's assume you are trying to seed your database using the seeding script and schema shown below.
+## 예제 1
+아래와 같은 시딩 스크립트와 스키마를 사용하여 데이터베이스를 시딩하려고 한다고 가정해봅시다.
 <CodeTabs items={["index.ts", "schema.ts"]}>
 <CodeTab>
 ```ts
@@ -48,28 +48,28 @@ export const bloodPressure = pgTable("bloodPressure", {
 ```
 </CodeTab>
 </CodeTabs>
-If the `bloodPressure` table has a not-null constraint on the `userId` column, running the seeding script will cause an error.
+만약 `bloodPressure` 테이블의 `userId` 컬럼에 not-null 제약조건이 있다면, 시딩 스크립트를 실행할 때 오류가 발생합니다.
 
 ```
-Error: Column 'userId' has not null constraint, 
+Error: Column 'userId' has not null constraint,
 and you didn't specify a table for foreign key on column 'userId' in 'bloodPressure' table.
 ```
 
-<Callout title='What does it mean?'>
-This means we can't fill the `userId` column with Null values due to the not-null constraint on that column. 
-Additionally, you didn't expose the `users` table to the `seed` function schema, so we can't generate `users.id` to populate the `userId` column with these values.
+<Callout title='무슨 의미인가요?'>
+이는 해당 컬럼의 not-null 제약조건으로 인해 `userId` 컬럼을 Null 값으로 채울 수 없다는 의미입니다.
+또한, `seed` 함수 스키마에 `users` 테이블을 노출하지 않았기 때문에 `users.id`를 생성하여 `userId` 컬럼을 이 값들로 채울 수 없습니다.
 </Callout>
 
 
-At this point, you have several options to resolve the error:
-- You can remove the not-null constraint from the `userId` column;
-- You can expose `users` table to `seed` function schema
-```ts 
+이 시점에서 오류를 해결하기 위한 몇 가지 옵션이 있습니다:
+- `userId` 컬럼에서 not-null 제약조건을 제거할 수 있습니다;
+- `seed` 함수 스키마에 `users` 테이블을 노출할 수 있습니다
+```ts
 await seed(db, { bloodPressure, users });
 ```
-- You can [refine](/docs/guides/seeding-with-partially-exposed-tables#refining-the-userid-column-generator) the `userId` column generator;
+- `userId` 컬럼 생성기를 [세분화](/docs/guides/seeding-with-partially-exposed-tables#refining-the-userid-column-generator)할 수 있습니다;
 
-## Example 2
+## 예제 2
 
 <CodeTabs items={["index.ts", "schema.ts"]}>
 <CodeTab>
@@ -102,23 +102,23 @@ export const bloodPressure = pgTable("bloodPressure", {
 </CodeTab>
 </CodeTabs>
 
-By running the seeding script above you will see a warning
+위의 시딩 스크립트를 실행하면 다음과 같은 경고가 표시됩니다
 ```
 Column 'userId' in 'bloodPressure' table will be filled with Null values
-because you specified neither a table for foreign key on column 'userId' 
+because you specified neither a table for foreign key on column 'userId'
 nor a function for 'userId' column in refinements.
 ```
-<Callout title='What does it mean?'>
-This means you neither provided the `users` table to the `seed` function schema nor refined the `userId` column generator. 
-As a result, the `userId` column will be filled with Null values.
+<Callout title='무슨 의미인가요?'>
+이는 `seed` 함수 스키마에 `users` 테이블을 제공하지 않았고 `userId` 컬럼 생성기도 세분화하지 않았다는 의미입니다.
+그 결과, `userId` 컬럼이 Null 값으로 채워집니다.
 </Callout>
-Then you will have two choices:
-- If you're okay with filling the `userId` column with Null values, you can ignore the warning;
+이제 두 가지 선택지가 있습니다:
+- `userId` 컬럼을 Null 값으로 채우는 것이 괜찮다면, 경고를 무시할 수 있습니다;
 
-- Otherwise, you can [refine](/docs/guides/seeding-with-partially-exposed-tables#refining-the-userid-column-generator) the `userId` column generator. 
+- 그렇지 않다면, `userId` 컬럼 생성기를 [세분화](/docs/guides/seeding-with-partially-exposed-tables#refining-the-userid-column-generator)할 수 있습니다.
 
-## Refining the `userId` column generator
-Doing so requires the `users` table to already have IDs such as 1 and 2 in the database.
+## `userId` 컬럼 생성기 세분화하기
+이를 수행하려면 데이터베이스의 `users` 테이블에 이미 1과 2와 같은 ID가 있어야 합니다.
 <CodeTabs items={["index.ts"]}>
 <CodeTab>
 ```ts copy {8}

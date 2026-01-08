@@ -2,16 +2,15 @@ import Tab from '@mdx/Tab.astro';
 import Tabs from '@mdx/Tabs.astro';
 import Callout from '@mdx/Callout.astro'
 
-# Common way of defining custom types
+# 커스텀 타입 정의하기
 
-## Examples
+## 예제
 
-The best way to see how `customType` definition is working is to check how existing data types
-could be defined using `customType` function from Drizzle ORM.
+`customType` 정의가 어떻게 작동하는지 확인하는 가장 좋은 방법은 Drizzle ORM의 `customType` 함수를 사용하여 기존 데이터 타입을 어떻게 정의할 수 있는지 살펴보는 것입니다.
 
 
 <Callout title='info'>
-Each dialect exposes `customType` function 
+각 dialect는 `customType` 함수를 제공합니다
 
 ```ts
 import { customType } from 'drizzle-orm/pg-core';
@@ -105,7 +104,7 @@ const customTimestamp = customType<
 });
 ```
 
-Usage for all types will be same as defined functions in Drizzle ORM. For example:
+모든 타입의 사용법은 Drizzle ORM에 정의된 함수와 동일합니다. 예를 들어:
 
 ```typescript copy
 const usersTable = pgTable('users', {
@@ -120,49 +119,49 @@ const usersTable = pgTable('users', {
 
 
 
-## TS-doc for type definitions 
+## 타입 정의를 위한 TS-doc
 
-You can check ts-doc for `types` and `param` definition.
+`types`와 `param` 정의에 대한 ts-doc을 확인할 수 있습니다.
 
 ```typescript
 export interface CustomTypeValues = {
   /**
-   * Required type for custom column, that will infer proper type model
+   * 커스텀 컬럼에 필요한 타입으로, 적절한 타입 모델을 추론합니다
    *
-   * Examples:
+   * 예시:
    *
-   * If you want your column to be `string` type after selecting/or on inserting - use `data: string`. Like `text`, `varchar`
+   * 조회/삽입 후 컬럼이 `string` 타입이 되도록 하려면 - `data: string`을 사용합니다. `text`, `varchar`처럼
    *
-   * If you want your column to be `number` type after selecting/or on inserting - use `data: number`. Like `integer`
+   * 조회/삽입 후 컬럼이 `number` 타입이 되도록 하려면 - `data: number`를 사용합니다. `integer`처럼
    */
   data: unknown;
 
   /**
- 	 * Type helper, that represents what type database driver is returning for specific database data type
+ 	 * 특정 데이터베이스 데이터 타입에 대해 데이터베이스 드라이버가 반환하는 타입을 나타내는 타입 헬퍼
  	 *
- 	 * Needed only in case driver's output and input for type differ
+ 	 * 드라이버의 출력과 입력 타입이 다른 경우에만 필요
  	 *
- 	 * Defaults to {@link driverData}
+ 	 * 기본값은 {@link driverData}
  	 */
  	driverOutput?: unknown;
 
   /**
-   * Type helper, that represents what type database driver is accepting for specific database data type
+   * 특정 데이터베이스 데이터 타입에 대해 데이터베이스 드라이버가 허용하는 타입을 나타내는 타입 헬퍼
    */
   driverData?: unknown;
 
   /**
- 	 * Type helper, that represents what type field returns after being aggregated to JSON for Relational Queries
+ 	 * Relational Queries에서 JSON으로 집계된 후 필드가 반환하는 타입을 나타내는 타입 헬퍼
  	 */
  	jsonData?: unknown;
 
   /**
-   * What config type should be used for {@link CustomTypeParams} `dataType` generation
+   * {@link CustomTypeParams} `dataType` 생성에 사용해야 하는 설정 타입
    */
   config?: Record<string, unknown>;
 
   /**
-   * If your custom data type should be notNull by default you can use `notNull: true`
+   * 커스텀 데이터 타입이 기본적으로 notNull이어야 하는 경우 `notNull: true`를 사용할 수 있습니다
    *
    * @example
    * const customSerial = customType<{ data: number, notNull: true, default: true }>({
@@ -174,7 +173,7 @@ export interface CustomTypeValues = {
   notNull?: boolean;
 
   /**
-   * If your custom data type has default you can use `default: true`
+   * 커스텀 데이터 타입이 기본값을 가지는 경우 `default: true`를 사용할 수 있습니다
    *
    * @example
    * const customSerial = customType<{ data: number, notNull: true, default: true }>({
@@ -188,28 +187,28 @@ export interface CustomTypeValues = {
 
 export interface CustomTypeParams<T extends CustomTypeValues> {
   /**
-   * Database data type string representation, that is used for migrations
+   * 마이그레이션에 사용되는 데이터베이스 데이터 타입의 문자열 표현
    * @example
    * ```
    * `jsonb`, `text`
    * ```
    *
-   * If database data type needs additional params you can use them from `config` param
+   * 데이터베이스 데이터 타입에 추가 파라미터가 필요한 경우 `config` 파라미터에서 사용할 수 있습니다
    * @example
    * ```
    * `varchar(256)`, `numeric(2,3)`
    * ```
    *
-   * To make `config` be of specific type please use config generic in {@link CustomTypeValues}
+   * `config`를 특정 타입으로 만들려면 {@link CustomTypeValues}에서 config 제네릭을 사용하세요
    *
    * @example
-   * Usage example
+   * 사용 예시
    * ```
    *   dataType() {
    *     return 'boolean';
    *   },
    * ```
-   * Or
+   * 또는
    * ```
    *   dataType(config) {
    *     return typeof config.length !== 'undefined' ? `varchar(${config.length})` : `varchar`;
@@ -219,9 +218,9 @@ export interface CustomTypeParams<T extends CustomTypeValues> {
   dataType: (config: T['config']) => string;
 
   /**
-   * Optional mapping function, between user input and what database driver will provide to the database
+   * 사용자 입력과 데이터베이스 드라이버가 데이터베이스에 제공할 값 사이의 선택적 매핑 함수
    * @example
-   * For example, when using jsonb we need to map JS/TS object to string before writing to database
+   * 예를 들어, jsonb를 사용할 때 데이터베이스에 쓰기 전에 JS/TS 객체를 문자열로 매핑해야 합니다
    * ```
    * toDriver(value: TData): string {
    *   return JSON.stringify(value);
@@ -231,22 +230,22 @@ export interface CustomTypeParams<T extends CustomTypeValues> {
   toDriver?: (value: T['data']) => T['driverData'];
 
   /**
-   * Optional mapping function, that is used for transforming data returned by driver to desired column's output format
+   * 드라이버가 반환한 데이터를 원하는 컬럼 출력 형식으로 변환하는 데 사용되는 선택적 매핑 함수
    * @example
-   * For example, when using timestamp we need to map string Date representation to JS Date
+   * 예를 들어, timestamp를 사용할 때 문자열 Date 표현을 JS Date로 매핑해야 합니다
    * ```
    * fromDriver(value: string): Date {
    *  return new Date(value);
    * },
    * ```
-   * 
-   * It'll cause the returned data to change from:
+   *
+   * 이렇게 하면 반환된 데이터가 다음에서:
  	 * ```
  	 * {
  	 * 	customField: "2025-04-07T03:25:16.635Z";
  	 * }
  	 * ```
- 	 * to:
+ 	 * 다음으로 변경됩니다:
  	 * ```
  	 * {
  	 * 	customField: new Date("2025-04-07T03:25:16.635Z");
@@ -256,27 +255,27 @@ export interface CustomTypeParams<T extends CustomTypeValues> {
   fromDriver?: (value: T['driverData']) => T['data'];
 
   	/**
- 	 * Optional mapping function, that is used for transforming data returned by transofmed to JSON in database data to desired format
+ 	 * 데이터베이스 데이터에서 JSON으로 변환된 데이터를 원하는 형식으로 변환하는 데 사용되는 선택적 매핑 함수
  	 *
- 	 * Used by [relational queries](https://orm.drizzle.team/docs/rqb-v2)
+ 	 * [relational queries](https://orm.drizzle.team/docs/rqb-v2)에서 사용됩니다
  	 *
- 	 * Defaults to {@link fromDriver} function
+ 	 * 기본값은 {@link fromDriver} 함수입니다
  	 * @example
- 	 * For example, when querying bigint column via [RQB](https://orm.drizzle.team/docs/rqb-v2) or [JSON functions](https://orm.drizzle.team/docs/json-functions), the result field will be returned as it's string representation, as opposed to bigint from regular query
- 	 * To handle that, we need a separate function to handle such field's mapping:
+ 	 * 예를 들어, [RQB](https://orm.drizzle.team/docs/rqb-v2) 또는 [JSON functions](https://orm.drizzle.team/docs/json-functions)를 통해 bigint 컬럼을 쿼리할 때, 결과 필드는 일반 쿼리에서 반환되는 bigint와 달리 문자열 표현으로 반환됩니다
+ 	 * 이를 처리하기 위해 별도의 함수가 필요합니다:
  	 * ```
  	 * fromJson(value: string): bigint {
  	 * 	return BigInt(value);
  	 * },
  	 * ```
  	 *
- 	 * It'll cause the returned data to change from:
+ 	 * 이렇게 하면 반환된 데이터가 다음에서:
  	 * ```
  	 * {
  	 * 	customField: "5044565289845416380";
  	 * }
  	 * ```
- 	 * to:
+ 	 * 다음으로 변경됩니다:
  	 * ```
  	 * {
  	 * 	customField: 5044565289845416380n;
@@ -286,20 +285,20 @@ export interface CustomTypeParams<T extends CustomTypeValues> {
  	fromJson?: (value: T['jsonData']) => T['data'];
 
   	/**
- 	 * Optional selection modifier function, that is used for modifying selection of column inside [JSON functions](https://orm.drizzle.team/docs/json-functions)
+ 	 * [JSON functions](https://orm.drizzle.team/docs/json-functions) 내에서 컬럼 선택을 수정하는 데 사용되는 선택적 선택 수정 함수
  	 *
- 	 * Additional mapping that could be required for such scenarios can be handled using {@link fromJson} function
+ 	 * 이러한 시나리오에 필요할 수 있는 추가 매핑은 {@link fromJson} 함수를 사용하여 처리할 수 있습니다
  	 *
- 	 * Used by [relational queries](https://orm.drizzle.team/docs/rqb-v2)
+ 	 * [relational queries](https://orm.drizzle.team/docs/rqb-v2)에서 사용됩니다
  	 * @example
- 	 * For example, when using bigint we need to cast field to text to preserve data integrity
+ 	 * 예를 들어, bigint를 사용할 때 데이터 무결성을 보존하기 위해 필드를 text로 캐스팅해야 합니다
  	 * ```
  	 * forJsonSelect(identifier: SQL, sql: SQLGenerator, arrayDimensions?: number): SQL {
  	 * 	return sql`${identifier}::text`
  	 * },
  	 * ```
  	 *
- 	 * This will change query from:
+ 	 * 이렇게 하면 쿼리가 다음에서:
  	 * ```
  	 * SELECT
  	 * 	row_to_json("t".*)
@@ -311,7 +310,7 @@ export interface CustomTypeParams<T extends CustomTypeValues> {
  	 * 		"table"
  	 * 	) AS "t"
  	 * ```
- 	 * to:
+ 	 * 다음으로 변경됩니다:
  	 * ```
  	 * SELECT
  	 * 	row_to_json("t".*)
@@ -324,16 +323,16 @@ export interface CustomTypeParams<T extends CustomTypeValues> {
  	 * 	) AS "t"
  	 * ```
  	 *
- 	 * Returned by query object will change from:
+ 	 * 쿼리 객체가 반환하는 값이 다음에서:
  	 * ```
  	 * {
- 	 * 	bigint: 5044565289845416000; // Partial data loss due to direct conversion to JSON format
+ 	 * 	bigint: 5044565289845416000; // JSON 형식으로 직접 변환으로 인한 부분 데이터 손실
  	 * }
  	 * ```
- 	 * to:
+ 	 * 다음으로 변경됩니다:
  	 * ```
  	 * {
- 	 * 	bigint: "5044565289845416380"; // Data is preserved due to conversion of field to text before JSON-ification
+ 	 * 	bigint: "5044565289845416380"; // JSON화 전 필드를 text로 변환하여 데이터 보존
  	 * }
  	 * ```
  	 */

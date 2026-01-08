@@ -1,15 +1,15 @@
 ---
-title: DrizzleORM v0.28.5 release
+title: DrizzleORM v0.28.5 릴리스
 pubDate: 2023-08-24 12:00:00
-description: Fixed incorrect OpenTelemetry type import that caused a runtime error.
+description: 런타임 오류를 발생시킨 잘못된 OpenTelemetry 타입 import를 수정했습니다.
 ---
 
-## Fixes
+## 수정 사항
 
-- Fixed incorrect OpenTelemetry type import that caused a runtime error
+- 런타임 오류를 발생시킨 잘못된 OpenTelemetry 타입 import 수정
 
-The OpenTelemetry logic currently present in the ORM isn't meant to be used by Drizzle and no stats have ever been collected by Drizzle using drizzle-orm. OpenTelemetry is simply a protocol. If you take a look at the actual code that utilizes it in drizzle-orm, it simply uses the tracer to collect the query stats and doesn't send it anywhere. It was designed for the ORM users to be able to send those stats to their own telemetry consumers.
+현재 ORM에 포함된 OpenTelemetry 로직은 Drizzle이 사용하기 위한 것이 아니며, drizzle-orm을 사용하여 Drizzle이 수집한 통계는 전혀 없습니다. OpenTelemetry는 단순히 프로토콜입니다. drizzle-orm에서 이를 활용하는 실제 코드를 살펴보면, 트레이서를 사용하여 쿼리 통계를 수집하기만 할 뿐 어디로도 전송하지 않습니다. 이는 ORM 사용자가 자체 텔레메트리 소비자에게 해당 통계를 전송할 수 있도록 설계되었습니다.
 
-The important thing is - the OpenTelemetry logic is disabled on the current version. It literally does nothing. We experimented with it at some point in the past, but disabled it before the release.
+중요한 점은 현재 버전에서 OpenTelemetry 로직이 비활성화되어 있다는 것입니다. 실제로 아무 작업도 수행하지 않습니다. 과거에 이를 실험했지만 릴리스 전에 비활성화했습니다.
 
-As to the reason of the issue in the last release: it happened because of an incorrect type import on [this line](https://github.com/drizzle-team/drizzle-orm/blob/594e96538e588fee5748e372884dbaf32c331524/drizzle-orm/src/tracing.ts#L1). We've used `import { type ... }` syntax instead of `import type { ... }`, which resulted in the `import '@opentelemetry/api'` line leaking to the runtime.
+마지막 릴리스의 문제 원인은 [이 라인](https://github.com/drizzle-team/drizzle-orm/blob/594e96538e588fee5748e372884dbaf32c331524/drizzle-orm/src/tracing.ts#L1)의 잘못된 타입 import로 인해 발생했습니다. `import type { ... }` 구문 대신 `import { type ... }` 구문을 사용했고, 그 결과 `import '@opentelemetry/api'` 라인이 런타임에 누출되었습니다.

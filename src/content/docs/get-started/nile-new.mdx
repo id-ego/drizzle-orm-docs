@@ -20,30 +20,30 @@ import SetupEnv from '@mdx/get-started/SetupEnv.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and Nile
+# Drizzle과 Nile 시작하기
 
 <Prerequisites>
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **Nile** - PostgreSQL re-engineered for multi-tenant apps - [read here](https://thenile.dev/)
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **Nile** - 멀티 테넌트 앱을 위해 재설계된 PostgreSQL - [자세히 보기](https://thenile.dev/)
 </Prerequisites>
 
 <FileStructure/>
 
-#### Step 1 - Install **postgres** package
+#### Step 1 - **postgres** 패키지 설치
 <InstallPackages lib='pg' devlib=' @types/pg'/>
 
-#### Step 2 - Setup connection variables
+#### Step 2 - 연결 변수 설정
 
 <SetupEnv env_variable='NILEDB_URL' />
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### Step 3 - 데이터베이스에 Drizzle ORM 연결
 
 <ConnectNile />
 
-#### Step 4 - Create a table
+#### Step 4 - 테이블 생성
 
-Create a `schema.ts` file in the `src/db` directory and declare your tables. Since Nile is Postgres for multi-tenant apps, our schema includes a table for tenants and a todos table with a `tenant_id` column (we refer to those as tenant-aware tables):
+`src/db` 디렉토리에 `schema.ts` 파일을 생성하고 테이블을 선언합니다. Nile은 멀티 테넌트 앱을 위한 Postgres이므로, 스키마에는 테넌트 테이블과 `tenant_id` 컬럼을 가진 todos 테이블이 포함됩니다 (이를 tenant-aware 테이블이라고 부릅니다):
 
 ```typescript copy filename="src/db/schema.ts"
 import { pgTable, uuid, text, timestamp, varchar, vector, boolean } from "drizzle-orm/pg-core"
@@ -67,18 +67,18 @@ export const todos = pgTable("todos", {
 });
 ```
 
-#### Step 5 - Setup Drizzle config file
+#### Step 5 - Drizzle 설정 파일 구성
 
 <SetupConfig dialect='postgresql' env_variable='NILEDB_URL'/>
 
-#### Step 6 - Applying changes to the database
+#### Step 6 - 데이터베이스에 변경사항 적용
 
 <ApplyChanges dialect='postgresql'/>
 
-#### Step 7 - Seed and Query the database
+#### Step 7 - 데이터베이스 시드 및 쿼리
 
 <QueryNile />
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
 <RunFile/>

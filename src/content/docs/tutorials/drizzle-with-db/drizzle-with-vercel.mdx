@@ -1,5 +1,5 @@
 ---
-title: "Drizzle with Vercel Postgres"
+title: "Drizzle과 Vercel Postgres"
 date: "2024-06-09"
 svgs: ['<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="9.63139" height="40.8516" rx="4.8157" transform="matrix(0.873028 0.48767 -0.497212 0.867629 43.4805 67.3037)" fill="currentColor"></rect><rect width="9.63139" height="40.8516" rx="4.8157" transform="matrix(0.873028 0.48767 -0.497212 0.867629 76.9395 46.5342)" fill="currentColor"></rect><rect width="9.63139" height="40.8516" rx="4.8157" transform="matrix(0.873028 0.48767 -0.497212 0.867629 128.424 46.5352)" fill="currentColor"></rect><rect width="9.63139" height="40.8516" rx="4.8157" transform="matrix(0.873028 0.48767 -0.497212 0.867629 94.957 67.3037)" fill="currentColor"></rect></svg>', <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 5L4 19H20L12 5Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>]
 ---
@@ -10,50 +10,50 @@ import Steps from '@mdx/Steps.astro';
 import Section from "@mdx/Section.astro";
 import Callout from '@mdx/Callout.astro';
 
-This tutorial demonstrates how to use Drizzle ORM with [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres). Vercel Postgres is a serverless SQL database designed to integrate with Vercel Functions and your frontend framework.
+이 튜토리얼은 [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres)와 함께 Drizzle ORM을 사용하는 방법을 설명합니다. Vercel Postgres는 Vercel Functions 및 프론트엔드 프레임워크와 통합되도록 설계된 서버리스 SQL 데이터베이스입니다.
 
 <Prerequisites>
-- You should have installed Drizzle ORM and [Drizzle kit](/docs/kit-overview). You can do this by running the following command:
+- Drizzle ORM과 [Drizzle kit](/docs/kit-overview)을 설치해야 합니다. 다음 명령어를 실행하여 설치할 수 있습니다:
 <Npm>
 drizzle-orm
 -D drizzle-kit
 </Npm>
 
-- You should have installed `dotenv` package for managing environment variables. Read more about this package [here](https://www.npmjs.com/package/dotenv)
+- 환경 변수를 관리하기 위해 `dotenv` 패키지를 설치해야 합니다. 이 패키지에 대한 자세한 내용은 [여기](https://www.npmjs.com/package/dotenv)를 참고하세요
 <Npm>
   dotenv
 </Npm>
 
-- You should have installed `@vercel/postgres` package. Read more about this package [here](https://www.npmjs.com/package/@vercel/postgres)
+- `@vercel/postgres` 패키지를 설치해야 합니다. 이 패키지에 대한 자세한 내용은 [여기](https://www.npmjs.com/package/@vercel/postgres)를 참고하세요
 <Npm>
   @vercel/postgres
-</Npm>  
+</Npm>
 </Prerequisites>
 
-Check [Vercel documentation](https://vercel.com/docs/storage/vercel-postgres/using-an-orm#drizzle) to learn how to connect to the database with Drizzle ORM.
+Drizzle ORM으로 데이터베이스에 연결하는 방법은 [Vercel 문서](https://vercel.com/docs/storage/vercel-postgres/using-an-orm#drizzle)를 확인하세요.
 
-## Setup Vercel Postgres and Drizzle ORM
+## Vercel Postgres와 Drizzle ORM 설정
 
 <Steps>
-#### Create a new Vercel Postgres database
+#### 새로운 Vercel Postgres 데이터베이스 생성
 
-You can create new Vercel Postgres database in the [dashboard](https://vercel.com/dashboard).
+[대시보드](https://vercel.com/dashboard)에서 새로운 Vercel Postgres 데이터베이스를 생성할 수 있습니다.
 
-Read Vercel Postgres [documentation](https://vercel.com/docs/storage/vercel-postgres/quickstart) to learn how to create a new database.
+새 데이터베이스를 생성하는 방법은 Vercel Postgres [문서](https://vercel.com/docs/storage/vercel-postgres/quickstart)를 참고하세요.
 
-#### Setup connection string variable
+#### 연결 문자열 변수 설정
 
-Navigate to your Vercel Postgres database and copy `POSTGRES_URL` from `.env.local` section.
+Vercel Postgres 데이터베이스로 이동하여 `.env.local` 섹션에서 `POSTGRES_URL`을 복사합니다.
 
-Add `POSTGRES_URL` to your `.env.local` or `.env` file.
+`POSTGRES_URL`을 `.env.local` 또는 `.env` 파일에 추가합니다.
 
 ```plaintext copy
 POSTGRES_URL=<YOUR_DATABASE_URL>
 ```
 
-#### Connect Drizzle ORM to your database
+#### Drizzle ORM을 데이터베이스에 연결
 
-Create a `index.ts` file in the `src/db` directory and set up your database configuration:
+`src/db` 디렉토리에 `index.ts` 파일을 생성하고 데이터베이스 설정을 구성합니다:
 
 ```typescript copy filename="src/db/index.ts"
 import { drizzle } from 'drizzle-orm/vercel-postgres';
@@ -65,9 +65,9 @@ export const db = drizzle();
 
 ```
 
-#### Create tables
+#### 테이블 생성
 
-Create a `schema.ts` file in the `src/db` directory and declare your tables:
+`src/db` 디렉토리에 `schema.ts` 파일을 생성하고 테이블을 정의합니다:
 
 ```typescript copy filename="src/db/schema.ts"
 import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
@@ -99,11 +99,11 @@ export type InsertPost = typeof postsTable.$inferInsert;
 export type SelectPost = typeof postsTable.$inferSelect;
 ```
 
-#### Setup Drizzle config file
+#### Drizzle 설정 파일 구성
 
-**Drizzle config** - a configuration file that is used by [Drizzle Kit](/docs/kit-overview) and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config** - [Drizzle Kit](/docs/kit-overview)에서 사용하는 설정 파일로, 데이터베이스 연결, 마이그레이션 폴더 및 스키마 파일에 대한 모든 정보를 포함합니다.
 
-Create a `drizzle.config.ts` file in the root of your project and add the following content:
+프로젝트 루트에 `drizzle.config.ts` 파일을 생성하고 다음 내용을 추가합니다:
 
 ```typescript copy filename="drizzle.config.ts"
 import { config } from 'dotenv';
@@ -121,19 +121,19 @@ export default defineConfig({
 });
 ```
 
-#### Applying changes to the database
+#### 데이터베이스에 변경사항 적용
 
-You can generate migrations using `drizzle-kit generate` command and then run them using the `drizzle-kit migrate` command.
+`drizzle-kit generate` 명령어를 사용하여 마이그레이션을 생성한 다음 `drizzle-kit migrate` 명령어로 실행할 수 있습니다.
 
-Generate migrations:
+마이그레이션 생성:
 
 ```bash copy
 npx drizzle-kit generate
 ```
 
-These migrations are stored in the `drizzle/migrations`  directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+이 마이그레이션은 `drizzle.config.ts`에 지정된 대로 `drizzle/migrations` 디렉토리에 저장됩니다. 이 디렉토리에는 데이터베이스 스키마를 업데이트하는 데 필요한 SQL 파일과 다양한 마이그레이션 단계에서 스키마 스냅샷을 저장하는 `meta` 폴더가 포함됩니다.
 
-Example of a generated migration:
+생성된 마이그레이션 예제:
 
 ```sql
 CREATE TABLE IF NOT EXISTS "posts_table" (
@@ -160,25 +160,25 @@ EXCEPTION
 END $$;
 ```
 
-Run migrations:
+마이그레이션 실행:
 
 ```bash copy
 npx drizzle-kit migrate
 ```
 
-Alternatively, you can push changes directly to the database using [Drizzle kit push command](/docs/kit-overview#prototyping-with-db-push):
+또는 [Drizzle kit push 명령어](/docs/kit-overview#prototyping-with-db-push)를 사용하여 데이터베이스에 직접 변경사항을 푸시할 수 있습니다:
 
 ```bash copy
 npx drizzle-kit push
 ```
 
-<Callout type="warning">Push command is good for situations where you need to quickly test new schema designs or changes in a local development environment, allowing for fast iterations without the overhead of managing migration files.</Callout>
+<Callout type="warning">Push 명령어는 로컬 개발 환경에서 새로운 스키마 디자인이나 변경사항을 빠르게 테스트해야 하는 상황에 적합하며, 마이그레이션 파일 관리의 오버헤드 없이 빠른 반복이 가능합니다.</Callout>
 
 </Steps>
 
-## Basic file structure
+## 기본 파일 구조
 
-This is the basic file structure of the project. In the `src/db` directory, we have database-related files including connection in `index.ts` and schema definitions in `schema.ts`.
+이것은 프로젝트의 기본 파일 구조입니다. `src/db` 디렉토리에는 `index.ts`의 연결 설정과 `schema.ts`의 스키마 정의를 포함한 데이터베이스 관련 파일이 있습니다.
 
 ```plaintext
 📦 <project root>
@@ -197,13 +197,13 @@ This is the basic file structure of the project. In the `src/db` directory, we h
  └ 📜 tsconfig.json
 ```
 
-## Query examples
+## 쿼리 예제
 
-For instance, we create `src/db/queries` folder and separate files for each operation: insert, select, update, delete.
+예를 들어, `src/db/queries` 폴더를 생성하고 각 작업(insert, select, update, delete)에 대한 파일을 분리합니다.
 
-#### Insert data
+#### 데이터 삽입
 
-Read more about insert query in the [documentation](/docs/insert).
+삽입 쿼리에 대한 자세한 내용은 [문서](/docs/insert)를 참고하세요.
 
 ```typescript copy filename="src/db/queries/insert.ts" {4, 8}
 import { db } from '../index';
@@ -218,14 +218,14 @@ export async function createPost(data: InsertPost) {
 }
 ```
 
-#### Select data
+#### 데이터 조회
 
-Read more about select query in the [documentation](/docs/select).
+조회 쿼리에 대한 자세한 내용은 [문서](/docs/select)를 참고하세요.
 
 <Callout type='warning'>
-`getColumns` available starting from `drizzle-orm@1.0.0-beta.2`(read more [here](/docs/upgrade-v1))
+`getColumns`는 `drizzle-orm@1.0.0-beta.2`부터 사용 가능합니다([여기](/docs/upgrade-v1)에서 자세히 확인)
 
-If you are on pre-1 version(like `0.45.1`) then use `getTableColumns`
+1.0 이전 버전(예: `0.45.1`)을 사용하는 경우 `getTableColumns`를 사용하세요
 </Callout>
 
 ```typescript copy filename="src/db/queries/select.ts" {5, 16, 41}
@@ -291,11 +291,11 @@ export async function getPostsForLast24Hours(
 }
 ```
 
-Alternatively, you can use [relational query syntax](/docs/rqb).
+또는 [관계형 쿼리 문법](/docs/rqb)을 사용할 수 있습니다.
 
-#### Update data
+#### 데이터 업데이트
 
-Read more about update query in the [documentation](/docs/update).
+업데이트 쿼리에 대한 자세한 내용은 [문서](/docs/update)를 참고하세요.
 
 ```typescript copy filename="src/db/queries/update.ts" {5}
 import { eq } from 'drizzle-orm';
@@ -307,9 +307,9 @@ export async function updatePost(id: SelectPost['id'], data: Partial<Omit<Select
 }
 ```
 
-#### Delete data
+#### 데이터 삭제
 
-Read more about delete query in the [documentation](/docs/delete).
+삭제 쿼리에 대한 자세한 내용은 [문서](/docs/delete)를 참고하세요.
 
 ```typescript copy filename="src/db/queries/delete.ts" {5}
 import { eq } from 'drizzle-orm';

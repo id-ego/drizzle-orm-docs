@@ -1,22 +1,22 @@
 ---
-title: DrizzleORM v0.28.2 release
+title: DrizzleORM v0.28.2 릴리스
 pubDate: 2023-08-10
-description: Added a set of tests for d1, fixed issues in internal documentation, resolved the issue of truncating timestamp milliseconds for MySQL, corrected the type of the '.get()' method for sqlite-based dialects, rectified the sqlite-proxy bug that caused the query to execute twice. Added a support for Typebox package.
+description: d1 테스트 세트 추가, 내부 문서 이슈 수정, MySQL 타임스탬프 밀리초 잘림 문제 해결, sqlite 기반 dialect의 '.get()' 메서드 타입 수정, 쿼리가 두 번 실행되는 sqlite-proxy 버그 수정. Typebox 패키지 지원 추가.
 ---
 
-## The community contributions release 🎉
+## 커뮤니티 기여 릴리스
 
-### Internal Features and Changes
-- Added a set of tests for d1
-- Fixed issues in internal documentation
+### 내부 기능 및 변경사항
+- d1 테스트 세트 추가
+- 내부 문서 이슈 수정
 
-### Fixes
-- Resolved the issue of truncating timestamp milliseconds for MySQL
-- Corrected the type of the `.get()` method for sqlite-based dialects ([#565](https://github.com/drizzle-team/drizzle-orm/issues/565))
-- Rectified the sqlite-proxy bug that caused the query to execute twice
+### 수정사항
+- MySQL 타임스탬프 밀리초 잘림 문제 해결
+- sqlite 기반 dialect의 `.get()` 메서드 타입 수정 ([#565](https://github.com/drizzle-team/drizzle-orm/issues/565))
+- 쿼리가 두 번 실행되는 sqlite-proxy 버그 수정
 
-### New packages 🎉
+### 새로운 패키지
 
-Added a support for [Typebox](https://github.com/sinclairzx81/typebox) in [drizzle-typebox](/docs/typebox) package.
+[drizzle-typebox](/docs/typebox) 패키지에서 [Typebox](https://github.com/sinclairzx81/typebox) 지원이 추가되었습니다.
 
-Please check documentation page for more usage examples: /docs/typebox
+더 많은 사용 예제는 문서 페이지를 확인하세요: /docs/typebox

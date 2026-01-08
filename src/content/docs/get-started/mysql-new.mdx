@@ -16,57 +16,57 @@ import SetupConfig from '@mdx/get-started/SetupConfig.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and MySQL
+# Drizzle과 MySQL 시작하기
 
-<Prerequisites>  
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **mysql2** - package for querying your MySQL database - [read here](https://github.com/sidorares/node-mysql2)
+<Prerequisites>
+  - **dotenv** - 환경 변수 관리 패키지 - [여기서 읽기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [여기서 읽기](https://tsx.is/)
+  - **mysql2** - MySQL 데이터베이스 쿼리 패키지 - [여기서 읽기](https://github.com/sidorares/node-mysql2)
 </Prerequisites>
 
-To use Drizzle with a MySQL database, you should use the `mysql2` driver
+Drizzle을 MySQL 데이터베이스와 함께 사용하려면 `mysql2` 드라이버를 사용해야 합니다.
 
-According to the **[official website](https://github.com/sidorares/node-mysql2)**, 
-`mysql2` is a MySQL client for Node.js with focus on performance.  
+**[공식 웹사이트](https://github.com/sidorares/node-mysql2)**에 따르면,
+`mysql2`는 성능에 중점을 둔 Node.js용 MySQL 클라이언트입니다.
 
-Drizzle ORM natively supports `mysql2` with `drizzle-orm/mysql2` package.
+Drizzle ORM은 `drizzle-orm/mysql2` 패키지로 `mysql2`를 기본 지원합니다.
 
 <FileStructure/>
 
-#### Step 1 - Install **mysql2** package
+#### 1단계 - **mysql2** 패키지 설치
 
 <InstallPackages lib='mysql2'/>
 
-#### Step 2 - Setup connection variables
+#### 2단계 - 연결 변수 설정
 
 <SetupEnv env_variable='DATABASE_URL' />
 
-<Callout title='tips'>
-If you don't have a MySQL database yet and want to create one for testing, you can use our guide on how to set up MySQL in Docker.
+<Callout title='팁'>
+아직 MySQL 데이터베이스가 없고 테스트용으로 생성하고 싶다면, Docker에서 MySQL을 설정하는 방법에 대한 가이드를 사용할 수 있습니다.
 
-The MySQL in Docker guide is available [here](/docs/guides/mysql-local-setup). Go set it up, generate a database URL (explained in the guide), and come back for the next steps
+MySQL in Docker 가이드는 [여기](/docs/guides/mysql-local-setup)에서 확인할 수 있습니다. 가이드에 따라 설정하고, 데이터베이스 URL을 생성한 후(가이드에 설명되어 있음) 다음 단계로 돌아오세요.
 </Callout>
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### 3단계 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectMySQL/>
 
-#### Step 4 - Create a table
+#### 4단계 - 테이블 생성
 
 <CreateTable/>
 
-#### Step 5 - Setup Drizzle config file
+#### 5단계 - Drizzle 설정 파일 구성
 
 <SetupConfig dialect='mysql' env_variable='DATABASE_URL'/>
 
-#### Step 6 - Applying changes to the database
+#### 6단계 - 데이터베이스에 변경사항 적용
 
 <ApplyChanges />
 
-#### Step 7 - Seed and Query the database
+#### 7단계 - 데이터베이스 시딩 및 쿼리
 
 <QueryDatabase dialect='mysql2' env_variable='DATABASE_URL'/>
 
-#### Step 8 - Run index.ts file
+#### 8단계 - index.ts 파일 실행
 
 <RunFile/>

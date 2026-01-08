@@ -1,5 +1,5 @@
 ---
-title: How to setup MySQL locally
+title: MySQL 로컬 설정 방법
 slug: mysql-local-setup
 ---
 
@@ -10,26 +10,26 @@ import CodeTab from '@mdx/CodeTab.astro';
 import Steps from '@mdx/Steps.astro';
 
 <Prerequisites>
-- Install latest [Docker Desktop](https://www.docker.com/products/docker-desktop/). Follow the instructions for your operating system.
+- 최신 [Docker Desktop](https://www.docker.com/products/docker-desktop/)을 설치합니다. 운영체제에 맞는 설치 가이드를 따라주세요.
 </Prerequisites>
 
 <Steps>
 
-#### Pull the MySQL image
+#### MySQL 이미지 가져오기
 
-Pull the latest MySQL image from Docker Hub. In your terminal, run `docker pull mysql` to pull the latest MySQL version from Docker Hub:
+Docker Hub에서 최신 MySQL 이미지를 가져옵니다. 터미널에서 `docker pull mysql` 명령어를 실행하여 최신 MySQL 버전을 가져옵니다:
 
 ```bash copy
 docker pull mysql
 ```
 
-Alternatively, you can pull preferred version with a specific tag:
+또는 특정 태그를 사용하여 원하는 버전을 가져올 수 있습니다:
 
 ```bash copy
 docker pull mysql:8.2
 ```
 
-When MySQL image is downloaded, you can check it in `Images` tab in Docker Desktop or by running `docker images`:
+MySQL 이미지가 다운로드되면 Docker Desktop의 `Images` 탭에서 확인하거나 `docker images` 명령어를 실행하여 확인할 수 있습니다:
 
 <Section>
 ```bash copy
@@ -42,45 +42,45 @@ mysql        latest    4e8a34aea708   2 months ago   609MB
 ```
 </Section>
 
-#### Start a MySQL instance
+#### MySQL 인스턴스 시작하기
 
-To start a new MySQL container, run the following command:
+새로운 MySQL 컨테이너를 시작하려면 다음 명령어를 실행합니다:
 
 ```bash copy
 docker run --name drizzle-mysql -e MYSQL_ROOT_PASSWORD=mypassword -d -p 3306:3306 mysql
 ```
 
-1. The `--name` option assigns the container the name `drizzle-mysql`.
-2. The `-e MYSQL_ROOT_PASSWORD=` option sets the `MYSQL_ROOT_PASSWORD` environment variable with the specified value. This is password for the root user.
-3. The `-d` flag runs the container in detached mode (in the background).
-4. The `-p` option maps port `3306` on the container to port `3306` on your host machine, allowing MySQL to be accessed from your host system through this port.
-5. The `mysql` argument specifies the image to use for the container. You can also specify other versions like `mysql:8.2`.
+1. `--name` 옵션은 컨테이너에 `drizzle-mysql`이라는 이름을 지정합니다.
+2. `-e MYSQL_ROOT_PASSWORD=` 옵션은 `MYSQL_ROOT_PASSWORD` 환경 변수를 지정된 값으로 설정합니다. 이는 root 사용자의 비밀번호입니다.
+3. `-d` 플래그는 컨테이너를 분리 모드(백그라운드)로 실행합니다.
+4. `-p` 옵션은 컨테이너의 `3306` 포트를 호스트 머신의 `3306` 포트에 매핑하여, 이 포트를 통해 호스트 시스템에서 MySQL에 접근할 수 있도록 합니다.
+5. `mysql` 인자는 컨테이너에 사용할 이미지를 지정합니다. `mysql:8.2`와 같이 다른 버전을 지정할 수도 있습니다.
 
-You can also specify other parameters like:
+다음과 같은 추가 매개변수도 지정할 수 있습니다:
 
-1. `-e MYSQL_DATABASE=` to create a new database when the container is created. Default is `mysql`.
-2. `-e MYSQL_USER=` and `-e MYSQL_PASSWORD=` to create a new user with a password when the container is created. But you still need to specify `MYSQL_ROOT_PASSWORD` for `root` user.
+1. `-e MYSQL_DATABASE=`는 컨테이너 생성 시 새 데이터베이스를 만듭니다. 기본값은 `mysql`입니다.
+2. `-e MYSQL_USER=`와 `-e MYSQL_PASSWORD=`는 컨테이너 생성 시 비밀번호를 가진 새 사용자를 만듭니다. 단, `root` 사용자를 위한 `MYSQL_ROOT_PASSWORD`는 여전히 지정해야 합니다.
 
-To check if the container is running, check `Containers` tab in Docker Desktop or use the `docker ps` command:
+컨테이너가 실행 중인지 확인하려면 Docker Desktop의 `Containers` 탭을 확인하거나 `docker ps` 명령어를 사용합니다:
 
 ```plaintext
 CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS          PORTS                               NAMES
 19506a8dc12b   mysql         "docker-entrypoint.s…"   4 seconds ago    Up 3 seconds    33060/tcp, 0.0.0.0:3306->3306/tcp   drizzle-mysql
 ```
 
-#### Configure database url
+#### 데이터베이스 URL 설정하기
 
-To connect to the MySQL database, you need to provide the database URL. The URL format is:
+MySQL 데이터베이스에 연결하려면 데이터베이스 URL을 제공해야 합니다. URL 형식은 다음과 같습니다:
 
 ```plaintext
 mysql://<user>:<password>@<host>:<port>/<database>
 ```
 
-You should replace placeholders with your actual values. For example, for created container the url will be:
+플레이스홀더를 실제 값으로 바꿔야 합니다. 예를 들어, 생성된 컨테이너의 경우 URL은 다음과 같습니다:
 
 ```plaintext
 mysql://root:mypassword@localhost:3306/mysql
 ```
 
-Now you can connect to the database using the URL in your application.
+이제 애플리케이션에서 이 URL을 사용하여 데이터베이스에 연결할 수 있습니다.
 </Steps>

@@ -19,47 +19,47 @@ import SetupEnv from '@mdx/get-started/SetupEnv.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and Vercel Postgres
+# Drizzle과 Vercel Postgres로 시작하기
 
 <Prerequisites>
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **Vercel Postgres database** - [read here](https://vercel.com/docs/storage/vercel-postgres)
-  - **Vercel Postgres driver** - [read here](https://vercel.com/docs/storage/vercel-postgres/sdk) & [GitHub](https://github.com/vercel/storage/tree/main/packages/postgres)
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **Vercel Postgres 데이터베이스** - [자세히 보기](https://vercel.com/docs/storage/vercel-postgres)
+  - **Vercel Postgres 드라이버** - [자세히 보기](https://vercel.com/docs/storage/vercel-postgres/sdk) & [GitHub](https://github.com/vercel/storage/tree/main/packages/postgres)
 </Prerequisites>
 
 <FileStructure/>
 
-#### Step 1 - Install required package
+#### Step 1 - 필수 패키지 설치
 <InstallPackages lib='@vercel/postgres'/>
 
-#### Step 2 - Setup connection variables
+#### Step 2 - 연결 변수 설정
 
 <SetupEnv env_variable='POSTGRES_URL' />
 
 <Callout title='warning'>
-It's important to name the variable `POSTGRES_URL` for Vercel Postgres.
+Vercel Postgres의 경우 변수 이름을 `POSTGRES_URL`로 지정하는 것이 중요합니다.
 
-In the Vercel Postgres storage tab, you can find the `.env.local` tab and copy the `POSTGRES_URL` variable
+Vercel Postgres 스토리지 탭에서 `.env.local` 탭을 찾아 `POSTGRES_URL` 변수를 복사할 수 있습니다.
 </Callout>
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### Step 3 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectVercel/>
 
-#### Step 4 - Create a table
+#### Step 4 - 테이블 생성
 
 <CreateTable />
 
-#### Step 5 - Setup Drizzle config file
+#### Step 5 - Drizzle 설정 파일 구성
 
 <SetupConfig dialect='postgresql' env_variable='POSTGRES_URL'/>
 
-#### Step 6 - Applying changes to the database
+#### Step 6 - 데이터베이스에 변경사항 적용
 
 <ApplyChanges />
 
-#### Step 7 - Seed and Query the database
+#### Step 7 - 데이터베이스 시드 및 쿼리
 
 ```typescript copy filename="src/index.ts"
 import 'dotenv/config';
@@ -105,6 +105,6 @@ async function main() {
 main();
 ```
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
 <RunFile/>

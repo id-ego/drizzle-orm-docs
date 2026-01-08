@@ -1,22 +1,22 @@
 ---
-title: MySQL column types
+title: MySQL 컬럼 타입
 ---
 import Section from '@mdx/Section.astro';
 import Callout from '@mdx/Callout.astro';
 
-We have native support for all of them, yet if that's not enough for you, feel free to create **[custom types](/docs/custom-types)**.
+모든 MySQL 컬럼 타입을 기본적으로 지원하며, 필요한 경우 **[커스텀 타입](/docs/custom-types)**을 생성할 수 있습니다.
 
-<Callout title='important' type='warning'>
-All examples in this part of the documentation do not use database column name aliases, and column names are generated from TypeScript keys. 
+<Callout title='중요' type='warning'>
+이 문서의 모든 예제는 데이터베이스 컬럼 이름 별칭을 사용하지 않으며, 컬럼 이름은 TypeScript 키에서 생성됩니다.
 
-You can use database aliases in column names if you want, and you can also use the `casing` parameter to define a mapping strategy for Drizzle. 
+원한다면 컬럼 이름에 데이터베이스 별칭을 사용할 수 있으며, `casing` 파라미터를 사용하여 Drizzle의 매핑 전략을 정의할 수도 있습니다.
 
-You can read more about it [here](/docs/sql-schema-declaration#shape-your-data-schema)
+자세한 내용은 [여기](/docs/sql-schema-declaration#shape-your-data-schema)를 참조하세요.
 </Callout>
 
 ### integer
 
-A signed integer, stored in `0`, `1`, `2`, `3`, `4`, `6`, or `8` bytes depending on the magnitude of the value.
+부호 있는 정수형으로, 값의 크기에 따라 `0`, `1`, `2`, `3`, `4`, `6`, 또는 `8` 바이트에 저장됩니다.
 
 <Section>
 ```typescript
@@ -113,7 +113,7 @@ CREATE TABLE `table` (
 ```
 </Section>
 
-We've omitted config of `M` in `bigint(M)`, since it indicates the display width of the numeric type 
+`bigint(M)`의 `M` 설정은 숫자 타입의 표시 너비를 나타내므로 생략했습니다. 
 
 ## ---
 
@@ -253,7 +253,7 @@ CREATE TABLE `table` (
 
 <Section>
 
-`SERIAL` is an alias for `BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE`.
+`SERIAL`은 `BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE`의 별칭입니다.
 
 ```typescript
 import { serial, mysqlTable } from "drizzle-orm/mysql-core";
@@ -273,9 +273,9 @@ CREATE TABLE `table` (
 ## ---
 
 ### binary
-`BINARY(M)` stores a fixed-length byte string of exactly M bytes.  
-On insert, shorter values are right-padded with `0x00` bytes to reach M bytes; on retrieval, no padding is stripped.
-All bytes—including trailing `0x00`—are significant in comparisons, `ORDER BY`, and `DISTINCT`
+`BINARY(M)`은 정확히 M 바이트의 고정 길이 바이트 문자열을 저장합니다.
+삽입 시 짧은 값은 M 바이트에 도달하도록 `0x00` 바이트로 오른쪽 패딩되며, 조회 시 패딩은 제거되지 않습니다.
+후행 `0x00`을 포함한 모든 바이트는 비교, `ORDER BY`, `DISTINCT`에서 의미가 있습니다.
 <Section>
 ```typescript
 import { binary, mysqlTable } from "drizzle-orm/mysql-core";
@@ -293,9 +293,9 @@ CREATE TABLE `table` (
 </Section>
 
 ### varbinary
-`VARBINARY(M)` stores a variable-length byte string of exactly M bytes.  
-On insert, shorter values are right-padded with `0x00` bytes to reach M bytes; on retrieval, no padding is stripped.
-All bytes—including trailing `0x00`—are significant in comparisons, `ORDER BY`, and `DISTINCT`
+`VARBINARY(M)`은 최대 M 바이트의 가변 길이 바이트 문자열을 저장합니다.
+삽입 시 짧은 값은 M 바이트에 도달하도록 `0x00` 바이트로 오른쪽 패딩되며, 조회 시 패딩은 제거되지 않습니다.
+후행 `0x00`을 포함한 모든 바이트는 비교, `ORDER BY`, `DISTINCT`에서 의미가 있습니다.
 <Section>
 ```typescript
 import { varbinary, mysqlTable } from "drizzle-orm/mysql-core";
@@ -317,10 +317,10 @@ CREATE TABLE `table` (
 ### blob
 
 <Callout type='warning'>
-Available starting from `drizzle-orm@1.0.0-beta.2`
+`drizzle-orm@1.0.0-beta.2`부터 사용 가능
 </Callout>
 
-A `BLOB` is a binary large object that can hold a variable amount of data.
+`BLOB`은 가변 크기의 데이터를 저장할 수 있는 이진 대형 객체입니다.
 <Section>
 ```typescript
 import { blob, mysqlTable } from "drizzle-orm/mysql-core";
@@ -340,10 +340,10 @@ CREATE TABLE `table` (
 ### tinyblob
 
 <Callout type='warning'>
-Available starting from `drizzle-orm@1.0.0-beta.2`
+`drizzle-orm@1.0.0-beta.2`부터 사용 가능
 </Callout>
 
-A `TINYBLOB` is a binary large object that can hold a variable amount of data.
+`TINYBLOB`은 가변 크기의 데이터를 저장할 수 있는 이진 대형 객체입니다.
 <Section>
 ```typescript
 import { tinyblob, mysqlTable } from "drizzle-orm/mysql-core";
@@ -363,10 +363,10 @@ CREATE TABLE `table` (
 ### mediumblob
 
 <Callout type='warning'>
-Available starting from `drizzle-orm@1.0.0-beta.2`
+`drizzle-orm@1.0.0-beta.2`부터 사용 가능
 </Callout>
 
-A `MEDIUMBLOB` is a binary large object that can hold a variable amount of data.
+`MEDIUMBLOB`은 가변 크기의 데이터를 저장할 수 있는 이진 대형 객체입니다.
 <Section>
 ```typescript
 import { mediumblob, mysqlTable } from "drizzle-orm/mysql-core";
@@ -386,10 +386,10 @@ CREATE TABLE `table` (
 ### longblob
 
 <Callout type='warning'>
-Available starting from `drizzle-orm@1.0.0-beta.2`
+`drizzle-orm@1.0.0-beta.2`부터 사용 가능
 </Callout>
 
-A `LONGBLOB` is a binary large object that can hold a variable amount of data.
+`LONGBLOB`은 가변 크기의 데이터를 저장할 수 있는 이진 대형 객체입니다.
 <Section>
 ```typescript
 import { longblob, mysqlTable } from "drizzle-orm/mysql-core";
@@ -427,7 +427,7 @@ CREATE TABLE `table` (
 </Section>
 
 ### varchar
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert`와 `select` 타입을 추론할 수 있으며, 런타임 값은 **검증하지 않습니다**.
 <Section>
 ```typescript
 import { varchar, mysqlTable } from "drizzle-orm/mysql-core";
@@ -449,7 +449,7 @@ CREATE TABLE `table` (
 
 ### text
 
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert`와 `select` 타입을 추론할 수 있으며, 런타임 값은 **검증하지 않습니다**.
 
 <Section>
 ```typescript
@@ -661,8 +661,8 @@ CREATE TABLE `table` (
 ```
 </Section>
 
-You can specify `.$type<..>()` for json object inference, it **won't** check runtime values. 
-It provides compile time protection for default values, insert and select schemas.
+JSON 객체 추론을 위해 `.$type<..>()`을 지정할 수 있으며, 런타임 값은 **검증하지 않습니다**.
+기본값, 삽입 및 조회 스키마에 대한 컴파일 타임 보호를 제공합니다.
 ```typescript
 // will be inferred as { foo: string }
 json: json().$type<{ foo: string }>();
@@ -696,9 +696,9 @@ CREATE TABLE `table` (
 
 ## ---
 
-### Customizing data type
+### 데이터 타입 커스터마이징
 
-Every column builder has a `.$type()` method, which allows you to customize the data type of the column. This is useful, for example, with unknown or branded types.
+모든 컬럼 빌더는 `.$type()` 메서드를 가지고 있으며, 이를 통해 컬럼의 데이터 타입을 커스터마이징할 수 있습니다. 예를 들어 unknown 타입이나 브랜드 타입을 사용할 때 유용합니다.
 
 ```ts
 type UserId = number & { __brand: 'user_id' };
@@ -714,7 +714,7 @@ const users = mysqlTable('users', {
 ```
 
 ### Not null
-`NOT NULL` constraint dictates that the associated column may not contain a `NULL` value.
+`NOT NULL` 제약조건은 해당 컬럼이 `NULL` 값을 포함할 수 없음을 나타냅니다.
 
 <Section>
 ```typescript
@@ -734,13 +734,10 @@ CREATE TABLE `table` (
 
 ### Default value
 
-The `DEFAULT` clause specifies a default value to use for the column if no value
-is explicitly provided by the user when doing an `INSERT`.
-If there is no explicit `DEFAULT` clause attached to a column definition,
-then the default value of the column is `NULL`.
+`DEFAULT` 절은 `INSERT` 시 사용자가 명시적으로 값을 제공하지 않을 때 컬럼에 사용할 기본값을 지정합니다.
+컬럼 정의에 명시적인 `DEFAULT` 절이 없으면 컬럼의 기본값은 `NULL`입니다.
 
-An explicit `DEFAULT` clause may specify that the default value is `NULL`,
-a string constant, a blob constant, a signed-number, or any constant expression enclosed in parentheses.
+명시적인 `DEFAULT` 절은 기본값이 `NULL`, 문자열 상수, blob 상수, 부호 있는 숫자 또는 괄호로 묶인 상수 표현식일 수 있음을 지정할 수 있습니다.
 
 <Section>
 ```typescript
@@ -758,12 +755,11 @@ CREATE TABLE `table` (
 ```
 </Section>
 
-When using `$default()` or `$defaultFn()`, which are simply different aliases for the same function, 
-you can generate defaults at runtime and use these values in all insert queries. 
-These functions can assist you in utilizing various implementations such as `uuid`, `cuid`, `cuid2`, and many more.
+동일한 함수의 다른 별칭인 `$default()` 또는 `$defaultFn()`을 사용하면 런타임에 기본값을 생성하고 모든 삽입 쿼리에서 이 값을 사용할 수 있습니다.
+이 함수들은 `uuid`, `cuid`, `cuid2` 등 다양한 구현을 활용하는 데 도움이 됩니다.
 
 <Callout type="info" emoji="ℹ️">
-	Note: This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`
+	참고: 이 값은 `drizzle-kit` 동작에 영향을 주지 않으며, `drizzle-orm`에서 런타임에만 사용됩니다
 </Callout>
 
 ```ts
@@ -775,16 +771,13 @@ const table = mysqlTable('table', {
 });
 ```
 
-When using `$onUpdate()` or `$onUpdateFn()`, which are simply different aliases for the same function, 
-you can generate defaults at runtime and use these values in all update queries. 
+동일한 함수의 다른 별칭인 `$onUpdate()` 또는 `$onUpdateFn()`을 사용하면 런타임에 기본값을 생성하고 모든 업데이트 쿼리에서 이 값을 사용할 수 있습니다.
 
-Adds a dynamic update value to the column. The function will be called when the row is updated, 
-and the returned value will be used as the column value if none is provided.
-If no default (or $defaultFn) value is provided, the function will be called
-when the row is inserted as well, and the returned value will be used as the column value.
+컬럼에 동적 업데이트 값을 추가합니다. 행이 업데이트될 때 함수가 호출되며, 값이 제공되지 않으면 반환된 값이 컬럼 값으로 사용됩니다.
+기본값(또는 $defaultFn)이 제공되지 않으면 행이 삽입될 때도 함수가 호출되며, 반환된 값이 컬럼 값으로 사용됩니다.
 
 <Callout type="info" emoji="ℹ️">
-	Note: This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`
+	참고: 이 값은 `drizzle-kit` 동작에 영향을 주지 않으며, `drizzle-orm`에서 런타임에만 사용됩니다
 </Callout>
 
 ```ts

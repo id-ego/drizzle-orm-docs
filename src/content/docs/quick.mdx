@@ -1,16 +1,16 @@
 import Npm from "@mdx/Npm.astro";
 
-# Quick start
-Lets build a quick start app with `PostgreSQL` + `postgresjs` and run our first migration.
+# 빠른 시작
+`PostgreSQL` + `postgresjs`를 사용하여 빠른 시작 앱을 만들고 첫 번째 마이그레이션을 실행해봅시다.
 
-The first thing we need to do is to install `drizzle-orm` and `drizzle-kit`:
+가장 먼저 해야 할 일은 `drizzle-orm`과 `drizzle-kit`을 설치하는 것입니다:
 
 <Npm>
 drizzle-orm postgres
 -D drizzle-kit
 </Npm>
 
-Lets declare our `schema.ts`:
+이제 `schema.ts`를 선언해봅시다:
 
 ```plaintext {4}
 📦 <project root>
@@ -33,7 +33,7 @@ export const user = pgTable("user", {
 });
 ```
 
-Now lets add drizzle configuration file:
+이제 Drizzle 설정 파일을 추가해봅시다:
 ```plaintext {4}
 📦 <project root>
  ├ ...
@@ -51,7 +51,7 @@ export default defineConfig({
 });
 ```
 
-Add `generate` and `migrate` commands to `package.json` and run our first migrations generation:
+`package.json`에 `generate`와 `migrate` 명령을 추가하고 첫 번째 마이그레이션을 생성해봅시다:
 
 ```json filename="package.json" {5,6}
 {
@@ -70,7 +70,7 @@ $ npm run generate
 [✓] Your SQL migration file ➜ drizzle/20242409125510_pale_mister_fear/migration.sql 🚀
 ```
 
-Done! We now have our first SQL migration file 🥳
+완료되었습니다! 이제 첫 번째 SQL 마이그레이션 파일이 생성되었습니다 🥳
 ```plaintext {4}
 📦 <project root>
  ├ 📂 drizzle
@@ -79,12 +79,12 @@ Done! We now have our first SQL migration file 🥳
  ├ 📜 drizzle.config.ts
  └ 📜 package.json
 ```
-Now lets run our first migration to the database:
+이제 데이터베이스에 첫 번째 마이그레이션을 실행해봅시다:
 
 ```shell filename="terminal"
 $ npm run migrate
 ```
 
-That's it, folks!  
+끝입니다!
 
-**My personal congratulations 🎉**
+**축하합니다 🎉**

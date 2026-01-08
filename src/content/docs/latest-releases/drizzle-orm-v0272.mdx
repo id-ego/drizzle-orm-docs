@@ -1,14 +1,14 @@
 ---
-title: DrizzleORM v0.27.2 release
+title: DrizzleORM v0.27.2 릴리스
 pubDate: 2023-07-12
-description: Added support for unique constraints in PostgreSQL, MySQL, SQLite.
+description: PostgreSQL, MySQL, SQLite에서 unique 제약조건 지원이 추가되었습니다.
 ---
 
-## 🎉 Added support for `UNIQUE` constraints in PostgreSQL, MySQL, SQLite
+## 🎉 PostgreSQL, MySQL, SQLite에서 `UNIQUE` 제약조건 지원 추가
 
-For PostgreSQL, unique constraints can be defined at the column level for single-column constraints, and in the third parameter for multi-column constraints. In both cases, it will be possible to define a custom name for the constraint. Additionally, PostgreSQL will receive the `NULLS NOT DISTINCT` option to restrict having more than one NULL value in a table. [Reference](https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-UNIQUE-CONSTRAINTS)
+PostgreSQL의 경우, unique 제약조건은 단일 컬럼 제약조건에는 컬럼 레벨에서 정의할 수 있고, 다중 컬럼 제약조건에는 세 번째 파라미터에서 정의할 수 있습니다. 두 경우 모두 제약조건에 대한 사용자 정의 이름을 지정할 수 있습니다. 또한 PostgreSQL은 테이블에 두 개 이상의 NULL 값을 제한하는 `NULLS NOT DISTINCT` 옵션을 지원합니다. [참고](https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-UNIQUE-CONSTRAINTS)
 
-Examples that just shows a different `unique` usage. Please don't search a real usage for those tables
+다양한 `unique` 사용법을 보여주는 예제입니다. 이 테이블들에서 실제 사용 사례를 찾으려 하지 마세요
 
 ```ts copy
 // single column
@@ -29,9 +29,9 @@ const table = pgTable('table', {
 }));
 ```
 
-For MySQL, everything will be the same except for the `NULLS NOT DISTINCT` option. It appears that MySQL does not support it
+MySQL의 경우, `NULLS NOT DISTINCT` 옵션을 제외하고는 모든 것이 동일합니다. MySQL은 이 옵션을 지원하지 않는 것으로 보입니다
 
-Examples that just shows a different `unique` usage. Please don't search a real usage for those tables
+다양한 `unique` 사용법을 보여주는 예제입니다. 이 테이블들에서 실제 사용 사례를 찾으려 하지 마세요
 
 ```ts copy
 // single column
@@ -52,7 +52,7 @@ const table = mysqlTable('cities1', {
 }));
 ```
 
-In SQLite unique constraints are the same as unique indexes. As long as you can specify a name for the unique index in SQLite - we will treat all unique constraints as unique indexes in internal implementation
+SQLite에서 unique 제약조건은 unique 인덱스와 동일합니다. SQLite에서 unique 인덱스에 이름을 지정할 수 있는 한, 내부 구현에서는 모든 unique 제약조건을 unique 인덱스로 처리합니다
 
 ```ts copy
 // single column

@@ -19,57 +19,56 @@ import SetupEnv from '@mdx/get-started/SetupEnv.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and CockroachDB
+# Drizzle과 CockroachDB 시작하기
 
 <Callout type='error'>
-This page explains concepts available on drizzle versions `1.0.0-beta.2` and higher.
+이 페이지는 Drizzle 버전 `1.0.0-beta.2` 이상에서 사용 가능한 개념을 설명합니다.
 </Callout>
 
 <br/>
 
 <Prerequisites>
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **node-postgres** - package for querying your PostgreSQL database - [read here](https://node-postgres.com/)
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **node-postgres** - PostgreSQL 데이터베이스 쿼리 패키지 - [자세히 보기](https://node-postgres.com/)
 </Prerequisites>
 
-Drizzle has native support for CockroachDB connections with the `node-postgres` and `postgres.js` drivers.
+Drizzle은 `node-postgres`와 `postgres.js` 드라이버를 통한 CockroachDB 연결을 기본적으로 지원합니다.
 
-We will use `node-postgres` for this get started example. But if you want to find more ways to connect to postgresql check
-our [CockroachDB Connection](/docs/get-started-cockroach) page 
+이 시작 가이드에서는 `node-postgres`를 사용합니다. PostgreSQL에 연결하는 다양한 방법을 알아보려면 [CockroachDB 연결](/docs/get-started-cockroach) 페이지를 확인하세요. 
 
 <FileStructure/>
 
-#### Step 1 - Install **node-postgres** package
+#### 단계 1 - **node-postgres** 패키지 설치
 <Npm>
   drizzle-orm@beta pg dotenv
   -D drizzle-kit@beta tsx @types/pg
 </Npm>
 
-#### Step 2 - Setup connection variables
+#### 단계 2 - 연결 변수 설정
 
 <SetupEnv env_variable='DATABASE_URL' />
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### 단계 3 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectCockroach/>
 
-#### Step 4 - Create a table
+#### 단계 4 - 테이블 생성
 
 <CreateTable />
 
-#### Step 5 - Setup Drizzle config file
+#### 단계 5 - Drizzle 설정 파일 구성
 
 <SetupConfig dialect='cockroach' env_variable='DATABASE_URL'/>
 
-#### Step 6 - Applying changes to the database
+#### 단계 6 - 데이터베이스에 변경사항 적용
 
 <ApplyChanges />
 
-#### Step 7 - Seed and Query the database
+#### 단계 7 - 데이터베이스 시드 및 쿼리
 
 <QueryDatabase dialect='cockroach' env_variable='DATABASE_URL'/>
 
-#### Step 8 - Run index.ts file
+#### 단계 8 - index.ts 파일 실행
 
 <RunFile/>

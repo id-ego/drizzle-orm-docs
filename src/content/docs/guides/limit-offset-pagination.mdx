@@ -1,5 +1,5 @@
 ---
-title: SQL Limit/Offset pagination
+title: SQL Limit/Offset 페이지네이션
 slug: limit-offset-pagination
 ---
 
@@ -12,13 +12,13 @@ import IsSupportedChipGroup from "@mdx/IsSupportedChipGroup.astro";
 <IsSupportedChipGroup chips={{PostgreSQL: true, MySQL: true, SQLite: true}}/>
 
 <Prerequisites>
-- Get started with [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql) and [SQLite](/docs/get-started-sqlite)
-- [Select statement](/docs/select) with [order by clause](/docs/select#order-by) and [limit & offset clauses](/docs/select#limit--offset)
-- [Relational queries](/docs/rqb) with [order by clause](/docs/rqb#order-by) and [limit & offset clauses](/docs/rqb#limit--offset)
-- [Dynamic query building](/docs/dynamic-query-building)
+- [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql), [SQLite](/docs/get-started-sqlite) 시작하기
+- [Select 문](/docs/select)과 [order by 절](/docs/select#order-by), [limit & offset 절](/docs/select#limit--offset)
+- [관계형 쿼리](/docs/rqb)와 [order by 절](/docs/rqb#order-by), [limit & offset 절](/docs/rqb#limit--offset)
+- [동적 쿼리 빌드](/docs/dynamic-query-building)
 </Prerequisites>
 
-This guide demonstrates how to implement `limit/offset` pagination in Drizzle:
+이 가이드는 Drizzle에서 `limit/offset` 페이지네이션을 구현하는 방법을 설명합니다:
 
 <CodeTabs items={["index.ts", "schema.ts"]}>
   <CodeTab>
@@ -106,12 +106,12 @@ This guide demonstrates how to implement `limit/offset` pagination in Drizzle:
   </CodeTab>
 </CodeTabs>
 
-Limit is the number of rows to return `(page size)` and offset is the number of rows to skip `((page number - 1) * page size)`. 
-For consistent pagination, ensure ordering by a unique column. Otherwise, the results can be inconsistent.
+Limit은 반환할 행의 개수`(페이지 크기)`이고, offset은 건너뛸 행의 개수`((페이지 번호 - 1) * 페이지 크기)`입니다.
+일관된 페이지네이션을 위해서는 고유한 컬럼으로 정렬해야 합니다. 그렇지 않으면 결과가 일관성 없게 나올 수 있습니다.
 
-If you need to order by a non-unique column, you should also append a unique column to the ordering.
+고유하지 않은 컬럼으로 정렬해야 하는 경우, 정렬에 고유 컬럼을 추가해야 합니다.
 
-This is how you can implement `limit/offset` pagination with 2 columns:
+다음은 2개의 컬럼으로 `limit/offset` 페이지네이션을 구현하는 방법입니다:
 
 <Section>
 ```ts copy {5}
@@ -128,7 +128,7 @@ await getUsers();
 ```
 </Section>
 
-Drizzle has useful relational queries API, that lets you easily implement `limit/offset` pagination:
+Drizzle은 `limit/offset` 페이지네이션을 쉽게 구현할 수 있는 유용한 관계형 쿼리 API를 제공합니다:
 
 <Section>
 ```ts copy {7,8,9}
@@ -148,7 +148,7 @@ await getUsers();
 ```
 </Section>
 
-Drizzle has simple and flexible API, which lets you easily create custom solutions. This is how you can create custom function for pagination using `.$dynamic()` function:
+Drizzle은 간단하고 유연한 API를 제공하여 쉽게 커스텀 솔루션을 만들 수 있습니다. 다음은 `.$dynamic()` 함수를 사용하여 페이지네이션용 커스텀 함수를 만드는 방법입니다:
 
 <Section>
 ```ts copy {11,12,13,16}
@@ -174,9 +174,9 @@ await withPagination(query.$dynamic(), asc(users.id));
 
 </Section>
 
-You can improve performance of `limit/offset` pagination by using `deferred join` technique. This method performs the pagination on a subset of the data instead of the entire table.
+`deferred join` 기법을 사용하여 `limit/offset` 페이지네이션의 성능을 향상시킬 수 있습니다. 이 방법은 전체 테이블 대신 데이터의 하위 집합에서 페이지네이션을 수행합니다.
 
-To implement it you can do like this:
+다음과 같이 구현할 수 있습니다:
 
 ```ts copy {10}
 const getUsers = async (page = 1, pageSize = 10) => {
@@ -192,11 +192,11 @@ const getUsers = async (page = 1, pageSize = 10) => {
 };
 ```
 
-**Benefits** of `limit/offset` pagination: it's simple to implement and pages are easily reachable, which means that you can navigate to any page without having to save the state of the previous pages.
+`limit/offset` 페이지네이션의 **장점**: 구현이 간단하고 페이지에 쉽게 접근할 수 있습니다. 이전 페이지의 상태를 저장하지 않고도 모든 페이지로 이동할 수 있습니다.
 
-**Drawbacks** of `limit/offset` pagination: degradation in query performance with increasing offset because database has to scan all rows before the offset to skip them, and inconsistency due to data shifts, which can lead to the same row being returned on different pages or rows being skipped.
+`limit/offset` 페이지네이션의 **단점**: offset이 증가하면 쿼리 성능이 저하됩니다. 데이터베이스가 offset 이전의 모든 행을 스캔한 후 건너뛰어야 하기 때문입니다. 또한 데이터 변경으로 인한 불일치가 발생할 수 있으며, 이로 인해 동일한 행이 다른 페이지에 반환되거나 행이 건너뛰어질 수 있습니다.
 
-This is how it works:
+다음은 작동 방식입니다:
 
 <Section>
 ```ts copy
@@ -270,6 +270,6 @@ await getUsers(2);
 ```
 </Section>
 
-So, if your database experiences frequently insert and delete operations in real time or you need high performance to paginate large tables, you should consider using [cursor-based](/docs/guides/cursor-based-pagination) pagination instead.
+따라서 데이터베이스에서 실시간으로 삽입 및 삭제 작업이 빈번하게 발생하거나 대용량 테이블을 페이지네이션할 때 높은 성능이 필요한 경우, [커서 기반](/docs/guides/cursor-based-pagination) 페이지네이션을 사용하는 것을 고려해야 합니다.
 
-To learn more about `deferred join` technique you should follow these guides: [Planetscale Pagination Guide](https://planetscale.com/blog/mysql-pagination) and [Efficient Pagination Guide by Aaron Francis](https://aaronfrancis.com/2022/efficient-pagination-using-deferred-joins).
+`deferred join` 기법에 대해 자세히 알아보려면 다음 가이드를 참고하세요: [Planetscale Pagination Guide](https://planetscale.com/blog/mysql-pagination), [Efficient Pagination Guide by Aaron Francis](https://aaronfrancis.com/2022/efficient-pagination-using-deferred-joins).

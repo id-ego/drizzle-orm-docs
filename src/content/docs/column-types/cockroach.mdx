@@ -1,5 +1,5 @@
 ---
-title: CockroachDB column types
+title: CockroachDB 컬럼 타입
 ---
 
 import Section from '@mdx/Section.astro';
@@ -7,7 +7,7 @@ import Callout from '@mdx/Callout.astro';
 import Npm from '@mdx/Npm.astro';
 
 <Callout type='error'>
-This page explains concepts available on drizzle versions `1.0.0-beta.2` and higher.
+이 페이지는 drizzle 버전 `1.0.0-beta.2` 이상에서 사용 가능한 개념을 설명합니다.
 </Callout>
 
 <Npm>
@@ -17,22 +17,22 @@ drizzle-kit@beta -D
 
 <br/>
 
-We have native support for all of them, yet if that's not enough for you, feel free to create **[custom types](/docs/custom-types)**.
+모든 타입에 대한 네이티브 지원을 제공하지만, 충분하지 않다면 **[커스텀 타입](/docs/custom-types)**을 생성할 수 있습니다.
 
 <Callout title='important' type='warning'>
-All examples in this part of the documentation do not use database column name aliases, and column names are generated from TypeScript keys. 
+이 문서의 모든 예제는 데이터베이스 컬럼명 별칭을 사용하지 않으며, 컬럼명은 TypeScript 키로부터 생성됩니다.
 
-You can use database aliases in column names if you want, and you can also use the `casing` parameter to define a mapping strategy for Drizzle. 
+원한다면 컬럼명에 데이터베이스 별칭을 사용할 수 있으며, `casing` 파라미터를 사용하여 Drizzle의 매핑 전략을 정의할 수도 있습니다.
 
-You can read more about it [here](/docs/sql-schema-declaration#shape-your-data-schema)
+자세한 내용은 [여기](/docs/sql-schema-declaration#shape-your-data-schema)에서 확인할 수 있습니다.
 </Callout>
 
 ### bigint
 `int` `int8` `int64` `integer`
 
-Signed 8-byte integer     
+부호 있는 8바이트 정수
 
-If you're expecting values above 2^31 but below 2^53, you can utilize `mode: 'number'` and deal with javascript number as opposed to bigint.
+2^31보다 크지만 2^53보다 작은 값을 예상한다면, `mode: 'number'`를 사용하여 bigint 대신 JavaScript number로 처리할 수 있습니다.
 <Section>
 ```typescript
 import { bigint, cockroachTable } from "drizzle-orm/cockroach-core";
@@ -75,8 +75,8 @@ CREATE TABLE "table" (
 </Section>
 
 ### smallint
-`smallint` `int2`  
-Small-range signed 2-byte integer   
+`smallint` `int2`
+작은 범위의 부호 있는 2바이트 정수   
 
 <Section>
 ```typescript
@@ -115,7 +115,7 @@ CREATE TABLE "table" (
 
 ### int4
 
-Signed 4-byte integer     
+부호 있는 4바이트 정수     
 
 <Section>
 ```typescript
@@ -156,18 +156,18 @@ CREATE TABLE "table" (
 
 ### int8
 
-An alias of **[bigint.](#bigint)**
+**[bigint](#bigint)**의 별칭입니다.
 
 ### int2
 
-An alias of **[smallint.](#smallint)**
+**[smallint](#smallint)**의 별칭입니다.
 
 ### ---
 
 ### bool
-Cockroach provides the standard SQL type bool.
+Cockroach는 표준 SQL 타입 bool을 제공합니다.
 
-For more info please refer to the official Cockroach **[docs.](https://www.cockroachlabs.com/docs/stable/bool)**
+자세한 정보는 공식 Cockroach **[문서](https://www.cockroachlabs.com/docs/stable/bool)**를 참조하세요.
 
 <Section>
 ```typescript
@@ -191,19 +191,19 @@ CREATE TABLE "table" (
 ### string
 `text` `varchar`, `char`
 
-The `STRING` data type stores a string of Unicode characters.
+`STRING` 데이터 타입은 유니코드 문자열을 저장합니다.
 
 <Callout>
-For PostgreSQL compatibility, CockroachDB supports the following STRING-related types and their aliases:
+PostgreSQL 호환성을 위해 CockroachDB는 다음 STRING 관련 타입과 별칭을 지원합니다:
 
-`VARCHAR` (and alias `CHARACTER VARYING`)
-`CHAR` (and alias `CHARACTER`)
+`VARCHAR` (별칭 `CHARACTER VARYING`)
+`CHAR` (별칭 `CHARACTER`)
 `NAME`
 </Callout>
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/string)**
-  
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/string)**를 참조하세요.
+
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert`와 `select` 타입을 추론할 수 있으며, 이는 런타임 값을 검사하지 **않습니다**.
 <Section>
 ```typescript
 import { string, cockroachTable } from "drizzle-orm/cockroach-core";
@@ -227,11 +227,11 @@ CREATE TABLE "table" (
 
 ### text
 
-CockroachDB alias for `STRING`:
+CockroachDB의 `STRING` 별칭입니다.
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/string)**
-  
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/string)**를 참조하세요.
+
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert`와 `select` 타입을 추론할 수 있으며, 이는 런타임 값을 검사하지 **않습니다**.
 <Section>
 ```typescript
 import { text, cockroachTable } from "drizzle-orm/cockroach-core";
@@ -252,15 +252,15 @@ CREATE TABLE "table" (
 </Section>
 
 ### varchar
-`character varying(n)` `varchar(n)`  
+`character varying(n)` `varchar(n)`
 
-`STRING` alias used to stay compatible with PostgreSQL
+PostgreSQL 호환성을 위해 사용되는 `STRING` 별칭입니다.
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/string)**
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/string)**를 참조하세요.
 
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert`와 `select` 타입을 추론할 수 있으며, 이는 런타임 값을 검사하지 **않습니다**.
 
-The `length` parameter is optional according to PostgreSQL docs.
+PostgreSQL 문서에 따르면 `length` 파라미터는 선택사항입니다.
 <Section>
 ```typescript
 import { varchar, cockroachTable } from "drizzle-orm/cockroach-core";
@@ -283,15 +283,15 @@ CREATE TABLE "table" (
 </Section>
 
 ### char
-`character(n)` `char(n)`  
+`character(n)` `char(n)`
 
-`STRING` alias used to stay compatible with PostgreSQL
+PostgreSQL 호환성을 위해 사용되는 `STRING` 별칭입니다.
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/string)**
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/string)**를 참조하세요.
 
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert`와 `select` 타입을 추론할 수 있으며, 이는 런타임 값을 검사하지 **않습니다**.
 
-The `length` parameter is optional according to PostgreSQL docs.
+PostgreSQL 문서에 따르면 `length` 파라미터는 선택사항입니다.
 <Section>
 ```typescript
 import { char, cockroachTable } from "drizzle-orm/cockroach-core";
@@ -320,9 +320,9 @@ https://www.cockroachlabs.com/docs/stable/float
 ### decimal
 
 `numeric` `decimal` `dec`
-The DECIMAL data type stores exact, fixed-point numbers. This type is used when it is important to preserve exact precision, for example, with monetary data.
+DECIMAL 데이터 타입은 정확한 고정 소수점 숫자를 저장합니다. 이 타입은 금전 데이터와 같이 정확한 정밀도를 유지하는 것이 중요할 때 사용됩니다.
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/decimal)**
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/decimal)**를 참조하세요.
 
 <Section>
 ```typescript
@@ -349,12 +349,12 @@ CREATE TABLE "table" (
 </Section>
 
 ### numeric
-An alias of **[decimal.](#decimal)**
+**[decimal](#decimal)**의 별칭입니다.
 
 ### float
-`float` `float8` `double precision`  
+`float` `float8` `double precision`
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/float)**  
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/float)**를 참조하세요.  
 
 <Section>
 ```typescript
@@ -378,10 +378,10 @@ CREATE TABLE "table" (
 </Section>
 
 ### real
-`real` `float4`  
-Single precision floating-point number (4 bytes)
+`real` `float4`
+단정밀도 부동소수점 숫자 (4바이트)
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/float)**  
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/float)**를 참조하세요.  
 
 <Section>
 ```typescript
@@ -406,16 +406,16 @@ CREATE TABLE "table" (
 
 ### double precision
 
-An alias of **[float.](#float)**
+**[float](#float)**의 별칭입니다.
 
 ## ---
 
 ### jsonb
-`jsonb`  
+`jsonb`
 
-The JSONB data type stores JSON (JavaScript Object Notation) data as a binary representation of the JSONB value, which eliminates whitespace, duplicate keys, and key ordering
+JSONB 데이터 타입은 JSON (JavaScript Object Notation) 데이터를 JSONB 값의 바이너리 표현으로 저장하며, 공백, 중복 키, 키 순서를 제거합니다.
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/jsonb)**
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/jsonb)**를 참조하세요.
 <Section>
 ```typescript
 import { jsonb, cockroachTable } from "drizzle-orm/cockroach-core";
@@ -435,8 +435,8 @@ CREATE TABLE "table" (
 ```
 </Section>
 
-You can specify `.$type<..>()` for json object inference, it **won't** check runtime values. 
-It provides compile time protection for default values, insert and select schemas.
+json 객체 추론을 위해 `.$type<..>()`을 지정할 수 있으며, 이는 런타임 값을 검사하지 **않습니다**.
+기본값, 삽입 및 조회 스키마에 대한 컴파일 타임 보호를 제공합니다.
 
 ```typescript
 // will be inferred as { foo: string }
@@ -452,15 +452,15 @@ jsonb: jsonb().$type<string[]>().default({});
 ## ---
 
 ### bit
-`bit`  
+`bit`
 
-The BIT data types store bit arrays. With BIT, the length is fixed.
+BIT 데이터 타입은 비트 배열을 저장합니다. BIT는 길이가 고정되어 있습니다.
 
 <br />
 
-**Size**
+**크기**
 
-The number of bits in a BIT value is determined as follows:
+BIT 값의 비트 수는 다음과 같이 결정됩니다:
 
 | Type&nbsp;declaration		| Logical&nbsp;size	|
 |:------------------		|:--------------	|
@@ -469,7 +469,7 @@ The number of bits in a BIT value is determined as follows:
 
 <br />
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/bit)**
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/bit)**를 참조하세요.
 <Section>
 ```typescript
 import { sql } from "drizzle-orm";
@@ -496,13 +496,13 @@ CREATE TABLE "table" (
 ### varbit
 `varbit`
 
-The VARBIT data types store bit arrays. With VARBIT, the length can be variable.
+VARBIT 데이터 타입은 비트 배열을 저장합니다. VARBIT는 길이가 가변적입니다.
 
 <br />
 
-**Size**
+**크기**
 
-The number of bits in a VARBIT value is determined as follows:
+VARBIT 값의 비트 수는 다음과 같이 결정됩니다:
 
 | Type&nbsp;declaration		| Logical&nbsp;size													|
 |:------------------		|:--------------													|
@@ -511,7 +511,7 @@ The number of bits in a VARBIT value is determined as follows:
 
 <br />
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/bit)**
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/bit)**를 참조하세요.
 <Section>
 ```typescript
 import { sql } from "drizzle-orm";
@@ -540,9 +540,9 @@ CREATE TABLE "table" (
 ### uuid
 `uuid`
 
-The UUID (Universally Unique Identifier) data type stores a 128-bit value that is unique across both space and time.
+UUID (Universally Unique Identifier) 데이터 타입은 공간과 시간에 걸쳐 고유한 128비트 값을 저장합니다.
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/uuid)**
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/uuid)**를 참조하세요.
 
 ```ts
 import { uuid, cockroachTable } from "drizzle-orm/cockroach-core";
@@ -565,12 +565,12 @@ CREATE TABLE "table" (
 ## ---
 
 ### time
-`time` `timetz` `time with timezone` `time without timezone`  
+`time` `timetz` `time with timezone` `time without timezone`
 
-The `TIME` data type stores the time of day in UTC.
-The `TIMETZ` data type stores a time of day with a time zone offset from UTC.
+`TIME` 데이터 타입은 UTC 기준 하루 중 시각을 저장합니다.
+`TIMETZ` 데이터 타입은 UTC로부터의 시간대 오프셋을 포함한 하루 중 시각을 저장합니다.
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/time)**
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/time)**를 참조하세요.
 
 <Section>
 ```typescript
@@ -595,11 +595,11 @@ CREATE TABLE "table" (
 </Section>
 
 ### timestamp
-`timestamp` `timestamptz` `timestamp with time zone` `timestamp without time zone`  
+`timestamp` `timestamptz` `timestamp with time zone` `timestamp without time zone`
 
-The TIMESTAMP and TIMESTAMPTZ data types store a date and time pair in UTC.
+TIMESTAMP와 TIMESTAMPTZ 데이터 타입은 UTC 기준 날짜와 시간 쌍을 저장합니다.
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/timestamp)**
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/timestamp)**를 참조하세요.
 <Section>
 ```typescript
 import { sql } from "drizzle-orm";
@@ -622,7 +622,7 @@ CREATE TABLE "table" (
 ```
 </Section>
 
-You can specify either `date` or `string` infer modes:
+`date` 또는 `string` 추론 모드를 지정할 수 있습니다:
 ```typescript
 // will infer as date
 timestamp: timestamp({ mode: "date" }),
@@ -631,19 +631,17 @@ timestamp: timestamp({ mode: "date" }),
 timestamp: timestamp({ mode: "string" }),
 ```
 
-> The `string` mode does not perform any mappings for you. This mode was added to Drizzle ORM to provide developers
-with the possibility to handle dates and date mappings themselves, depending on their needs.
-Drizzle will pass raw dates as strings `to` and `from` the database, so the behavior should be as predictable as possible 
-and aligned 100% with the database behavior
+> `string` 모드는 어떠한 매핑도 수행하지 않습니다. 이 모드는 개발자가 필요에 따라 날짜와 날짜 매핑을 직접 처리할 수 있도록 Drizzle ORM에 추가되었습니다.
+Drizzle은 원시 날짜를 문자열로 데이터베이스 `에` 그리고 데이터베이스 `로부터` 전달하므로, 동작은 가능한 한 예측 가능하고 데이터베이스 동작과 100% 일치해야 합니다.
 
-> The `date` mode is the regular way to work with dates. Drizzle will take care of all mappings between the database and the JS Date object
+> `date` 모드는 날짜를 다루는 일반적인 방법입니다. Drizzle이 데이터베이스와 JS Date 객체 간의 모든 매핑을 처리합니다.
 
 ### date
-`date`  
+`date`
 
-The DATE data type stores a year, month, and day.
+DATE 데이터 타입은 연도, 월, 일을 저장합니다.
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/date)**
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/date)**를 참조하세요.
 <Section>
 ```typescript
 import { date, cockroachTable } from "drizzle-orm/cockroach-core";
@@ -659,7 +657,7 @@ CREATE TABLE "table" (
 );
 ```
 </Section>
-You can specify either `date` or `string` infer modes:
+`date` 또는 `string` 추론 모드를 지정할 수 있습니다:
 ```typescript
 // will infer as date
 date: date({ mode: "date" }),
@@ -668,11 +666,11 @@ date: date({ mode: "date" }),
 date: date({ mode: "string" }),
 ```
 ### interval
-`interval`  
+`interval`
 
-Stores a value that represents a span of time.
+시간 범위를 나타내는 값을 저장합니다.
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/interval)** 
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/interval)**를 참조하세요. 
 
 <Section>
 ```typescript
@@ -697,13 +695,13 @@ CREATE TABLE "table" (
 
 ## ---
 
-### enum 
-`enum` `enumerated types`  
-Enumerated (enum) types are data types that comprise a static, ordered set of values. 
-They are equivalent to the enum types supported in a number of programming languages. 
-An example of an enum type might be the days of the week, or a set of status values for a piece of data.
+### enum
+`enum` `enumerated types`
+열거형(enum) 타입은 정적이고 순서가 있는 값들의 집합으로 구성된 데이터 타입입니다.
+여러 프로그래밍 언어에서 지원하는 enum 타입과 동일합니다.
+enum 타입의 예로는 요일이나 데이터의 상태 값 집합이 있습니다.
 
-For more info please refer to the official CockroachDB **[docs.](https://www.cockroachlabs.com/docs/stable/enum)**
+자세한 정보는 공식 CockroachDB **[문서](https://www.cockroachlabs.com/docs/stable/enum)**를 참조하세요.
 <Section>
 ```typescript
 import { cockroachEnum, cockroachTable } from "drizzle-orm/cockroach-core";
@@ -727,9 +725,9 @@ CREATE TABLE "table" (
 ## ---
 
 ### Customizing data type
-Every column builder has a `.$type()` method, which allows you to customize the data type of the column. 
+모든 컬럼 빌더는 `.$type()` 메서드를 제공하며, 이를 통해 컬럼의 데이터 타입을 커스터마이징할 수 있습니다.
 
-This is useful, for example, with unknown or branded types:
+이는 예를 들어 unknown 또는 브랜드 타입과 함께 사용할 때 유용합니다:
 ```ts
 type UserId = number & { __brand: 'user_id' };
 type Data = {
@@ -746,16 +744,16 @@ const users = cockroachTable('users', {
 ### Identity Columns
 
 <Callout type="info">
-To use this feature you would need to have `drizzle-orm@0.32.0` or higher and `drizzle-kit@0.23.0` or higher
+이 기능을 사용하려면 `drizzle-orm@0.32.0` 이상과 `drizzle-kit@0.23.0` 이상이 필요합니다.
 </Callout>
 
-PostgreSQL and CockroachDB supports identity columns as a way to automatically generate unique integer values for a column. These values are generated using sequences and can be defined using the GENERATED AS IDENTITY clause.
+PostgreSQL과 CockroachDB는 컬럼에 대해 고유한 정수 값을 자동으로 생성하는 방법으로 identity 컬럼을 지원합니다. 이 값들은 시퀀스를 사용하여 생성되며 GENERATED AS IDENTITY 절을 사용하여 정의할 수 있습니다.
 
-**Types of Identity Columns**
-- `GENERATED ALWAYS AS IDENTITY`: The database always generates a value for the column. Manual insertion or updates to this column are not allowed unless the OVERRIDING SYSTEM VALUE clause is used.
-- `GENERATED BY DEFAULT AS IDENTITY`: The database generates a value by default, but manual values can also be inserted or updated. If a manual value is provided, it will be used instead of the system-generated value.
+**Identity 컬럼 타입**
+- `GENERATED ALWAYS AS IDENTITY`: 데이터베이스가 항상 컬럼 값을 생성합니다. OVERRIDING SYSTEM VALUE 절을 사용하지 않는 한 이 컬럼에 수동 삽입이나 업데이트는 허용되지 않습니다.
+- `GENERATED BY DEFAULT AS IDENTITY`: 데이터베이스가 기본적으로 값을 생성하지만, 수동 값도 삽입하거나 업데이트할 수 있습니다. 수동 값이 제공되면 시스템 생성 값 대신 해당 값이 사용됩니다.
 
-**Usage example**
+**사용 예제**
 ```ts
 import { pgTable, integer, text } from 'drizzle-orm/pg-core' 
 
@@ -766,18 +764,15 @@ export const ingredients = pgTable("ingredients", {
 });
 ```
 
-You can specify all properties available for sequences in the `.generatedAlwaysAsIdentity()` function. Additionally, you can specify custom names for these sequences
+`.generatedAlwaysAsIdentity()` 함수에서 시퀀스에 사용 가능한 모든 속성을 지정할 수 있습니다. 또한 이러한 시퀀스에 대한 커스텀 이름도 지정할 수 있습니다.
 
-PostgreSQL docs [reference](https://www.postgresql.org/docs/current/sql-createtable.html#SQL-CREATETABLE-PARMS-GENERATED-IDENTITY).
+PostgreSQL 문서 [레퍼런스](https://www.postgresql.org/docs/current/sql-createtable.html#SQL-CREATETABLE-PARMS-GENERATED-IDENTITY).
 
 ### Default value
-The `DEFAULT` clause specifies a default value to use for the column if no value
-is explicitly provided by the user when doing an `INSERT`.
-If there is no explicit `DEFAULT` clause attached to a column definition,
-then the default value of the column is `NULL`.
+`DEFAULT` 절은 `INSERT` 수행 시 사용자가 명시적으로 값을 제공하지 않을 경우 컬럼에 사용할 기본값을 지정합니다.
+컬럼 정의에 명시적인 `DEFAULT` 절이 없으면, 컬럼의 기본값은 `NULL`입니다.
 
-An explicit `DEFAULT` clause may specify that the default value is `NULL`,
-a string constant, a blob constant, a signed-number, or any constant expression enclosed in parentheses.
+명시적인 `DEFAULT` 절은 기본값을 `NULL`, 문자열 상수, blob 상수, 부호 있는 숫자, 또는 괄호로 묶인 상수 표현식으로 지정할 수 있습니다.
 
 <Section>
 ```typescript
@@ -802,13 +797,12 @@ CREATE TABLE IF NOT EXISTS "table" (
 ```
 </Section>
 
-When using `$default()` or `$defaultFn()`, which are simply different aliases for the same function, 
-you can generate defaults at runtime and use these values in all insert queries. 
+`$default()` 또는 `$defaultFn()`을 사용하면 (동일한 함수의 다른 별칭입니다), 런타임에 기본값을 생성하고 모든 삽입 쿼리에서 이 값을 사용할 수 있습니다.
 
-These functions can assist you in utilizing various implementations such as `uuid`, `cuid`, `cuid2`, and many more.
+이 함수들은 `uuid`, `cuid`, `cuid2` 등 다양한 구현을 활용하는 데 도움이 됩니다.
 
 <Callout type="info" emoji="ℹ️">
-	Note: This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`
+참고: 이 값은 `drizzle-kit` 동작에 영향을 주지 않으며, `drizzle-orm`에서 런타임에만 사용됩니다.
 </Callout>
 
 ```ts
@@ -820,16 +814,13 @@ const table = pgTable('table', {
 });
 ```
 
-When using `$onUpdate()` or `$onUpdateFn()`, which are simply different aliases for the same function, 
-you can generate defaults at runtime and use these values in all update queries. 
+`$onUpdate()` 또는 `$onUpdateFn()`을 사용하면 (동일한 함수의 다른 별칭입니다), 런타임에 기본값을 생성하고 모든 업데이트 쿼리에서 이 값을 사용할 수 있습니다.
 
-Adds a dynamic update value to the column. The function will be called when the row is updated, 
-and the returned value will be used as the column value if none is provided.
-If no default (or $defaultFn) value is provided, the function will be called
-when the row is inserted as well, and the returned value will be used as the column value.
+컬럼에 동적 업데이트 값을 추가합니다. 행이 업데이트될 때 함수가 호출되며, 값이 제공되지 않으면 반환된 값이 컬럼 값으로 사용됩니다.
+기본값(또는 $defaultFn)이 제공되지 않으면, 행이 삽입될 때도 함수가 호출되고 반환된 값이 컬럼 값으로 사용됩니다.
 
 <Callout type="info" emoji="ℹ️">
-	Note: This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`
+참고: 이 값은 `drizzle-kit` 동작에 영향을 주지 않으며, `drizzle-orm`에서 런타임에만 사용됩니다.
 </Callout>
 
 ```ts
@@ -844,7 +835,7 @@ const table = pgTable('table', {
 
 
 ### Not null
-`NOT NULL` constraint dictates that the associated column may not contain a `NULL` value.
+`NOT NULL` 제약조건은 연결된 컬럼이 `NULL` 값을 포함할 수 없음을 지정합니다.
 
 <Section>
 ```typescript
@@ -864,8 +855,8 @@ CREATE TABLE IF NOT EXISTS "table" (
 
 
 ### Primary key
-A primary key constraint indicates that a column, or group of columns, can be used as a unique identifier for rows in the table. 
-This requires that the values be both unique and not null.
+기본 키 제약조건은 컬럼 또는 컬럼 그룹이 테이블의 행에 대한 고유 식별자로 사용될 수 있음을 나타냅니다.
+이는 값이 고유하고 null이 아니어야 함을 요구합니다.
 <Section>
 ```typescript
 import { serial, pgTable } from "drizzle-orm/pg-core";

@@ -3,23 +3,23 @@ import Callout from '@mdx/Callout.astro';
 
 # drizzle-zod
 
-`drizzle-zod` is a plugin for **[Drizzle ORM](https://github.com/drizzle-team/drizzle-orm)** that allows you to generate **[Zod](https://github.com/colinhacks/zod)** schemas from Drizzle ORM schemas.
+`drizzle-zod`는 Drizzle ORM 스키마로부터 **[Zod](https://github.com/colinhacks/zod)** 스키마를 생성할 수 있게 해주는 **[Drizzle ORM](https://github.com/drizzle-team/drizzle-orm)** 플러그인입니다.
 
-### Install the dependencies
+### 의존성 설치
 
 <Npm>
 drizzle-zod
 </Npm>
 
 <Callout type="warning">
-This documentation is for `drizzle-zod@0.6.0` and higher
+이 문서는 `drizzle-zod@0.6.0` 이상 버전을 위한 것입니다
 
-You must also have Drizzle ORM v0.36.0 or greater and Zod v3.25.1 or greater installed.
+Drizzle ORM v0.36.0 이상과 Zod v3.25.1 이상이 설치되어 있어야 합니다.
 </Callout>
 
-### Select schema
+### Select 스키마
 
-Defines the shape of data queried from the database - can be used to validate API responses.
+데이터베이스에서 조회한 데이터의 형태를 정의합니다 - API 응답 검증에 사용할 수 있습니다.
 
 ```ts copy
 import { pgTable, text, integer } from 'drizzle-orm/pg-core';
@@ -34,13 +34,13 @@ const users = pgTable('users', {
 const userSelectSchema = createSelectSchema(users);
 
 const rows = await db.select({ id: users.id, name: users.name }).from(users).limit(1);
-const parsed: { id: number; name: string; age: number } = userSelectSchema.parse(rows[0]); // Error: `age` is not returned in the above query
+const parsed: { id: number; name: string; age: number } = userSelectSchema.parse(rows[0]); // 오류: 위 쿼리에서 `age`가 반환되지 않음
 
 const rows = await db.select().from(users).limit(1);
-const parsed: { id: number; name: string; age: number } = userSelectSchema.parse(rows[0]); // Will parse successfully
+const parsed: { id: number; name: string; age: number } = userSelectSchema.parse(rows[0]); // 파싱 성공
 ```
 
-Views and enums are also supported.
+뷰와 열거형도 지원됩니다.
 
 ```ts copy
 import { pgEnum } from 'drizzle-orm/pg-core';
@@ -55,9 +55,9 @@ const usersViewSchema = createSelectSchema(usersView);
 const parsed: { id: number; name: string; age: number } = usersViewSchema.parse(...);
 ```
 
-### Insert schema
+### Insert 스키마
 
-Defines the shape of data to be inserted into the database - can be used to validate API requests.
+데이터베이스에 삽입할 데이터의 형태를 정의합니다 - API 요청 검증에 사용할 수 있습니다.
 
 ```ts copy
 import { pgTable, text, integer } from 'drizzle-orm/pg-core';
@@ -72,16 +72,16 @@ const users = pgTable('users', {
 const userInsertSchema = createInsertSchema(users);
 
 const user = { name: 'John' };
-const parsed: { name: string, age: number } = userInsertSchema.parse(user); // Error: `age` is not defined
+const parsed: { name: string, age: number } = userInsertSchema.parse(user); // 오류: `age`가 정의되지 않음
 
 const user = { name: 'Jane', age: 30 };
-const parsed: { name: string, age: number } = userInsertSchema.parse(user); // Will parse successfully
+const parsed: { name: string, age: number } = userInsertSchema.parse(user); // 파싱 성공
 await db.insert(users).values(parsed);
 ```
 
-### Update schema
+### Update 스키마
 
-Defines the shape of data to be updated in the database - can be used to validate API requests.
+데이터베이스에서 업데이트할 데이터의 형태를 정의합니다 - API 요청 검증에 사용할 수 있습니다.
 
 ```ts copy
 import { pgTable, text, integer } from 'drizzle-orm/pg-core';
@@ -96,16 +96,16 @@ const users = pgTable('users', {
 const userUpdateSchema = createUpdateSchema(users);
 
 const user = { id: 5, name: 'John' };
-const parsed: { name?: string | undefined, age?: number | undefined } = userUpdateSchema.parse(user); // Error: `id` is a generated column, it can't be updated
+const parsed: { name?: string | undefined, age?: number | undefined } = userUpdateSchema.parse(user); // 오류: `id`는 생성된 컬럼이므로 업데이트할 수 없음
 
 const user = { age: 35 };
-const parsed: { name?: string | undefined, age?: number | undefined } = userUpdateSchema.parse(user); // Will parse successfully
+const parsed: { name?: string | undefined, age?: number | undefined } = userUpdateSchema.parse(user); // 파싱 성공
 await db.update(users).set(parsed).where(eq(users.name, 'Jane'));
 ```
 
-### Refinements
+### 스키마 개선
 
-Each create schema function accepts an additional optional parameter that you can used to extend, modify or completely overwite a field's schema. Defining a callback function will extend or modify while providing a Zod schema will overwrite it.
+각 스키마 생성 함수는 필드의 스키마를 확장, 수정 또는 완전히 덮어쓸 수 있는 추가 선택적 매개변수를 받습니다. 콜백 함수를 정의하면 확장 또는 수정하고, Zod 스키마를 제공하면 덮어씁니다.
 
 ```ts copy
 import { pgTable, text, integer, json } from 'drizzle-orm/pg-core';
@@ -120,9 +120,9 @@ const users = pgTable('users', {
 });
 
 const userSelectSchema = createSelectSchema(users, {
-  name: (schema) => schema.max(20), // Extends schema
-  bio: (schema) => schema.max(1000), // Extends schema before becoming nullable/optional
-  preferences: z.object({ theme: z.string() }) // Overwrites the field, including its nullability
+  name: (schema) => schema.max(20), // 스키마 확장
+  bio: (schema) => schema.max(1000), // nullable/optional이 되기 전에 스키마 확장
+  preferences: z.object({ theme: z.string() }) // nullability를 포함하여 필드 덮어쓰기
 });
 
 const parsed: {
@@ -135,11 +135,11 @@ const parsed: {
 } = userSelectSchema.parse(...);
 ```
 
-### Factory functions
+### 팩토리 함수
 
-For more advanced use cases, you can use the `createSchemaFactory` function.
+더 고급 사용 사례를 위해 `createSchemaFactory` 함수를 사용할 수 있습니다.
 
-**Use case: Using an extended Zod instance**
+**사용 사례: 확장된 Zod 인스턴스 사용**
 
 ```ts copy
 import { pgTable, text, integer } from 'drizzle-orm/pg-core';
@@ -155,12 +155,12 @@ const users = pgTable('users', {
 const { createInsertSchema } = createSchemaFactory({ zodInstance: z });
 
 const userInsertSchema = createInsertSchema(users, {
-  // We can now use the extended instance
+  // 이제 확장된 인스턴스를 사용할 수 있습니다
   name: (schema) => schema.openapi({ example: 'John' })
 });
 ```
 
-**Use case: Type coercion**
+**사용 사례: 타입 강제 변환**
 
 ```ts copy
 import { pgTable, timestamp } from 'drizzle-orm/pg-core';
@@ -173,21 +173,21 @@ const users = pgTable('users', {
 });
 
 const { createInsertSchema } = createSchemaFactory({
-  // This configuration will only coerce dates. Set `coerce` to `true` to coerce all data types or specify others
+  // 이 설정은 날짜만 강제 변환합니다. 모든 데이터 타입을 강제 변환하려면 `coerce`를 `true`로 설정하거나 다른 타입을 지정하세요
   coerce: {
     date: true
   }
 });
 
 const userInsertSchema = createInsertSchema(users);
-// The above is the same as this:
+// 위 코드는 아래와 동일합니다:
 const userInsertSchema = z.object({
   ...,
   createdAt: z.coerce.date()
 });
 ```
 
-### Data type reference
+### 데이터 타입 레퍼런스
 
 ```ts
 pg.boolean();
@@ -281,28 +281,28 @@ z.string().max(length);
 mysql.tinytext();
 
 // Schema
-z.string().max(255); // unsigned 8-bit integer limit
+z.string().max(255); // unsigned 8비트 정수 제한
 ```
 
 ```ts
 mysql.text();
 
 // Schema
-z.string().max(65_535); // unsigned 16-bit integer limit
+z.string().max(65_535); // unsigned 16비트 정수 제한
 ```
 
 ```ts
 mysql.mediumtext();
 
 // Schema
-z.string().max(16_777_215); // unsigned 24-bit integer limit
+z.string().max(16_777_215); // unsigned 24비트 정수 제한
 ```
 
 ```ts
 mysql.longtext();
 
 // Schema
-z.string().max(4_294_967_295); // unsigned 32-bit integer limit
+z.string().max(4_294_967_295); // unsigned 32비트 정수 제한
 ```
 
 ```ts
@@ -328,14 +328,14 @@ z.enum(enum);
 mysql.tinyint();
 
 // Schema
-z.number().min(-128).max(127).int(); // 8-bit integer lower and upper limit
+z.number().min(-128).max(127).int(); // 8비트 정수 하한 및 상한
 ```
 
 ```ts
 mysql.tinyint({ unsigned: true });
 
 // Schema
-z.number().min(0).max(255).int(); // unsigned 8-bit integer lower and upper limit
+z.number().min(0).max(255).int(); // unsigned 8비트 정수 하한 및 상한
 ```
 
 ```ts
@@ -345,14 +345,14 @@ pg.smallserial();
 mysql.smallint();
 
 // Schema
-z.number().min(-32_768).max(32_767).int(); // 16-bit integer lower and upper limit
+z.number().min(-32_768).max(32_767).int(); // 16비트 정수 하한 및 상한
 ```
 
 ```ts
 mysql.smallint({ unsigned: true });
 
 // Schema
-z.number().min(0).max(65_535).int(); // unsigned 16-bit integer lower and upper limit
+z.number().min(0).max(65_535).int(); // unsigned 16비트 정수 하한 및 상한
 ```
 
 ```ts
@@ -361,28 +361,28 @@ pg.real();
 mysql.float();
 
 // Schema
-z.number().min(-8_388_608).max(8_388_607); // 24-bit integer lower and upper limit
+z.number().min(-8_388_608).max(8_388_607); // 24비트 정수 하한 및 상한
 ```
 
 ```ts
 mysql.mediumint();
 
 // Schema
-z.number().min(-8_388_608).max(8_388_607).int(); // 24-bit integer lower and upper limit
+z.number().min(-8_388_608).max(8_388_607).int(); // 24비트 정수 하한 및 상한
 ```
 
 ```ts
 mysql.float({ unsigned: true });
 
 // Schema
-z.number().min(0).max(16_777_215); // unsigned 24-bit integer lower and upper limit
+z.number().min(0).max(16_777_215); // unsigned 24비트 정수 하한 및 상한
 ```
 
 ```ts
 mysql.mediumint({ unsigned: true });
 
 // Schema
-z.number().min(0).max(16_777_215).int(); // unsigned 24-bit integer lower and upper limit
+z.number().min(0).max(16_777_215).int(); // unsigned 24비트 정수 하한 및 상한
 ```
 
 ```ts
@@ -392,14 +392,14 @@ pg.serial();
 mysql.int();
 
 // Schema
-z.number().min(-2_147_483_648).max(2_147_483_647).int(); // 32-bit integer lower and upper limit
+z.number().min(-2_147_483_648).max(2_147_483_647).int(); // 32비트 정수 하한 및 상한
 ```
 
 ```ts
 mysql.int({ unsigned: true });
 
 // Schema
-z.number().min(0).max(4_294_967_295).int(); // unsgined 32-bit integer lower and upper limit
+z.number().min(0).max(4_294_967_295).int(); // unsigned 32비트 정수 하한 및 상한
 ```
 
 ```ts
@@ -411,14 +411,14 @@ mysql.real();
 sqlite.real();
 
 // Schema
-z.number().min(-140_737_488_355_328).max(140_737_488_355_327); // 48-bit integer lower and upper limit
+z.number().min(-140_737_488_355_328).max(140_737_488_355_327); // 48비트 정수 하한 및 상한
 ```
 
 ```ts
 mysql.double({ unsigned: true });
 
 // Schema
-z.number().min(0).max(281_474_976_710_655); // unsigned 48-bit integer lower and upper limit
+z.number().min(0).max(281_474_976_710_655); // unsigned 48비트 정수 하한 및 상한
 ```
 
 ```ts
@@ -431,14 +431,14 @@ mysql.bigserial({ mode: 'number' });
 sqlite.integer({ mode: 'number' });
 
 // Schema
-z.number().min(-9_007_199_254_740_991).max(9_007_199_254_740_991).int(); // Javascript min. and max. safe integers
+z.number().min(-9_007_199_254_740_991).max(9_007_199_254_740_991).int(); // 자바스크립트 최소 및 최대 안전 정수
 ```
 
 ```ts
 mysql.serial();
 
 // Schema
-z.number().min(0).max(9_007_199_254_740_991).int(); // Javascript max. safe integer
+z.number().min(0).max(9_007_199_254_740_991).int(); // 자바스크립트 최대 안전 정수
 ```
 
 ```ts
@@ -450,14 +450,14 @@ mysql.bigint({ mode: 'bigint' });
 sqlite.blob({ mode: 'bigint' });
 
 // Schema
-z.bigint().min(-9_223_372_036_854_775_808n).max(9_223_372_036_854_775_807n); // 64-bit integer lower and upper limit
+z.bigint().min(-9_223_372_036_854_775_808n).max(9_223_372_036_854_775_807n); // 64비트 정수 하한 및 상한
 ```
 
 ```ts
 mysql.bigint({ mode: 'bigint', unsigned: true });
 
 // Schema
-z.bigint().min(0).max(18_446_744_073_709_551_615n); // unsigned 64-bit integer lower and upper limit
+z.bigint().min(0).max(18_446_744_073_709_551_615n); // unsigned 64비트 정수 하한 및 상한
 ```
 
 ```ts

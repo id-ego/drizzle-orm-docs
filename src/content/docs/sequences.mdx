@@ -3,21 +3,21 @@ import Callout from '@mdx/Callout.astro';
 import Tab from '@mdx/Tab.astro';
 import Tabs from '@mdx/Tabs.astro';
 
-# Sequences
+# 시퀀스
 
 <IsSupportedChipGroup chips={{ 'PostgreSQL': true, 'SQLite': false, 'MySQL': false, 'SingleStore': false, 'MSSQL': false, 'CockroachDB': true }} />
 
-Sequences in PostgreSQL and CockroachDB are special single-row tables created to generate unique identifiers, often used for auto-incrementing primary key values. They provide a thread-safe way to generate unique sequential values across multiple sessions.
+PostgreSQL과 CockroachDB의 시퀀스는 고유 식별자를 생성하기 위해 만들어진 특수한 단일 행 테이블로, 자동 증가하는 기본 키 값에 자주 사용됩니다. 여러 세션에서 고유한 순차 값을 생성하는 스레드 안전한 방법을 제공합니다.
 
 <Tabs items={['PostgreSQL', 'CockroachDB']}>
 <Tab>
 ```ts
 import { pgSchema, pgSequence } from "drizzle-orm/pg-core";
 
-// No params specified
+// 파라미터 없이 생성
 export const customSequence = pgSequence("name");
 
-// Sequence with params
+// 파라미터와 함께 생성
 export const customSequence = pgSequence("name", {
       startWith: 100,
       maxValue: 10000,
@@ -27,7 +27,7 @@ export const customSequence = pgSequence("name", {
       increment: 2
 });
 
-// Sequence in custom schema
+// 커스텀 스키마에서 시퀀스 생성
 export const customSchema = pgSchema('custom_schema');
 export const customSequence = customSchema.sequence("name");
 ```
@@ -36,10 +36,10 @@ export const customSequence = customSchema.sequence("name");
 ```ts
 import { cockroachSchema, cockroachSequence } from "drizzle-orm/cockroach-core";
 
-// No params specified
+// 파라미터 없이 생성
 export const customSequence = cockroachSequence("name");
 
-// Sequence with params
+// 파라미터와 함께 생성
 export const customSequence = cockroachSequence("name", {
       startWith: 100,
       maxValue: 10000,
@@ -49,7 +49,7 @@ export const customSequence = cockroachSequence("name", {
       increment: 2
 });
 
-// Sequence in custom schema
+// 커스텀 스키마에서 시퀀스 생성
 export const customSchema = cockroachSchema('custom_schema');
 export const customSequence = customSchema.sequence("name");
 ```

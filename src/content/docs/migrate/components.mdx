@@ -111,7 +111,7 @@ import YoutubeCards from "@mdx/YoutubeCards.astro";
 
 ## Section
 
-For codeblocks connection
+코드 블록 연결용
 
 <Section>
 ```typescript
@@ -214,21 +214,21 @@ CREATE TABLE `table` (
 
 ## Steps
 
-With h4 headers
+h4 헤더 사용
 
 <Steps>
 
-#### Install babel plugin
+#### babel 플러그인 설치
 
-It's necessary to bundle SQL migration files as string directly to your bundle.
+SQL 마이그레이션 파일을 문자열로 번들에 직접 포함시키기 위해 필요합니다.
 
 ```shell
 npm install babel-plugin-inline-import
 ```
 
-#### Update config files.
+#### 설정 파일 업데이트
 
-You will need to update `babel.config.js`, `metro.config.js` and `drizzle.config.ts` files
+`babel.config.js`, `metro.config.js`, `drizzle.config.ts` 파일을 업데이트해야 합니다
 
 ```js filename='babel.config.js'
 module.exports = function (api) {
@@ -266,7 +266,7 @@ module.exports = function (api) {
 ]}/>
 
 
-## Collapsable code block
+## 접을 수 있는 코드 블록
 
 ```prisma  copy filename="prisma/schema.prisma" collapsable
 generator client {

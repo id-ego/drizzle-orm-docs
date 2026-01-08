@@ -1,5 +1,5 @@
 ---
-title: MSSQL column types
+title: MSSQL 컬럼 타입
 ---
 
 import Section from '@mdx/Section.astro';
@@ -7,7 +7,7 @@ import Callout from '@mdx/Callout.astro';
 import Npm from '@mdx/Npm.astro';
 
 <Callout type='error'>
-This page explains concepts available on drizzle versions `1.0.0-beta.2` and higher.
+이 페이지는 drizzle 버전 `1.0.0-beta.2` 이상에서 사용 가능한 개념을 설명합니다.
 </Callout>
 
 <Npm>
@@ -17,18 +17,18 @@ drizzle-kit@beta -D
 
 <br/>
 
-We have native support for all of them, yet if that's not enough for you, feel free to create **[custom types](/docs/custom-types)**.
+모든 타입에 대한 네이티브 지원을 제공하지만, 충분하지 않다면 **[커스텀 타입](/docs/custom-types)**을 자유롭게 생성할 수 있습니다.
 
 <Callout title='important' type='warning'>
-All examples in this part of the documentation do not use database column name aliases, and column names are generated from TypeScript keys. 
+이 문서의 모든 예제는 데이터베이스 컬럼 이름 별칭을 사용하지 않으며, 컬럼 이름은 TypeScript 키에서 생성됩니다.
 
-You can use database aliases in column names if you want, and you can also use the `casing` parameter to define a mapping strategy for Drizzle. 
+원한다면 컬럼 이름에 데이터베이스 별칭을 사용할 수 있고, Drizzle의 매핑 전략을 정의하기 위해 `casing` 매개변수를 사용할 수도 있습니다.
 
-You can read more about it [here](/docs/sql-schema-declaration#shape-your-data-schema)
+자세한 내용은 [여기](/docs/sql-schema-declaration#shape-your-data-schema)를 참조하세요.
 </Callout>
 
 ### int
-Signed 4-byte integer     
+부호 있는 4바이트 정수     
 
 <Section>
 ```typescript
@@ -68,7 +68,7 @@ CREATE TABLE [table] (
 ### smallint
 `smallint`
 
-Small-range signed 2-byte integer   
+부호 있는 2바이트 정수   
 
 <Section>
 ```typescript
@@ -106,7 +106,7 @@ CREATE TABLE [table] (
 ### tinyint
 `tinyint`
 
-Small-range signed 1-byte integer   
+부호 있는 1바이트 정수   
 
 <Section>
 ```typescript
@@ -144,9 +144,9 @@ CREATE TABLE [table] (
 ### bigint
 `bigint`
 
-Signed 8-byte integer  
+부호 있는 8바이트 정수
 
-If you're expecting values above 2^31 but below 2^53, you can utilise `mode: 'number'` and deal with javascript number as opposed to bigint.
+2^31보다 크지만 2^53보다 작은 값을 예상하는 경우, `mode: 'number'`를 사용하여 bigint 대신 JavaScript number를 사용할 수 있습니다.
 <Section>
 ```typescript
 import { bigint, mssqlTable } from "drizzle-orm/mssql-core";
@@ -193,9 +193,9 @@ CREATE TABLE [table] (
 
 ### bit
 
-An integer data type that can take a value of `1`, `0`, or `NULL`
+`1`, `0` 또는 `NULL` 값을 가질 수 있는 정수 데이터 타입
 
-Drizzle will accept `true` or `false` as values instead of `1` and `0`
+Drizzle은 `1`과 `0` 대신 `true` 또는 `false` 값을 허용합니다
 
 <Section>
 ```typescript
@@ -217,13 +217,12 @@ CREATE TABLE [table] (
 ## ---
 
 ### text
-`text`  
-Variable-length non-Unicode data in the code page of the server and with a maximum string length 
-of 2^31 - 1 (2,147,483,647)
+`text`
+서버의 코드 페이지에 있는 가변 길이 non-Unicode 데이터이며 최대 문자열 길이는 2^31 - 1 (2,147,483,647)입니다
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/ntext-text-and-image-transact-sql?view=sql-server-ver17#text)**
-  
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/ntext-text-and-image-transact-sql?view=sql-server-ver17#text)**를 참조하세요.
+
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert` 및 `select` 타입을 추론할 수 있습니다. 이는 런타임 값을 검사하지 **않습니다**.
 <Section>
 ```typescript
 import { text, mssqlTable } from "drizzle-orm/mssql-core";
@@ -244,12 +243,12 @@ CREATE TABLE [table] (
 </Section>
 
 ### ntext
-`text`  
-Variable-length Unicode data with a maximum string length of 2^30 - 1 (1,073,741,823).
+`text`
+최대 문자열 길이가 2^30 - 1 (1,073,741,823)인 가변 길이 Unicode 데이터입니다.
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/ntext-text-and-image-transact-sql?view=sql-server-ver17#text)**
-  
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/ntext-text-and-image-transact-sql?view=sql-server-ver17#text)**를 참조하세요.
+
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert` 및 `select` 타입을 추론할 수 있습니다. 이는 런타임 값을 검사하지 **않습니다**.
 <Section>
 ```typescript
 import { text, mssqlTable } from "drizzle-orm/mssql-core";
@@ -270,14 +269,14 @@ CREATE TABLE [table] (
 </Section>
 
 ### varchar
-`varchar(n|max)`  
-Variable-size string data. Use n to define the string size in bytes and can be a value from 1 through 8,000
+`varchar(n|max)`
+가변 크기 문자열 데이터입니다. n을 사용하여 문자열 크기를 바이트 단위로 정의하며 1부터 8,000까지의 값을 가질 수 있습니다
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/char-and-varchar-transact-sql?view=sql-server-ver17#varchar---n--max--)**
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/char-and-varchar-transact-sql?view=sql-server-ver17#varchar---n--max--)**를 참조하세요.
 
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert` 및 `select` 타입을 추론할 수 있습니다. 이는 런타임 값을 검사하지 **않습니다**.
 
-The `length` parameter is optional according to MSSQL docs.
+MSSQL 문서에 따르면 `length` 매개변수는 선택 사항입니다.
 <Section>
 ```typescript
 import { varchar, mssqlTable } from "drizzle-orm/mssql-core";
@@ -302,14 +301,14 @@ CREATE TABLE [table] (
 </Section>
 
 ### nvarchar
-`nvarchar(n|max)`  
-Variable-size string data. The value of n defines the string size in byte-pairs
+`nvarchar(n|max)`
+가변 크기 문자열 데이터입니다. n 값은 바이트 쌍 단위로 문자열 크기를 정의합니다
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/nchar-and-nvarchar-transact-sql?view=sql-server-ver17#nvarchar---n--max--)**
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/nchar-and-nvarchar-transact-sql?view=sql-server-ver17#nvarchar---n--max--)**를 참조하세요.
 
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert` 및 `select` 타입을 추론할 수 있습니다. 이는 런타임 값을 검사하지 **않습니다**.
 
-The `length` parameter is optional according to MSSQL docs.
+MSSQL 문서에 따르면 `length` 매개변수는 선택 사항입니다.
 <Section>
 ```typescript
 import { nvarchar, mssqlTable } from "drizzle-orm/mssql-core";
@@ -335,15 +334,15 @@ CREATE TABLE [table] (
 </Section>
 
 ### char
-`char(n)`  
+`char(n)`
 
-Fixed-size string data. n defines the string size in bytes and must be a value from 1 through 8,000
+고정 크기 문자열 데이터입니다. n은 바이트 단위로 문자열 크기를 정의하며 1부터 8,000까지의 값이어야 합니다
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/char-and-varchar-transact-sql?view=sql-server-ver17#char---n--)**
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/char-and-varchar-transact-sql?view=sql-server-ver17#char---n--)**를 참조하세요.
 
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert` 및 `select` 타입을 추론할 수 있습니다. 이는 런타임 값을 검사하지 **않습니다**.
 
-The `length` parameter is optional according to MSSQL docs.
+MSSQL 문서에 따르면 `length` 매개변수는 선택 사항입니다.
 <Section>
 ```typescript
 import { char, mssqlTable } from "drizzle-orm/mssql-core";
@@ -366,15 +365,15 @@ CREATE TABLE [table] (
 </Section>
 
 ### nchar
-`nchar(n)`  
+`nchar(n)`
 
-Fixed-size string data. n defines the string size in byte-pairs, and must be a value from 1 through 4,000
+고정 크기 문자열 데이터입니다. n은 바이트 쌍 단위로 문자열 크기를 정의하며 1부터 4,000까지의 값이어야 합니다
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/nchar-and-nvarchar-transact-sql?view=sql-server-ver17#nchar---n--)**
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/nchar-and-nvarchar-transact-sql?view=sql-server-ver17#nchar---n--)**를 참조하세요.
 
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert` 및 `select` 타입을 추론할 수 있습니다. 이는 런타임 값을 검사하지 **않습니다**.
 
-The `length` parameter is optional according to MSSQL docs.
+MSSQL 문서에 따르면 `length` 매개변수는 선택 사항입니다.
 <Section>
 ```typescript
 import { nchar, mssqlTable } from "drizzle-orm/mssql-core";
@@ -400,7 +399,7 @@ CREATE TABLE [table] (
 
 ### binary
 
-Fixed-length binary data with a length of n bytes, where n is a value from 1 through 8,000. The storage size is n bytes.
+n바이트 길이의 고정 길이 바이너리 데이터입니다. 여기서 n은 1부터 8,000까지의 값입니다. 저장 크기는 n바이트입니다.
 
 <Section>
 ```typescript
@@ -422,7 +421,7 @@ CREATE TABLE [table] (
 
 ### varbinary
 
-Variable-length binary data. n can be a value from 1 through 8,000. max indicates that the maximum storage size is 2^31-1 bytes
+가변 길이 바이너리 데이터입니다. n은 1부터 8,000까지의 값을 가질 수 있습니다. max는 최대 저장 크기가 2^31-1 바이트임을 나타냅니다
 
 <Section>
 ```typescript
@@ -449,9 +448,9 @@ CREATE TABLE [table] (
 ### numeric
 `numeric`
 
-Fixed precision and scale numbers. When maximum precision is used, valid values are from -10^38 + 1 through 10^38 - 1
+고정 정밀도 및 스케일 숫자입니다. 최대 정밀도를 사용할 때 유효한 값은 -10^38 + 1부터 10^38 - 1까지입니다
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/decimal-and-numeric-transact-sql?view=sql-server-ver17#decimal---p---s----and-numeric---p---s---)**
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/decimal-and-numeric-transact-sql?view=sql-server-ver17#decimal---p---s----and-numeric---p---s---)**를 참조하세요.
 
 <Section>
 ```typescript
@@ -476,13 +475,13 @@ CREATE TABLE [table] (
 </Section>
 
 ### decimal
-An alias of **[numeric.](#numeric)**
+**[numeric](#numeric)**의 별칭입니다.
 
 ### real
 
-The ISO synonym for real is float(24).
+real의 ISO 동의어는 float(24)입니다.
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/float-and-real-transact-sql?view=sql-server-ver17)**  
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/float-and-real-transact-sql?view=sql-server-ver17)**를 참조하세요.  
 
 <Section>
 ```typescript
@@ -505,9 +504,9 @@ CREATE TABLE [table] (
 
 ### float
 
-float [ (n) ] Where n is the number of bits that are used to store the mantissa of the float number in scientific notation and, therefore, dictates the precision and storage size. If n is specified, it must be a value between 1 and 53. The default value of n is 53.
+float [ (n) ] 여기서 n은 과학적 표기법으로 float 숫자의 가수를 저장하는 데 사용되는 비트 수이므로 정밀도와 저장 크기를 결정합니다. n이 지정된 경우 1에서 53 사이의 값이어야 합니다. n의 기본값은 53입니다.
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/float-and-real-transact-sql?view=sql-server-ver17#syntax)**  
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/float-and-real-transact-sql?view=sql-server-ver17#syntax)**를 참조하세요.  
 
 <Section>
 ```typescript
@@ -533,9 +532,9 @@ CREATE TABLE [table] (
 ### time
 `time`
 
-Defines a time of a day. The time is without time zone awareness and is based on a 24-hour clock.
+하루 중 시간을 정의합니다. 시간은 시간대 인식이 없으며 24시간제를 기반으로 합니다.
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/time-transact-sql?view=sql-server-ver17#time-description)**
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/time-transact-sql?view=sql-server-ver17#time-description)**를 참조하세요.
 
 <Section>
 ```typescript
@@ -560,11 +559,11 @@ CREATE TABLE [table] (
 </Section>
 
 ### date
-`date`  
+`date`
 
-Calendar date (year, month, day)
+달력 날짜 (년, 월, 일)
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/date-transact-sql?view=sql-server-ver17#date-description)**
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/date-transact-sql?view=sql-server-ver17#date-description)**를 참조하세요.
 <Section>
 ```typescript
 import { date, mssqlTable } from "drizzle-orm/mssql-core";
@@ -580,25 +579,25 @@ CREATE TABLE [table] (
 );
 ```
 </Section>
-You can specify either `date` or `string` infer modes:
+`date` 또는 `string` 추론 모드를 지정할 수 있습니다:
 ```typescript
-// will infer as date
+// date로 추론됩니다
 date: date({ mode: "date" }),
 
-// will infer as string
+// string으로 추론됩니다
 date: date({ mode: "string" }),
 ```
 
 ### datetime
-`datetime`  
+`datetime`
 
-Defines a date that is combined with a time of day with fractional seconds that is based on a 24-hour clock.
+24시간제를 기반으로 하는 소수 초 단위의 시간과 결합된 날짜를 정의합니다.
 
-<Callout title='MSSQL docs'>
-Avoid using datetime for new work. Instead, use the time, date, datetime2, and datetimeoffset data types. These types align with the SQL Standard, and are more portable. time, datetime2 and datetimeoffset provide more seconds precision. datetimeoffset provides time zone support for globally deployed applications.
+<Callout title='MSSQL 문서'>
+새로운 작업에는 datetime 사용을 피하세요. 대신 time, date, datetime2 및 datetimeoffset 데이터 타입을 사용하세요. 이러한 타입은 SQL 표준에 부합하며 이식성이 더 좋습니다. time, datetime2 및 datetimeoffset은 더 높은 초 정밀도를 제공합니다. datetimeoffset은 전 세계적으로 배포되는 애플리케이션을 위한 시간대 지원을 제공합니다.
 </Callout>
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/datetime-transact-sql?view=sql-server-ver17#description)**
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/datetime-transact-sql?view=sql-server-ver17#description)**를 참조하세요.
 <Section>
 ```typescript
 import { datetime, mssqlTable } from "drizzle-orm/mssql-core";
@@ -614,21 +613,21 @@ CREATE TABLE [table] (
 );
 ```
 </Section>
-You can specify either `date` or `string` infer modes:
+`date` 또는 `string` 추론 모드를 지정할 수 있습니다:
 ```typescript
-// will infer as date
+// date로 추론됩니다
 datetime: datetime({ mode: "date" }),
 
-// will infer as string
+// string으로 추론됩니다
 datetime: datetime({ mode: "string" }),
 ```
 
 ### datetime2
-`datetime2`  
+`datetime2`
 
-Defines a date that is combined with a time of day that is based on 24-hour clock. datetime2 can be considered as an extension of the existing datetime type that has a larger date range, a larger default fractional precision, and optional user-specified precision.
+24시간제를 기반으로 하는 시간과 결합된 날짜를 정의합니다. datetime2는 더 넓은 날짜 범위, 더 큰 기본 소수 정밀도 및 선택적 사용자 지정 정밀도를 가진 기존 datetime 타입의 확장으로 간주될 수 있습니다.
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/datetime2-transact-sql?view=sql-server-ver17#datetime2-description)**
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/datetime2-transact-sql?view=sql-server-ver17#datetime2-description)**를 참조하세요.
 <Section>
 ```typescript
 import { datetime2, mssqlTable } from "drizzle-orm/mssql-core";
@@ -644,21 +643,21 @@ CREATE TABLE [table] (
 );
 ```
 </Section>
-You can specify either `date` or `string` infer modes:
+`date` 또는 `string` 추론 모드를 지정할 수 있습니다:
 ```typescript
-// will infer as date
+// date로 추론됩니다
 datetime2: datetime2({ mode: "date" }),
 
-// will infer as string
+// string으로 추론됩니다
 datetime2: datetime2({ mode: "string" }),
 ```
 
 ### datetimeoffset
-`datetimeoffset`  
+`datetimeoffset`
 
-Defines a date that is combined with a time of a day based on a 24-hour clock like datetime2, and adds time zone awareness based on Coordinated Universal Time (UTC).
+datetime2와 같이 24시간제를 기반으로 하는 시간과 결합된 날짜를 정의하며, 협정 세계시(UTC)를 기반으로 한 시간대 인식을 추가합니다.
 
-For more info please refer to the official MSSQL **[docs.](https://learn.microsoft.com/en-us/sql/t-sql/data-types/datetimeoffset-transact-sql?view=sql-server-ver17#datetimeoffset-description)**
+자세한 내용은 공식 MSSQL **[문서](https://learn.microsoft.com/en-us/sql/t-sql/data-types/datetimeoffset-transact-sql?view=sql-server-ver17#datetimeoffset-description)**를 참조하세요.
 <Section>
 ```typescript
 import { datetimeoffset, mssqlTable } from "drizzle-orm/mssql-core";
@@ -674,21 +673,21 @@ CREATE TABLE [table] (
 );
 ```
 </Section>
-You can specify either `date` or `string` infer modes:
+`date` 또는 `string` 추론 모드를 지정할 수 있습니다:
 ```typescript
-// will infer as date
+// date로 추론됩니다
 datetimeoffset: datetimeoffset({ mode: "date" }),
 
-// will infer as string
+// string으로 추론됩니다
 datetimeoffset: datetimeoffset({ mode: "string" }),
 ```
 
 ## ---
 
-### Customizing data type
-Every column builder has a `.$type()` method, which allows you to customize the data type of the column. 
+### 데이터 타입 커스터마이징
+모든 컬럼 빌더는 `.$type()` 메서드를 가지고 있으며, 이를 통해 컬럼의 데이터 타입을 커스터마이징할 수 있습니다.
 
-This is useful, for example, with unknown or branded types:
+예를 들어 unknown 또는 branded 타입에 유용합니다:
 ```ts
 type UserId = number & { __brand: 'user_id' };
 type Data = {
@@ -702,14 +701,11 @@ const users = mssqlTable('users', {
 });
 ```
 
-### Default value
-The `DEFAULT` clause specifies a default value to use for the column if no value
-is explicitly provided by the user when doing an `INSERT`.
-If there is no explicit `DEFAULT` clause attached to a column definition,
-then the default value of the column is `NULL`.
+### 기본값
+`DEFAULT` 절은 `INSERT` 시 사용자가 명시적으로 값을 제공하지 않은 경우 컬럼에 사용할 기본값을 지정합니다.
+컬럼 정의에 명시적인 `DEFAULT` 절이 없으면 컬럼의 기본값은 `NULL`입니다.
 
-An explicit `DEFAULT` clause may specify that the default value is `NULL`,
-a string constant, a blob constant, a signed-number, or any constant expression enclosed in parentheses.
+명시적 `DEFAULT` 절은 기본값이 `NULL`, 문자열 상수, blob 상수, 부호 있는 숫자 또는 괄호로 묶인 모든 상수 표현식임을 지정할 수 있습니다.
 
 <Section>
 ```typescript
@@ -730,11 +726,10 @@ CREATE TABLE [table] (
 ```
 </Section>
 
-When using `$default()` or `$defaultFn()`, which are simply different aliases for the same function, 
-you can generate defaults at runtime and use these values in all insert queries. 
+`$default()` 또는 `$defaultFn()`을 사용할 때 (이들은 동일한 함수에 대한 다른 별칭일 뿐입니다), 런타임에 기본값을 생성하고 모든 삽입 쿼리에서 이러한 값을 사용할 수 있습니다.
 
 <Callout type="info" emoji="ℹ️">
-	Note: This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`
+	참고: 이 값은 `drizzle-kit` 동작에 영향을 주지 않으며, `drizzle-orm`에서 런타임에만 사용됩니다
 </Callout>
 
 ```ts
@@ -746,16 +741,13 @@ const table = mssqlTable('table', {
 });
 ```
 
-When using `$onUpdate()` or `$onUpdateFn()`, which are simply different aliases for the same function, 
-you can generate defaults at runtime and use these values in all update queries. 
+`$onUpdate()` 또는 `$onUpdateFn()`을 사용할 때 (이들은 동일한 함수에 대한 다른 별칭일 뿐입니다), 런타임에 기본값을 생성하고 모든 업데이트 쿼리에서 이러한 값을 사용할 수 있습니다.
 
-Adds a dynamic update value to the column. The function will be called when the row is updated, 
-and the returned value will be used as the column value if none is provided.
-If no default (or $defaultFn) value is provided, the function will be called
-when the row is inserted as well, and the returned value will be used as the column value.
+컬럼에 동적 업데이트 값을 추가합니다. 행이 업데이트될 때 함수가 호출되고, 제공되지 않은 경우 반환된 값이 컬럼 값으로 사용됩니다.
+기본값(또는 $defaultFn)이 제공되지 않으면 행이 삽입될 때도 함수가 호출되고 반환된 값이 컬럼 값으로 사용됩니다.
 
 <Callout type="info" emoji="ℹ️">
-	Note: This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`
+	참고: 이 값은 `drizzle-kit` 동작에 영향을 주지 않으며, `drizzle-orm`에서 런타임에만 사용됩니다
 </Callout>
 
 ```ts
@@ -770,7 +762,7 @@ const table = mssqlTable('table', {
 
 
 ### Not null
-`NOT NULL` constraint dictates that the associated column may not contain a `NULL` value.
+`NOT NULL` 제약조건은 연결된 컬럼이 `NULL` 값을 포함할 수 없음을 명시합니다.
 
 <Section>
 ```typescript
@@ -789,9 +781,9 @@ CREATE TABLE [table] (
 </Section>
 
 
-### Primary key
-A primary key constraint indicates that a column, or group of columns, can be used as a unique identifier for rows in the table. 
-This requires that the values be both unique and not null.
+### 기본 키
+기본 키 제약조건은 컬럼 또는 컬럼 그룹이 테이블의 행에 대한 고유 식별자로 사용될 수 있음을 나타냅니다.
+이를 위해서는 값이 고유하고 null이 아니어야 합니다.
 <Section>
 ```typescript
 import { int, mssqlTable } from "drizzle-orm/mssql-core";

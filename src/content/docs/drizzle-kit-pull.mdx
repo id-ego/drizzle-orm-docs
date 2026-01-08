@@ -13,20 +13,20 @@ import Npx from "@mdx/Npx.astro"
 # `drizzle-kit pull`
 
 <Prerequisites>
-- Get started with Drizzle and `drizzle-kit` - [read here](/docs/get-started)
-- Drizzle schema fundamentals - [read here](/docs/sql-schema-declaration) 
-- Database connection basics - [read here](/docs/connect-overview) 
-- Drizzle migrations fundamentals - [read here](/docs/migrations) 
-- Drizzle Kit [overview](/docs/kit-overview) and [config file](/docs/drizzle-config-file) docs
+- Drizzle 및 `drizzle-kit` 시작하기 - [여기 읽기](/docs/get-started)
+- Drizzle 스키마 기초 - [여기 읽기](/docs/sql-schema-declaration)
+- 데이터베이스 연결 기본 - [여기 읽기](/docs/connect-overview)
+- Drizzle 마이그레이션 기초 - [여기 읽기](/docs/migrations)
+- Drizzle Kit [개요](/docs/kit-overview) 및 [설정 파일](/docs/drizzle-config-file) 문서
 </Prerequisites>
 
-`drizzle-kit pull` lets you literally pull(introspect) your existing database schema and generate `schema.ts` drizzle schema file, 
-it is designed to cover [database first](/docs/migrations) approach of Drizzle migrations.
+`drizzle-kit pull`을 사용하면 기존 데이터베이스 스키마를 그대로 가져와(인트로스펙션) `schema.ts` Drizzle 스키마 파일을 생성할 수 있으며,
+Drizzle 마이그레이션의 [데이터베이스 우선](/docs/migrations) 접근 방식을 지원하도록 설계되었습니다.
 
-<Callout collapsed="How it works under the hood?">
-When you run Drizzle Kit `pull` command it will:
-1. Pull database schema(DDL) from your existing database
-2. Generate `schema.ts` drizzle schema file and save it to `out` folder
+<Callout collapsed="내부 동작 원리">
+Drizzle Kit `pull` 명령어를 실행하면:
+1. 기존 데이터베이스에서 데이터베이스 스키마(DDL)를 가져옵니다
+2. `schema.ts` Drizzle 스키마 파일을 생성하여 `out` 폴더에 저장합니다
 
 <Section>
 ```
@@ -54,18 +54,17 @@ export const users = p.pgTable("users", {
 </Section>
 </Callout>
 
-It is a great approach if you need to manage database schema outside of your TypeScript project or 
-you're using database, which is managed by somebody else.
+TypeScript 프로젝트 외부에서 데이터베이스 스키마를 관리해야 하거나
+다른 사람이 관리하는 데이터베이스를 사용하는 경우 유용한 접근 방식입니다.
 
 <br/>
 <hr/>
 <br/>
 
-`drizzle-kit pull` requires you to specify `dialect` and either
-database connection `url` or `user:password@host:port/db` params, you can provide them
-either via [drizzle.config.ts](/docs/drizzle-config-file) config file or via CLI options:
+`drizzle-kit pull`은 `dialect`와 데이터베이스 연결 `url` 또는 `user:password@host:port/db` 파라미터 중 하나를 지정해야 합니다.
+[drizzle.config.ts](/docs/drizzle-config-file) 설정 파일 또는 CLI 옵션을 통해 제공할 수 있습니다:
 
-<CodeTabs items={["With config file", "With CLI options"]}>
+<CodeTabs items={["설정 파일 사용", "CLI 옵션 사용"]}>
 <Section>
 ```ts
 // drizzle.config.ts
@@ -88,9 +87,9 @@ npx drizzle-kit pull --dialect=postgresql --url=postgresql://user:password@host:
 ```
 </CodeTabs>
 
-### Multiple configuration files in one project
+### 프로젝트에 여러 설정 파일 사용
 
-You can have multiple config files in the project, it's very useful when you have multiple database stages or multiple databases or different databases on the same project:
+프로젝트에 여러 설정 파일을 가질 수 있으며, 여러 데이터베이스 스테이지, 여러 데이터베이스 또는 동일한 프로젝트에서 다른 데이터베이스를 사용할 때 매우 유용합니다:
 
 <Npx>
   drizzle-kit pull --config=drizzle-dev.config.ts
@@ -107,16 +106,16 @@ You can have multiple config files in the project, it's very useful when you hav
  └ 📜 tsconfig.json
 ```
 
-### Specifying database driver
+### 데이터베이스 드라이버 지정
 <Callout type="warning">
-**Expo SQLite** and **OP SQLite** are on-device(per-user) databases, there's no way to `pull` database schema from there.<br/>
-For embedded databases Drizzle provides **embedded migrations** - check out our [get started](/docs/get-started/expo-new) guide.
+**Expo SQLite** 및 **OP SQLite**는 온-디바이스(사용자별) 데이터베이스이므로 여기서 데이터베이스 스키마를 `pull`할 방법이 없습니다.<br/>
+임베디드 데이터베이스의 경우 Drizzle은 **임베디드 마이그레이션**을 제공합니다 - [시작하기](/docs/get-started/expo-new) 가이드를 확인하세요.
 </Callout>
-Drizzle Kit does not come with a pre-bundled database driver, 
-it will automatically pick available database driver from your current project based on the `dialect` - [see discussion](https://github.com/drizzle-team/drizzle-orm/discussions/2203).
+Drizzle Kit에는 사전 번들된 데이터베이스 드라이버가 포함되어 있지 않으며,
+`dialect`를 기반으로 현재 프로젝트에서 사용 가능한 데이터베이스 드라이버를 자동으로 선택합니다 - [토론 보기](https://github.com/drizzle-team/drizzle-orm/discussions/2203).
 
-Mostly all drivers of the same dialect share the same set of connection params, 
-as for exceptions like `aws-data-api`, `pglight` and `d1-http` - you will have to explicitely specify `driver` param.
+대부분의 동일한 dialect의 드라이버는 동일한 연결 파라미터를 공유하지만,
+`aws-data-api`, `pglight`, `d1-http`와 같은 예외의 경우 명시적으로 `driver` 파라미터를 지정해야 합니다.
 
 <CodeTabs items={["AWS Data API", "PGLite", "Cloudflare D1 HTTP"]}>
 ```ts {6}
@@ -162,10 +161,10 @@ export default defineConfig({
 ```
 </CodeTabs>
 
-### Initial pull
+### 초기 풀
 
 <Callout type='error'>
-This feature is available on  `1.0.0-beta.2` and higher.
+이 기능은 `1.0.0-beta.2` 이상에서 사용할 수 있습니다.
 </Callout>
 
 <Npm>
@@ -175,27 +174,26 @@ drizzle-kit@beta -D
 
 <br/>
 
-You can use the `--init` flag to mark the pulled schema as an applied migration in your database, 
-so that all subsequent migrations are diffed against the initial one
+`--init` 플래그를 사용하여 가져온 스키마를 데이터베이스에 적용된 마이그레이션으로 표시할 수 있으며,
+이후의 모든 마이그레이션은 초기 스키마를 기준으로 비교됩니다
 
 ```shell
 npx drizzle-kit push --init
 ```
 
-### Including tables, schemas and extensions
-`drizzle-kit push` will by default manage all tables in `public` schema.
-You can configure list of tables, schemas and extensions via `tablesFilters`, `schemaFilter` and `extensionFilters` options.
+### 테이블, 스키마 및 확장 포함
+`drizzle-kit push`는 기본적으로 `public` 스키마의 모든 테이블을 관리합니다.
+`tablesFilters`, `schemaFilter`, `extensionFilters` 옵션을 통해 테이블, 스키마 및 확장 목록을 구성할 수 있습니다.
 
 |                     |                                                                                               |
 | :------------------ | :-------------------------------------------------------------------------------------------- |
-| `tablesFilter`      | `glob` based table names filter, e.g. `["users", "user_info"]` or `"user*"`. Default is `"*"` |
-| `schemaFilter`      | `glob` based schema names filter, e.g. `["public", "drizzle"]` or `"drizzle*"`. Default is `"*"`                     |
-| `extensionsFilters` | List of installed database extensions, e.g. `["postgis"]`. Default is `[]`                    |
+| `tablesFilter`      | `glob` 기반 테이블 이름 필터, 예: `["users", "user_info"]` 또는 `"user*"`. 기본값은 `"*"` |
+| `schemaFilter`      | `glob` 기반 스키마 이름 필터, 예: `["public", "drizzle"]` 또는 `"drizzle*"`. 기본값은 `"*"`                     |
+| `extensionsFilters` | 설치된 데이터베이스 확장 목록, 예: `["postgis"]`. 기본값은 `[]`                    |
 <br/>
 
-Let's configure drizzle-kit to only operate with **all tables** in **public** schema
-and let drizzle-kit know that there's a **postgis** extension installed, 
-which creates it's own tables in public schema, so drizzle can ignore them.
+drizzle-kit이 **public** 스키마의 **모든 테이블**에만 작동하도록 구성하고,
+**postgis** 확장이 설치되어 있으며 public 스키마에 자체 테이블을 생성하므로 Drizzle이 이를 무시할 수 있도록 알려줍니다.
 
 <Section>
 ```ts filename="drizzle.config.ts" {9-11}
@@ -217,26 +215,26 @@ npx drizzle-kit push
 ```
 </Section>
 
-### Extended list of configurations
-We recommend configuring `drizzle-kit` through [drizzle.config.ts](/docs/drizzle-config-file) file, 
-yet you can provide all configuration options through CLI if necessary, e.g. in CI/CD pipelines, etc.
+### 확장 설정 목록
+[drizzle.config.ts](/docs/drizzle-config-file) 파일을 통해 `drizzle-kit`을 구성하는 것을 권장하지만,
+필요한 경우(예: CI/CD 파이프라인 등) CLI를 통해 모든 설정 옵션을 제공할 수 있습니다.
 
 |                     |            |                                                                           |
 | :------------------ | :--------- | :------------------------------------------------------------------------ |
-| `dialect`           | `required` | Database dialect, one of <Dialects/>                                      |
-| `driver`            |            | Drivers exceptions <Drivers/>                                             |
-| `out`               |            | Migrations output folder path, default is `./drizzle`                     |
-| `url`               |            | Database connection string                                                |
-| `user`              |            | Database user                                                             |
-| `password`          |            | Database password                                                         |
-| `host`              |            | Host                                                                      |
-| `port`              |            | Port                                                                      |
-| `database`          |            | Database name                                                             |
-| `config`            |            | Configuration file path, default is `drizzle.config.ts`                          |
-| `introspect-casing` |            | Strategy for JS keys creation in columns, tables, etc. `preserve` `camel` |
-| `tablesFilter`      |            | Table name filter                                                         |
-| `schemaFilter`      |            | Schema name filter. Default: `["public"]`                                 |
-| `extensionsFilters` |            | Database extensions internal database filters                             |
+| `dialect`           | `required` | 데이터베이스 dialect, <Dialects/> 중 하나                                      |
+| `driver`            |            | 드라이버 예외 <Drivers/>                                             |
+| `out`               |            | 마이그레이션 출력 폴더 경로, 기본값은 `./drizzle`                     |
+| `url`               |            | 데이터베이스 연결 문자열                                                |
+| `user`              |            | 데이터베이스 사용자                                                             |
+| `password`          |            | 데이터베이스 비밀번호                                                         |
+| `host`              |            | 호스트                                                                      |
+| `port`              |            | 포트                                                                      |
+| `database`          |            | 데이터베이스 이름                                                             |
+| `config`            |            | 설정 파일 경로, 기본값은 `drizzle.config.ts`                          |
+| `introspect-casing` |            | 컬럼, 테이블 등의 JS 키 생성 전략. `preserve` `camel` |
+| `tablesFilter`      |            | 테이블 이름 필터                                                         |
+| `schemaFilter`      |            | 스키마 이름 필터. 기본값: `["public"]`                                 |
+| `extensionsFilters` |            | 데이터베이스 확장 내부 데이터베이스 필터                             |
 
 <Npx>
 drizzle-kit pull --dialect=postgresql --url=postgresql://user:password@host:port/dbname

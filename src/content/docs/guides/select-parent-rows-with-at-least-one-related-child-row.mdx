@@ -1,5 +1,5 @@
 ---
-title: Select parent rows with at least one related child row
+title: 최소 하나의 관련 자식 행이 있는 부모 행 조회
 slug: select-parent-rows-with-at-least-one-related-child-row
 ---
 
@@ -12,13 +12,13 @@ import Section from "@mdx/Section.astro";
 <IsSupportedChipGroup chips={{PostgreSQL: true, MySQL: true, SQLite: true}}/>
 
 <Prerequisites>
-- Get started with [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql) and [SQLite](/docs/get-started-sqlite)
-- [Select statement](/docs/select) and [select from subquery](/docs/select#select-from-subquery)
+- [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql), [SQLite](/docs/get-started-sqlite) 시작하기
+- [Select 문](/docs/select)과 [서브쿼리에서 조회하기](/docs/select#select-from-subquery)
 - [Inner join](/docs/joins#inner-join)
-- [Filter operators](/docs/operators) and [exists function](/docs/operators#exists)
+- [필터 연산자](/docs/operators)와 [exists 함수](/docs/operators#exists)
 </Prerequisites>
 
-This guide demonstrates how to select parent rows with the condition of having at least one related child row. Below, there are examples of schema definitions and the corresponding database data:
+이 가이드는 최소 하나의 관련 자식 행이 있는 부모 행을 조회하는 방법을 설명합니다. 아래는 스키마 정의와 해당 데이터베이스 데이터의 예제입니다:
 
   ```ts copy
   import { integer, pgTable, serial, text } from 'drizzle-orm/pg-core';
@@ -67,7 +67,7 @@ This guide demonstrates how to select parent rows with the condition of having a
   </CodeTab>
 </CodeTabs>
 
-To select parent rows with at least one related child row and retrieve child data you can use `.innerJoin()` method:
+최소 하나의 관련 자식 행이 있는 부모 행을 조회하고 자식 데이터를 가져오려면 `.innerJoin()` 메서드를 사용할 수 있습니다:
 
 <Section>
   ```ts copy {12}
@@ -93,7 +93,7 @@ To select parent rows with at least one related child row and retrieve child dat
   ```
 
   ```ts
-  // result data, there is no user with id 2 because he has no posts
+  // 결과 데이터, id가 2인 사용자는 게시글이 없어서 포함되지 않습니다
   [
     {
       user: { id: 1, name: 'John Doe', email: 'john_doe@email.com' },
@@ -126,7 +126,7 @@ To select parent rows with at least one related child row and retrieve child dat
   ```
 </Section>
 
-To only select parent rows with at least one related child row you can use subquery with `exists()` function like this:
+최소 하나의 관련 자식 행이 있는 부모 행만 조회하려면 다음과 같이 `exists()` 함수와 서브쿼리를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {8}
@@ -145,7 +145,7 @@ select * from users where exists (select 1 from posts where posts.user_id = user
 ```
 
 ```ts
-// result data, there is no user with id 2 because he has no posts
+// 결과 데이터, id가 2인 사용자는 게시글이 없어서 포함되지 않습니다
 [
   { id: 1, name: 'John Doe', email: 'john_doe@email.com' },
   { id: 3, name: 'Nick Smith', email: 'nick_smith@email.com' }

@@ -1,13 +1,13 @@
 import Tab from '@mdx/Tab.astro';
 import Tabs from '@mdx/Tabs.astro';
 
-# Transactions
+# 트랜잭션
 
-SQL transaction is a grouping of one or more SQL statements that interact with a database.
-A transaction in its entirety can commit to a database as a single logical unit
-or rollback (become undone) as a single logical unit.
+SQL 트랜잭션은 데이터베이스와 상호작용하는 하나 이상의 SQL 문을 그룹화한 것입니다.
+트랜잭션은 전체적으로 단일 논리 단위로 데이터베이스에 커밋되거나
+단일 논리 단위로 롤백(취소)될 수 있습니다.
 
-Drizzle ORM provides APIs to run SQL statements in transactions:
+Drizzle ORM은 트랜잭션에서 SQL 문을 실행하는 API를 제공합니다:
 
 ```ts copy
 const db = drizzle(...)
@@ -18,7 +18,7 @@ await db.transaction(async (tx) => {
 });
 ```
 
-Drizzle ORM supports `savepoints` with nested transactions API:
+Drizzle ORM은 중첩 트랜잭션 API로 `savepoints`를 지원합니다:
 
 ```ts copy {7-9}
 const db = drizzle(...)
@@ -33,7 +33,7 @@ await db.transaction(async (tx) => {
 });
 ```
 
-You can embed business logic to the transaction and rollback whenever needed:
+트랜잭션에 비즈니스 로직을 포함하고 필요할 때 롤백할 수 있습니다:
 
 ```ts copy {7}
 const db = drizzle(...)
@@ -41,7 +41,7 @@ const db = drizzle(...)
 await db.transaction(async (tx) => {
   const [account] = await tx.select({ balance: accounts.balance }).from(accounts).where(eq(users.name, 'Dan'));
   if (account.balance < 100) {
-    // This throws an exception that rollbacks the transaction.
+    // 트랜잭션을 롤백하는 예외를 발생시킵니다.
     tx.rollback()
   }
 
@@ -50,7 +50,7 @@ await db.transaction(async (tx) => {
 });
 ```
 
-You can return values from the transaction:
+트랜잭션에서 값을 반환할 수 있습니다:
 
 ```ts copy {8}
 const db = drizzle(...)
@@ -64,7 +64,7 @@ const newBalance: number = await db.transaction(async (tx) => {
 });
 ```
 
-You can use transactions with **[relational queries](/docs/rqb)**:
+**[관계형 쿼리](/docs/rqb)**와 함께 트랜잭션을 사용할 수 있습니다:
 
 ```ts
 const db = drizzle({ schema })
@@ -82,7 +82,7 @@ await db.transaction(async (tx) => {
 
 
 
-We provide dialect-specific transaction configuration APIs:
+각 데이터베이스 방언별 트랜잭션 설정 API를 제공합니다:
 
 <Tabs items={["PostgreSQL", "MySQL", "SQLite", "SingleStore", "MSSQL", "CockroachDB"]}>
 <Tab>

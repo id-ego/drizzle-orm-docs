@@ -9,26 +9,26 @@ import Npx from "@mdx/Npx.astro";
 import SchemaFilePaths from "@mdx/SchemaFilePaths.mdx"
 import Dialects from "@mdx/Dialects.mdx"
 
-# `drizzle-kit generate` 
+# `drizzle-kit generate`
 
 <Prerequisites>
-- Get started with Drizzle and `drizzle-kit` - [read here](/docs/get-started)
-- Drizzle schema fundamentals - [read here](/docs/sql-schema-declaration)
-- Database connection basics - [read here](/docs/connect-overview)
-- Drizzle migrations fundamentals - [read here](/docs/migrations)
-- Drizzle Kit [overview](/docs/kit-overview) and [config file](/docs/drizzle-config-file)
+- Drizzle 및 `drizzle-kit` 시작하기 - [여기에서 읽기](/docs/get-started)
+- Drizzle 스키마 기본 - [여기에서 읽기](/docs/sql-schema-declaration)
+- 데이터베이스 연결 기본 - [여기에서 읽기](/docs/connect-overview)
+- Drizzle 마이그레이션 기본 - [여기에서 읽기](/docs/migrations)
+- Drizzle Kit [개요](/docs/kit-overview) 및 [설정 파일](/docs/drizzle-config-file)
 </Prerequisites>
 
 
 <br/>
 
-`drizzle-kit generate` lets you generate SQL migrations based on your Drizzle schema upon declaration or on subsequent schema changes.
-<Callout collapsed="How it works under the hood?">
-Drizzle Kit `generate` command triggers a sequence of events:
-1. It will read through your Drizzle schema file(s) and compose a json snapshot of your schema
-2. It will read through your previous migrations folders and compare current json snapshot to the most recent one
-3. Based on json differences it will generate SQL migrations
-4. Save `migration.sql` and `snapshot.json` in migration folder under current timestamp
+`drizzle-kit generate`는 Drizzle 스키마 선언 시점 또는 이후 스키마 변경 시 SQL 마이그레이션을 생성할 수 있도록 해줍니다.
+<Callout collapsed="내부적으로 어떻게 동작하나요?">
+Drizzle Kit `generate` 명령은 다음과 같은 일련의 작업을 수행합니다:
+1. Drizzle 스키마 파일을 읽고 스키마의 JSON 스냅샷을 생성합니다
+2. 이전 마이그레이션 폴더를 읽고 현재 JSON 스냅샷을 가장 최근 스냅샷과 비교합니다
+3. JSON 차이를 기반으로 SQL 마이그레이션을 생성합니다
+4. 현재 타임스탬프를 이름으로 사용하여 마이그레이션 폴더에 `migration.sql`과 `snapshot.json`을 저장합니다
 
 <Section>
 ```typescript filename="src/schema.ts"
@@ -68,13 +68,13 @@ CREATE TABLE "users" (
 </Section>
 </Callout>
 
-It's designed to cover [code first](/docs/migrations) approach of managing Drizzle migrations. 
-You can apply generated migrations using [`drizzle-kit migrate`](/docs/drizzle-kit-migrate), using drizzle-orm's `migrate()`, 
-using external migration tools like [bytebase](https://www.bytebase.com/) or running migrations yourself directly on the database. 
+[코드 우선](/docs/migrations) 접근 방식으로 Drizzle 마이그레이션을 관리하도록 설계되었습니다.
+생성된 마이그레이션은 [`drizzle-kit migrate`](/docs/drizzle-kit-migrate)를 사용하거나, drizzle-orm의 `migrate()` 함수를 사용하거나,
+[bytebase](https://www.bytebase.com/)와 같은 외부 마이그레이션 도구를 사용하거나, 데이터베이스에서 직접 실행하여 적용할 수 있습니다.
 
-`drizzle-kit generate` command requires you to provide both `dialect` and `schema` path options, 
-you can set them either via [drizzle.config.ts](/docs/drizzle-config-file) config file or via CLI options
-<CodeTabs items={["With config file", "As CLI options"]}>
+`drizzle-kit generate` 명령은 `dialect`와 `schema` 경로 옵션을 모두 제공해야 합니다.
+[drizzle.config.ts](/docs/drizzle-config-file) 설정 파일을 통해 제공하거나 CLI 옵션으로 제공할 수 있습니다
+<CodeTabs items={["설정 파일 사용", "CLI 옵션 사용"]}>
 <Section>
 ```ts
 // drizzle.config.ts
@@ -95,15 +95,15 @@ npx drizzle-kit generate --dialect=postgresql --schema=./src/schema.ts
 ```
 </CodeTabs>
 
-### Schema files path
-You can have a single `schema.ts` file or as many schema files as you want spread out across the project. 
-Drizzle Kit requires you to specify path(s) to them as a [glob](https://www.digitalocean.com/community/tools/glob?comments=true&glob=/**/*.js&matches=false&tests=//%20This%20will%20match%20as%20it%20ends%20with%20'.js'&tests=/hello/world.js&tests=//%20This%20won't%20match!&tests=/test/some/globs) via `schema` configuration option.
+### 스키마 파일 경로
+프로젝트 전체에 단일 `schema.ts` 파일을 사용할 수도 있고, 원하는 만큼 여러 스키마 파일로 분산시킬 수도 있습니다.
+Drizzle Kit은 `schema` 설정 옵션을 통해 [glob](https://www.digitalocean.com/community/tools/glob?comments=true&glob=/**/*.js&matches=false&tests=//%20This%20will%20match%20as%20it%20ends%20with%20'.js'&tests=/hello/world.js&tests=//%20This%20won't%20match!&tests=/test/some/globs) 형식의 경로를 지정할 수 있습니다.
 
 <SchemaFilePaths/>
 
 
-### Custom migration file name
-You can set custom migration file names by providing `--name` CLI option
+### 커스텀 마이그레이션 파일명
+`--name` CLI 옵션을 사용하여 커스텀 마이그레이션 파일명을 지정할 수 있습니다
 ```shell
 npx drizzle-kit generate --name=init
 ```
@@ -117,8 +117,8 @@ npx drizzle-kit generate --name=init
  └ …
 ```
 
-### Multiple configuration files in one project
-You can have multiple config files in the project, it's very useful when you have multiple database stages or multiple databases or different databases on the same project:
+### 프로젝트 내 여러 설정 파일
+프로젝트에 여러 개의 설정 파일을 둘 수 있으며, 이는 여러 데이터베이스 환경(개발/프로덕션)을 사용하거나 동일한 프로젝트에서 서로 다른 데이터베이스를 관리할 때 매우 유용합니다:
 <Npx>
   drizzle-kit generate --config=drizzle-dev.config.ts
   drizzle-kit generate --config=drizzle-prod.config.ts
@@ -134,9 +134,8 @@ You can have multiple config files in the project, it's very useful when you hav
  └ 📜 tsconfig.json
 ```
 
-### Custom migrations
-You can generate empty migration files to write your own custom SQL migrations 
-for DDL alternations currently not supported by Drizzle Kit or data seeding. Extended docs on custom migrations - [see here](/docs/kit-custom-migrations)
+### 커스텀 마이그레이션
+Drizzle Kit이 현재 지원하지 않는 DDL 변경이나 데이터 시딩을 위해 빈 마이그레이션 파일을 생성하여 커스텀 SQL 마이그레이션을 작성할 수 있습니다. 커스텀 마이그레이션에 대한 자세한 내용은 [여기를 참조하세요](/docs/kit-custom-migrations)
 
 ```shell
 drizzle-kit generate --custom --name=seed-users
@@ -159,15 +158,15 @@ INSERT INTO "users" ("name") VALUES('Dandrew');
 ```
 </Section>
 
-### Extended list of available configurations
-`drizzle-kit generate` has a list of cli-only options
+### 사용 가능한 설정의 전체 목록
+`drizzle-kit generate`에서 사용할 수 있는 CLI 전용 옵션 목록입니다
 
 <rem025/>
 
 |               |                                                      |
 | :--------     | :--------------------------------------------------- |
-| `custom`      | generate empty SQL for custom migration              |
-| `name`        | generate migration with custom name                  |
+| `custom`      | 커스텀 마이그레이션용 빈 SQL 파일 생성              |
+| `name`        | 커스텀 이름으로 마이그레이션 생성                  |
 
 <rem025/>
 
@@ -179,25 +178,25 @@ drizzle-kit generate --name=seed_users --custom
 <br/>
 <hr/>
 <br/>
-We recommend configuring `drizzle-kit` through [drizzle.config.ts](/docs/drizzle-config-file) file, 
-yet you can provide all configuration options through CLI if necessary, e.g. in CI/CD pipelines, etc.
+[drizzle.config.ts](/docs/drizzle-config-file) 파일을 통해 `drizzle-kit`을 설정하는 것을 권장하지만,
+필요한 경우 (예: CI/CD 파이프라인) CLI를 통해 모든 설정 옵션을 직접 제공할 수 있습니다.
 
 |               |            |                                                                            |
 | :------------ | :-------   | :----------------------------------------------------------------------    |
-| `dialect`     | `required` | Database dialect, one of <Dialects/>                                       |
-| `schema`      | `required` | Path to typescript schema file(s) or folder(s) with multiple schema files  |
-| `out`         |            | Migrations output folder, default is `./drizzle`                           |
-| `config`      |            | Configuration file path, default is `drizzle.config.ts`                    |
-| `breakpoints` |            | SQL statements breakpoints, default is `true`                              |
+| `dialect`     | `필수` | 데이터베이스 dialect, <Dialects/> 중 하나                                       |
+| `schema`      | `필수` | TypeScript 스키마 파일 또는 여러 스키마 파일이 있는 폴더 경로  |
+| `out`         |            | 마이그레이션 출력 폴더, 기본값 `./drizzle`                           |
+| `config`      |            | 설정 파일 경로, 기본값 `drizzle.config.ts`                    |
+| `breakpoints` |            | SQL 문 중단점, 기본값 `true`                              |
 
 
-### Extended example
-Example of how to create a custom postgresql migration file named `0001_seed-users.sql` 
-with Drizzle schema located in `./src/schema.ts` and migrations folder named `./migrations` instead of default `./drizzle`.
+### 확장 예제
+`./src/schema.ts`에 위치한 Drizzle 스키마를 사용하고, 기본 `./drizzle` 대신 `./migrations` 폴더를 사용하여
+`0001_seed-users.sql`이라는 커스텀 PostgreSQL 마이그레이션 파일을 생성하는 예제입니다.
 
-We will also place drizzle config file in the `configs` folder.
+또한 `configs` 폴더에 drizzle 설정 파일을 배치합니다.
 
-Let's create config file:
+설정 파일을 생성합니다:
 
 ```plaintext {4}
 📦 <project root>
@@ -217,11 +216,11 @@ export default defineConfig({
 });
 ```
 
-Now let's run
+이제 실행합니다
 ```shell
 npx drizzle-kit generate --config=./configs/drizzle.config.ts --name=seed-users --custom
 ```
-And it will successfully generate
+성공적으로 생성됩니다
 <Section>
 ```plaintext {6}
 📦 <project root>

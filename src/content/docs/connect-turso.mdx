@@ -11,26 +11,26 @@ import LibsqlTabs from "@mdx/LibsqlTabs.mdx";
 # Drizzle \<\> Turso Cloud
 
 <Prerequisites>
-- Database [connection basics](/docs/connect-overview) with Drizzle
-- Turso Cloud - [website](https://docs.turso.tech/turso-cloud)
-- Turso Cloud driver - [website](https://docs.turso.tech/sdk/ts/reference) & [GitHub](https://github.com/tursodatabase/libsql-client-ts)
+- Drizzle의 데이터베이스 [연결 기본사항](/docs/connect-overview)
+- Turso Cloud - [웹사이트](https://docs.turso.tech/turso-cloud)
+- Turso Cloud 드라이버 - [웹사이트](https://docs.turso.tech/sdk/ts/reference) & [GitHub](https://github.com/tursodatabase/libsql-client-ts)
 </Prerequisites>
 
-According to the **[official website](https://turso.tech/drizzle)**, 
-Turso is a **[libSQL](https://github.com/libsql/libsql)** powered edge SQLite database as a service.
-  
-Drizzle ORM natively supports libSQL driver.
-We embrace SQL dialects and dialect specific drivers and syntax and mirror most popular 
-SQLite-like `all`, `get`, `values` and `run` query methods syntax. 
+**[공식 웹사이트](https://turso.tech/drizzle)**에 따르면,
+Turso는 **[libSQL](https://github.com/libsql/libsql)** 기반의 엣지 SQLite 데이터베이스 서비스입니다.
 
-#### Step 1 - Install packages
+Drizzle ORM은 libSQL 드라이버를 기본적으로 지원합니다.
+우리는 SQL 방언과 방언별 드라이버 및 문법을 지원하며, 가장 널리 사용되는
+SQLite 스타일의 `all`, `get`, `values`, `run` 쿼리 메서드 문법을 제공합니다. 
+
+#### 1단계 - 패키지 설치
 <Npm>
 drizzle-orm @libsql/client
 -D drizzle-kit
 </Npm>
 
-#### Step 2 - Initialize the driver
-Drizzle has native support for all `@libsql/client` driver variations:
+#### 2단계 - 드라이버 초기화
+Drizzle은 모든 `@libsql/client` 드라이버 변형을 기본적으로 지원합니다:
 
 <LibsqlTable />
 
@@ -39,7 +39,7 @@ Drizzle has native support for all `@libsql/client` driver variations:
 <LibsqlTabs />
 
 
-If you need to provide your existing driver:
+기존 드라이버를 제공해야 하는 경우:
 
 <CodeTabs items={["default", "web"]}>
 ```typescript copy
@@ -70,15 +70,15 @@ const result = await db.select().from(users).all()
 ```
 </CodeTabs>
 
-#### Step 3 - make a query
+#### 3단계 - 쿼리 실행
 
 ```ts
 import { drizzle } from 'drizzle-orm/libsql';
 import * as s from 'drizzle-orm/sqlite-core';
 
 const db = drizzle({ connection: {
-  url: process.env.DATABASE_URL, 
-  authToken: process.env.DATABASE_AUTH_TOKEN 
+  url: process.env.DATABASE_URL,
+  authToken: process.env.DATABASE_AUTH_TOKEN
 }});
 
 const users = s.sqliteTable("users", {
@@ -89,6 +89,6 @@ const users = s.sqliteTable("users", {
 const result = await db.select().from(users);
 ```
 
-#### What's next?
+#### 다음 단계
 
 <WhatsNextPostgres/>

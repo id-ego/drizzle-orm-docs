@@ -1,5 +1,5 @@
 ---
-title: Update many with different values for each row
+title: 각 행마다 다른 값으로 여러 행 업데이트하기
 slug: update-many-with-different-value
 ---
 
@@ -10,12 +10,12 @@ import IsSupportedChipGroup from "@mdx/IsSupportedChipGroup.astro";
 <IsSupportedChipGroup chips={{PostgreSQL: true, MySQL: true, SQLite: true}}/>
 
 <Prerequisites>
-- Get started with [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql) and [SQLite](/docs/get-started-sqlite)
-- [Update statement](/docs/update)
-- [Filters](/docs/operators) and [sql operator](/docs/sql)
+- [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql), [SQLite](/docs/get-started-sqlite) 시작하기
+- [Update 문](/docs/update)
+- [필터](/docs/operators) 및 [sql 연산자](/docs/sql)
 </Prerequisites>
 
-To implement update many with different values for each row within 1 request you can use `sql` operator with `case` statement and `.update().set()` methods like this:
+하나의 요청으로 각 행마다 다른 값으로 여러 행을 업데이트하려면 `sql` 연산자와 `case` 문, 그리고 `.update().set()` 메서드를 다음과 같이 사용할 수 있습니다:
 
 <Section>
 ```ts {26, 29, 32, 36, 38, 40}
@@ -39,7 +39,7 @@ const inputs = [
   },
 ];
 
-// You have to be sure that inputs array is not empty
+// inputs 배열이 비어있지 않은지 확인해야 합니다
 if (inputs.length === 0) {
   return;
 }

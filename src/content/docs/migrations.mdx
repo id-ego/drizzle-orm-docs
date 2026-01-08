@@ -14,47 +14,47 @@ import Npm from '@mdx/Npm.astro';
 import Tag from '@mdx/Tag.astro'
 
 
-# Drizzle migrations fundamentals
+# Drizzle 마이그레이션 기초
 
-SQL databases require you to specify a **strict schema** of entities you're going to store upfront 
-and if (when) you need to change the shape of those entities - you will need to do it via **schema migrations**.
+SQL 데이터베이스는 저장할 엔티티의 **엄격한 스키마**를 미리 지정해야 하며,
+이러한 엔티티의 구조를 변경해야 할 경우 **스키마 마이그레이션**을 통해 수행해야 합니다.
 
-There're multiple production grade ways of managing database migrations. 
-Drizzle is designed to perfectly suits all of them, regardless of you going **database first** or **codebase first**.
+데이터베이스 마이그레이션을 관리하는 여러 프로덕션 수준의 방법이 있습니다.
+Drizzle은 **데이터베이스 우선** 또는 **코드베이스 우선** 접근 방식에 관계없이 모든 방식에 완벽하게 적합하도록 설계되었습니다.
 
-**Database first** is when your database schema is a source of truth. You manage your database schema either directly on the database or 
-via database migration tools and then you pull your database schema to your codebase application level entities.  
- 
-**Codebase first** is when database schema in your codebase is a source of truth and is under version control. You declare and manage your database schema in JavaScript/TypeScript
-and then you apply that schema to the database itself either with Drizzle, directly or via external migration tools. 
+**데이터베이스 우선**은 데이터베이스 스키마가 소스 오브 트루스(source of truth)인 방식입니다. 데이터베이스에서 직접 또는
+데이터베이스 마이그레이션 도구를 통해 데이터베이스 스키마를 관리한 다음, 데이터베이스 스키마를 코드베이스의 애플리케이션 레벨 엔티티로 가져옵니다.
 
-#### How can Drizzle help?
-We've built [**drizzle-kit**](/docs/kit-overview) - CLI app for managing migrations with Drizzle. 
+**코드베이스 우선**은 코드베이스의 데이터베이스 스키마가 소스 오브 트루스이며 버전 관리 대상인 방식입니다. JavaScript/TypeScript로 데이터베이스 스키마를 선언하고 관리한 다음,
+Drizzle을 통해 직접 또는 외부 마이그레이션 도구를 통해 해당 스키마를 데이터베이스에 적용합니다. 
+
+#### Drizzle이 어떻게 도울 수 있나요?
+Drizzle에서는 마이그레이션 관리를 위한 CLI 앱인 [**drizzle-kit**](/docs/kit-overview)을 제공합니다.
 ```shell
 drizzle-kit migrate
 drizzle-kit generate
 drizzle-kit push
 drizzle-kit pull
 ```
-It is designed to let you choose how to approach migrations based on your current business demands. 
+현재 비즈니스 요구사항에 따라 마이그레이션 접근 방식을 선택할 수 있도록 설계되었습니다.
 
-It fits in both database and codebase first approaches, it lets you **push your schema** or **generate SQL migration** files or **pull the schema** from database. 
-It is perfect wether you work alone or in a team.
+데이터베이스 우선 및 코드베이스 우선 접근 방식 모두에 적합하며, **스키마 푸시**, **SQL 마이그레이션** 파일 생성 또는 데이터베이스에서 **스키마 풀** 기능을 제공합니다.
+혼자 작업하든 팀으로 작업하든 완벽하게 활용할 수 있습니다.
 <br/>
 
 <hr/>
 <rem/>
 
-**Now let's pick the best option for your project:**
+**이제 프로젝트에 가장 적합한 옵션을 선택해보세요:**
 <rem/>
 
-<Tag style="font-size: 12px">**Option 1**</Tag>
-> I manage database schema myself using external migration tools or by running SQL migrations directly on my database.
-> From Drizzle I just need to get current state of the schema from my database and save it as TypeScript schema file.
+<Tag style="font-size: 12px">**옵션 1**</Tag>
+> 외부 마이그레이션 도구를 사용하거나 데이터베이스에서 직접 SQL 마이그레이션을 실행하여 데이터베이스 스키마를 직접 관리합니다.
+> Drizzle에서는 데이터베이스의 현재 스키마 상태를 가져와 TypeScript 스키마 파일로 저장하기만 하면 됩니다.
 
-<Callout collapsed="Expand details">
-That's a **database first** approach. You have your database schema as a **source of truth** and 
-Drizzle lets you pull database schema to TypeScript using [`drizzle-kit pull`](/docs/drizzle-kit-pull) command.
+<Callout collapsed="세부사항 펼치기">
+이것은 **데이터베이스 우선** 접근 방식입니다. 데이터베이스 스키마를 **소스 오브 트루스**로 사용하며,
+Drizzle을 통해 [`drizzle-kit pull`](/docs/drizzle-kit-pull) 명령으로 데이터베이스 스키마를 TypeScript로 가져올 수 있습니다.
 
 <Section>
 ```
@@ -86,17 +86,17 @@ export const users = p.pgTable("users", {
 <rem/>
 <rem/>
 
-<Tag style="font-size: 12px">**Option 2**</Tag>
-> I want to have database schema in my TypeScript codebase, 
-> I don't wanna deal with SQL migration files.  
-> I want Drizzle to "push" my schema directly to the database
+<Tag style="font-size: 12px">**옵션 2**</Tag>
+> TypeScript 코드베이스에 데이터베이스 스키마를 두고 싶고,
+> SQL 마이그레이션 파일을 다루고 싶지 않습니다.
+> Drizzle이 스키마를 데이터베이스에 직접 "푸시"하기를 원합니다
 
-<Callout collapsed="Expand details">
-That's a **codebase first** approach. You have your TypeScript Drizzle schema as a **source of truth** and 
-Drizzle lets you push schema changes to the database using [`drizzle-kit push`](/docs/drizzle-kit-push) command.
+<Callout collapsed="세부사항 펼치기">
+이것은 **코드베이스 우선** 접근 방식입니다. TypeScript Drizzle 스키마를 **소스 오브 트루스**로 사용하며,
+Drizzle을 통해 [`drizzle-kit push`](/docs/drizzle-kit-push) 명령으로 스키마 변경사항을 데이터베이스에 푸시할 수 있습니다.
 
-That's the best approach for rapid prototyping and we've seen dozens of teams 
-and solo developers successfully using it as a primary migrations flow in their production applications.
+이는 빠른 프로토타이핑에 가장 적합한 접근 방식이며, 수많은 팀과
+개인 개발자들이 프로덕션 애플리케이션의 주요 마이그레이션 흐름으로 성공적으로 사용하고 있습니다.
 
 <Section>
 ```typescript {6} filename="src/schema.ts"
@@ -136,14 +136,14 @@ Add column to `users` table
 <rem/>
 <rem/>
 
-<Tag style="font-size: 12px">**Option 3**</Tag>
-> I want to have database schema in my TypeScript codebase, 
-> I want Drizzle to generate SQL migration files for me and apply them to my database
+<Tag style="font-size: 12px">**옵션 3**</Tag>
+> TypeScript 코드베이스에 데이터베이스 스키마를 두고 싶고,
+> Drizzle이 SQL 마이그레이션 파일을 생성하고 데이터베이스에 적용하기를 원합니다
 
-<Callout collapsed="Expand details">
-That's a **codebase first** approach. You have your TypeScript Drizzle schema as a source of truth and 
-Drizzle lets you generate SQL migration files based on your schema changes with [`drizzle-kit generate`](/docs/drizzle-kit-generate)
-and then apply them to the database with [`drizzle-kit migrate`](/docs/drizzle-kit-migrate) commands. 
+<Callout collapsed="세부사항 펼치기">
+이것은 **코드베이스 우선** 접근 방식입니다. TypeScript Drizzle 스키마를 소스 오브 트루스로 사용하며,
+Drizzle을 통해 [`drizzle-kit generate`](/docs/drizzle-kit-generate) 명령으로 스키마 변경사항을 기반으로 SQL 마이그레이션 파일을 생성하고,
+[`drizzle-kit migrate`](/docs/drizzle-kit-migrate) 명령으로 데이터베이스에 적용할 수 있습니다. 
 <Section>
 ```typescript filename="src/schema.ts"
 import * as p from "drizzle-orm/pg-core";
@@ -199,18 +199,18 @@ CREATE TABLE "users" (
 <rem/>
 <rem/>
 
-<Tag style="font-size: 12px">**Option 4**</Tag>
-> I want to have database schema in my TypeScript codebase,
-> I want Drizzle to generate SQL migration files for me and I want Drizzle to apply them during runtime
+<Tag style="font-size: 12px">**옵션 4**</Tag>
+> TypeScript 코드베이스에 데이터베이스 스키마를 두고 싶고,
+> Drizzle이 SQL 마이그레이션 파일을 생성하고 런타임에 적용하기를 원합니다
 
-<Callout collapsed="Expand details">
-That's a **codebase first** approach. You have your TypeScript Drizzle schema as a source of truth and 
-Drizzle lets you generate SQL migration files based on your schema changes with [`drizzle-kit generate`](/docs/drizzle-kit-generate) and then 
-you can apply them to the database during runtime of your application.
+<Callout collapsed="세부사항 펼치기">
+이것은 **코드베이스 우선** 접근 방식입니다. TypeScript Drizzle 스키마를 소스 오브 트루스로 사용하며,
+Drizzle을 통해 [`drizzle-kit generate`](/docs/drizzle-kit-generate) 명령으로 스키마 변경사항을 기반으로 SQL 마이그레이션 파일을 생성한 다음,
+애플리케이션 런타임에 데이터베이스에 적용할 수 있습니다.
 
-This approach is widely used for **monolithic** applications when you apply database migrations 
-during zero downtime deployment and rollback DDL changes if something fails. 
-This is also used in **serverless** deployments with migrations running in **custom resource** once during deployment process.
+이 접근 방식은 무중단 배포 중에 데이터베이스 마이그레이션을 적용하고
+문제가 발생하면 DDL 변경사항을 롤백하는 **모놀리식** 애플리케이션에서 널리 사용됩니다.
+또한 배포 프로세스 중 **커스텀 리소스**에서 한 번 마이그레이션을 실행하는 **서버리스** 배포에도 사용됩니다.
 
 <Section>
 ```typescript filename="src/schema.ts"
@@ -277,15 +277,15 @@ await migrate(db);
 <rem/>
 <rem/>
 
-<Tag style="font-size: 12px">**Option 5**</Tag>
-> I want to have database schema in my TypeScript codebase,
-> I want Drizzle to generate SQL migration files for me,
-> but I will apply them to my database myself or via external migration tools 
+<Tag style="font-size: 12px">**옵션 5**</Tag>
+> TypeScript 코드베이스에 데이터베이스 스키마를 두고 싶고,
+> Drizzle이 SQL 마이그레이션 파일을 생성하기를 원하지만,
+> 데이터베이스에는 직접 또는 외부 마이그레이션 도구를 통해 적용하겠습니다
 
-<Callout collapsed="Expand details">
-That's a **codebase first** approach. You have your TypeScript Drizzle schema as a source of truth and 
-Drizzle lets you generate SQL migration files based on your schema changes with [`drizzle-kit generate`](/docs/drizzle-kit-generate) and then 
-you can apply them to the database either directly or via external migration tools.
+<Callout collapsed="세부사항 펼치기">
+이것은 **코드베이스 우선** 접근 방식입니다. TypeScript Drizzle 스키마를 소스 오브 트루스로 사용하며,
+Drizzle을 통해 [`drizzle-kit generate`](/docs/drizzle-kit-generate) 명령으로 스키마 변경사항을 기반으로 SQL 마이그레이션 파일을 생성한 다음,
+데이터베이스에 직접 또는 외부 마이그레이션 도구를 통해 적용할 수 있습니다.
 
 <Section>
 ```typescript filename="src/schema.ts"
@@ -352,15 +352,15 @@ CREATE TABLE "users" (
 <rem/>
 <rem/>
 
-<Tag style="font-size: 12px">**Option 6**</Tag>
-> I want to have database schema in my TypeScript codebase,
-> I want Drizzle to output the SQL representation of my Drizzle schema to the console,
-> and I will apply them to my database via [Atlas](https://atlasgo.io/guides/orms/drizzle)
+<Tag style="font-size: 12px">**옵션 6**</Tag>
+> TypeScript 코드베이스에 데이터베이스 스키마를 두고 싶고,
+> Drizzle이 Drizzle 스키마의 SQL 표현을 콘솔에 출력하기를 원하며,
+> [Atlas](https://atlasgo.io/guides/orms/drizzle)를 통해 데이터베이스에 적용하겠습니다
 
-<Callout collapsed="Expand details">
-That's a **codebase first** approach. You have your TypeScript Drizzle schema as a source of truth and 
-Drizzle lets you export SQL statements based on your schema changes with [`drizzle-kit export`](/docs/drizzle-kit-generate) and then 
-you can apply them to the database via [Atlas](https://atlasgo.io/guides/orms/drizzle) or other external SQL migration tools.
+<Callout collapsed="세부사항 펼치기">
+이것은 **코드베이스 우선** 접근 방식입니다. TypeScript Drizzle 스키마를 소스 오브 트루스로 사용하며,
+Drizzle을 통해 [`drizzle-kit export`](/docs/drizzle-kit-generate) 명령으로 스키마 변경사항을 기반으로 SQL 문을 내보낸 다음,
+[Atlas](https://atlasgo.io/guides/orms/drizzle) 또는 기타 외부 SQL 마이그레이션 도구를 통해 데이터베이스에 적용할 수 있습니다.
 
 <Section>
 ```typescript filename="src/schema.ts"

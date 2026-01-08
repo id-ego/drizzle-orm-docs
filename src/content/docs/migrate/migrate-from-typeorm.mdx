@@ -1,28 +1,29 @@
 ---
-title: "Migrate from TypeORM to Drizzle"
+title: "TypeORM에서 Drizzle로 마이그레이션"
+description: "TypeORM 프로젝트를 Drizzle ORM으로 마이그레이션하는 단계별 가이드"
 ---
 import Npm from "@mdx/Npm.astro";
 import Steps from "@mdx/Steps.astro";
 
-## Getting Started
+## 시작하기
 
-This guide provides a straightforward approach to migrating a basic **TypeORM** project to **Drizzle ORM**. Although the example focuses on `PostgreSQL`, the process is similar for other supported databases.
+이 가이드는 기본적인 **TypeORM** 프로젝트를 **Drizzle ORM**으로 마이그레이션하는 간단한 접근 방법을 제공합니다. 예제는 `PostgreSQL`에 중점을 두고 있지만, 다른 지원되는 데이터베이스도 유사한 과정을 따릅니다.
 
-### Overview of the migration process
+### 마이그레이션 프로세스 개요
 
-Regardless of your application type or API layer, the steps to transition from **TypeORM** to **Drizzle ORM** remain consistent:
+애플리케이션 타입이나 API 레이어와 관계없이, **TypeORM**에서 **Drizzle ORM**으로 전환하는 단계는 일관됩니다:
 
-1. Install **Drizzle ORM** & **Drizzle Kit**
-2. Setup **Drizzle config** file
-3. Introspect your database
-4. Connect **Drizzle ORM** to your database
-5. Transition your **TypeORM** queries to **Drizzle ORM** queries
+1. **Drizzle ORM** & **Drizzle Kit** 설치
+2. **Drizzle config** 파일 설정
+3. 데이터베이스 인트로스펙션
+4. **Drizzle ORM**을 데이터베이스에 연결
+5. **TypeORM** 쿼리를 **Drizzle ORM** 쿼리로 전환
 
-These steps are applicable whether you're developing a REST API (for example, with Express, Koa, or NestJS) or any other type of application that utilizes **TypeORM** for database interactions.
+이러한 단계는 REST API(예: Express, Koa 또는 NestJS)를 개발하든, **TypeORM**을 데이터베이스 상호작용에 활용하는 다른 유형의 애플리케이션을 개발하든 적용 가능합니다.
 
-## Overview of the TypeORM project
+## TypeORM 프로젝트 개요
 
-For this guide, we'll use a REST API built with `Express` as a sample project to migrate to **Drizzle ORM**. It has four entities:
+이 가이드에서는 **Drizzle ORM**으로 마이그레이션할 샘플 프로젝트로 `Express`로 구축된 REST API를 사용합니다. 네 개의 엔티티를 가지고 있습니다:
 
 ```typescript collapsable copy filename="src/entities/supplier.entity.ts"
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
@@ -133,14 +134,14 @@ export class OrderDetail {
 }
 ```
 
-The models have the following relations:
+모델은 다음과 같은 관계를 가지고 있습니다:
 
-1. `one-to-many` between `Supplier` and `Product`
-2. `many-to-many` between `Order` and `Product`
+1. `Supplier`와 `Product` 간의 `일대다` 관계
+2. `Order`와 `Product` 간의 `다대다` 관계
 
-For `many-to-many` relation we will create a join table `order_details`, so `Order` and `Product` entities will have `one-to-many` relations with `OrderDetail` entity.
+`다대다` 관계를 위해 조인 테이블 `order_details`를 생성하므로, `Order`와 `Product` 엔티티는 `OrderDetail` 엔티티와 `일대다` 관계를 가집니다.
 
-The corresponding tables have been created using a generated TypeORM migration.
+해당 테이블들은 생성된 TypeORM 마이그레이션을 사용하여 생성되었습니다.
 
 ```typescript copy filename="src/db/migrations/1702216840703-init.ts"
 import { MigrationInterface, QueryRunner } from "typeorm";
@@ -171,7 +172,7 @@ export class Init1702216840703 implements MigrationInterface {
 }
 ```
 
-This guide uses the following file structure:
+이 가이드는 다음 파일 구조를 사용합니다:
 
 ```text
 📦 <project root>
@@ -201,20 +202,20 @@ This guide uses the following file structure:
 
 <Steps>
 
-#### Install Drizzle ORM & Drizzle Kit
+#### Drizzle ORM & Drizzle Kit 설치
 
-The first step is to install **Drizzle ORM** and `pg` package which we will use as a driver. The second step is to install **Drizzle Kit** and types for `pg`. [Drizzle Kit](/docs/kit-overview) - CLI companion for automatic SQL migrations generation and rapid prototyping. 
+첫 번째 단계는 드라이버로 사용할 **Drizzle ORM**과 `pg` 패키지를 설치하는 것입니다. 두 번째 단계는 **Drizzle Kit**과 `pg`용 타입을 설치하는 것입니다. [Drizzle Kit](/docs/kit-overview)은 자동 SQL 마이그레이션 생성과 빠른 프로토타이핑을 위한 CLI 도구입니다. 
 
 <Npm>
 drizzle-orm pg
 -D drizzle-kit @types/pg
 </Npm>
 
-#### Setup Drizzle config file
+#### Drizzle config 파일 설정
 
-**Drizzle config** - a configuration file that is used by **Drizzle Kit** and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config**는 **Drizzle Kit**에서 사용하는 설정 파일로, 데이터베이스 연결, 마이그레이션 폴더 및 스키마 파일에 대한 모든 정보를 포함합니다.
 
-Create a `drizzle.config.ts` file in the root of your project and add the following content:
+프로젝트 루트에 `drizzle.config.ts` 파일을 생성하고 다음 내용을 추가하세요:
 
 ```typescript copy filename="drizzle.config.ts"
 import 'dotenv/config'; // make sure to install dotenv package
@@ -238,15 +239,15 @@ export default defineConfig({
 });
 ```
 
-#### Introspect your database
+#### 데이터베이스 인트로스펙션
 
-**Drizzle Kit** provides a CLI command to introspect your database and generate a schema file. The schema file contains all the information about your database tables, columns, relations, and indices.
+**Drizzle Kit**은 데이터베이스를 인트로스펙트하고 스키마 파일을 생성하는 CLI 명령어를 제공합니다. 스키마 파일에는 데이터베이스 테이블, 컬럼, 관계 및 인덱스에 대한 모든 정보가 포함됩니다.
 
 ```bash
 npx drizzle-kit introspect
 ```
 
-This command will generate a schema.ts file, along with snapshots and migrations in the src/drizzle folder.
+이 명령어는 src/drizzle 폴더에 schema.ts 파일과 스냅샷 및 마이그레이션을 생성합니다.
 
 ```typescript collapsable copy filename="src/drizzle/schema.ts" 
 import {
@@ -375,7 +376,7 @@ EXCEPTION
 END $$;
 ```
 
-Also, if you want to use relational queries, you have to update your schema file with relational tables:
+또한 관계형 쿼리를 사용하려면 스키마 파일에 관계 테이블을 추가해야 합니다:
 
 ```typescript copy filename="src/drizzle/schema.ts"
 // ...other imports
@@ -401,7 +402,7 @@ export const orderDetailsRelations = relations(orderDetails, ({ one }) => ({
 }));
 ```
 
-Now we have the following file structure:
+이제 다음과 같은 파일 구조를 가지게 됩니다:
 
 ```text
 📦 <project root>
@@ -427,9 +428,9 @@ Now we have the following file structure:
  └ 📜 tsconfig.json
 ```
 
-#### Connect Drizzle ORM to your database
+#### Drizzle ORM을 데이터베이스에 연결
 
-Create a `db.ts` file in the `src/drizzle` folder and set up your database configuration:
+`src/drizzle` 폴더에 `db.ts` 파일을 생성하고 데이터베이스 설정을 구성하세요:
 
 ```typescript copy filename="src/drizzle/db.ts"
 import { drizzle } from 'drizzle-orm/node-postgres';
@@ -465,13 +466,13 @@ import { migrate } from 'drizzle-orm/node-postgres/migrator';
 })();
 ```
 
-#### Transition your TypeORM queries to Drizzle ORM queries
+#### TypeORM 쿼리를 Drizzle ORM 쿼리로 전환
 
-In this section, we will show you how to replace several queries from **TypeORM** with **Drizzle ORM**.
+이 섹션에서는 **TypeORM**의 여러 쿼리를 **Drizzle ORM**으로 교체하는 방법을 보여줍니다.
 
-##### Replace insert queries
+##### 삽입 쿼리 교체
 
-We will show how to insert new rows into `suppliers` and `products` tables.
+`suppliers`와 `products` 테이블에 새 행을 삽입하는 방법을 보여줍니다.
 
 1. `POST /suppliers`
 ```typescript copy filename="src/controllers/supplier.controller.ts"
@@ -496,7 +497,7 @@ const suppliers = repository.create([
 await repository.save(suppliers);
 ```
 
-With **Drizzle ORM**, the query is implemented as follows:
+**Drizzle ORM**에서는 다음과 같이 쿼리를 구현합니다:
 
 ```typescript copy filename="src/controllers/supplier.controller.ts"
 import { db } from '../drizzle/db';
@@ -554,9 +555,9 @@ const products = repository.create([
 await repository.save(products);
 ```
 
-With **Drizzle ORM**, the query is implemented as follows:
+**Drizzle ORM**에서는 다음과 같이 쿼리를 구현합니다:
 
-Be careful with the `unitPrice` field. In **TypeORM** it's a `number` type, but in **Drizzle ORM** it's a `string` type, which can handle more than 16383 digits after the decimal point, unlike the `number` type.
+`unitPrice` 필드에 주의하세요. **TypeORM**에서는 `number` 타입이지만, **Drizzle ORM**에서는 `string` 타입입니다. 이는 `number` 타입과 달리 소수점 이하 16383자리 이상을 처리할 수 있습니다.
 
 ```typescript copy filename="src/controllers/product.controller.ts"
 await db.insert(products).values([
@@ -587,13 +588,13 @@ await db.insert(products).values([
 ]);
 ```
 
-##### Replace select queries
+##### 조회 쿼리 교체
 
-In this section we will show how to select one row, multiple rows, count rows, filter rows, join tables and paginate results.
+이 섹션에서는 단일 행 조회, 여러 행 조회, 행 수 세기, 행 필터링, 테이블 조인 및 결과 페이지네이션 방법을 보여줍니다.
 
 1. `GET /products/:id`
 
-In **TypeORM**, the response type is not strictly typed. For example, if you choose to include a relation or select only a few fields instead of all, these modifications will not be reflected in the response type.
+**TypeORM**에서는 응답 타입이 엄격하게 타입이 지정되지 않습니다. 예를 들어, 관계를 포함하거나 모든 필드 대신 일부 필드만 선택하는 경우, 이러한 수정 사항이 응답 타입에 반영되지 않습니다.
 
 ```typescript copy filename="src/controllers/product.controller.ts"
 import dataSource from '../db/typeorm.config';
@@ -636,7 +637,7 @@ const response = await db.query.products.findFirst({
 });
 ```
 
-In **Drizzle ORM**, the response type will match precisely what is specified in the select object, so including the `supplier` relation is fully type-safe.
+**Drizzle ORM**에서는 응답 타입이 select 객체에 지정된 내용과 정확히 일치하므로, `supplier` 관계를 포함하는 것이 완전히 타입 안전합니다.
 
 ```typescript
 // response type
@@ -659,7 +660,7 @@ const response: {
 
 2. `GET /products`
 
-In **TypeORM**, the result is not type-safe as it doesn't specify the fields you want to select.
+**TypeORM**에서는 선택하려는 필드를 지정하지 않으므로 결과가 타입 안전하지 않습니다.
 
 ```typescript copy filename="src/controllers/product.controller.ts"
 import { ILike } from 'typeorm';
@@ -727,7 +728,7 @@ const [response, count] = await Promise.all([
 ]);
 ```
 
-In **Drizzle ORM**, the result is strictly type-safe, meaning the fields you select are explicitly defined.
+**Drizzle ORM**에서는 결과가 엄격하게 타입 안전하며, 선택한 필드가 명시적으로 정의됩니다.
 
 ```typescript
 // response type
@@ -741,9 +742,9 @@ const response: {
 
 3. `GET /orders/:id`
 
-In **TypeORM** you can't use `aggregation functions` with relations and select specific fields using method `findOne`. So, you have to use `querybuilder`, which is not type-safe as well.
+**TypeORM**에서는 `findOne` 메서드를 사용하여 관계와 함께 `집계 함수`를 사용하고 특정 필드를 선택할 수 없습니다. 따라서 타입 안전하지 않은 `querybuilder`를 사용해야 합니다.
 
-We want to select `id`, `orderDate` and `shipCountry` fields from `orders` table and by using `aggregation functions` sum `totalPrice` of order, `totalQuantity` of products in the order and count `totalProducts` in the order.
+`orders` 테이블에서 `id`, `orderDate`, `shipCountry` 필드를 선택하고, `집계 함수`를 사용하여 주문의 `totalPrice` 합계, 주문 내 제품의 `totalQuantity` 합계, 주문 내 `totalProducts` 개수를 계산하려고 합니다.
 
 ```typescript copy filename="src/controllers/order.controller.ts"
 import dataSource from '../db/typeorm.config';
@@ -796,7 +797,7 @@ const response = await db
       .leftJoin(products, eq(products.id, orderDetails.productId));
 ```
 
-In **Drizzle ORM**, the result will be type-safe with aggregations too.
+**Drizzle ORM**에서는 집계를 사용한 결과도 타입 안전합니다.
 
 ```typescript
 // response type
@@ -810,11 +811,11 @@ const response: {
 }[]
 ```
 
-**Note:** as of now aggregations are not supported in relational queries, so you have to use `core queries`.
+**참고:** 현재 관계형 쿼리에서는 집계가 지원되지 않으므로 `코어 쿼리`를 사용해야 합니다.
 
-##### Replace update queries
+##### 업데이트 쿼리 교체
 
-In this section, we will show you how to update multiple rows.
+이 섹션에서는 여러 행을 업데이트하는 방법을 보여줍니다.
 
 1. `PATCH /suppliers/:id`
 
@@ -855,9 +856,9 @@ await db
     .where(eq(suppliers.id, id));
 ```
 
-##### Replace delete queries
+##### 삭제 쿼리 교체
 
-In this section, we will show you how to delete a single row and multiple rows using transactions.
+이 섹션에서는 트랜잭션을 사용하여 단일 행과 여러 행을 삭제하는 방법을 보여줍니다.
 
 1. `DELETE /orders/:id`
 

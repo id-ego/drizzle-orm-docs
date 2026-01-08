@@ -8,20 +8,20 @@ import Prerequisites from "@mdx/Prerequisites.astro";
 import CodeTabs from "@mdx/CodeTabs.astro";
 import Section from "@mdx/Section.astro";
 
-# Drizzle HTTP proxy
+# Drizzle HTTP 프록시
 
 <Prerequisites>
-- Database [connection basics](/docs/connect-overview) with Drizzle
+- Drizzle의 데이터베이스 [연결 기초](/docs/connect-overview)
 </Prerequisites>
 
-How an HTTP Proxy works and why you might need it
+HTTP 프록시의 작동 방식과 필요한 이유
 
-Drizzle Proxy is used when you need to implement your own driver communication with the database. 
-It can be used in several cases, such as adding custom logic at the query stage with existing drivers. 
-The most common use is with an HTTP driver, which sends queries to your server with the database, executes the query 
-on your database, and responds with raw data that Drizzle ORM can then map to results
+Drizzle 프록시는 데이터베이스와의 드라이버 통신을 직접 구현해야 할 때 사용됩니다.
+기존 드라이버에 쿼리 단계에서 커스텀 로직을 추가하는 등 여러 경우에 사용할 수 있습니다.
+가장 일반적인 사용 사례는 HTTP 드라이버로, 데이터베이스가 있는 서버로 쿼리를 전송하고, 데이터베이스에서 쿼리를 실행한 후,
+Drizzle ORM이 결과로 매핑할 수 있는 원시 데이터를 응답으로 반환합니다
 
-<Callout collapsed="How it works under the hood?">
+<Callout collapsed="내부적으로 어떻게 작동하나요?">
 ```                                  
 ┌───────────────────────────┐                 ┌─────────────────────────────┐              
 │       Drizzle ORM         │                 │  HTTP Server with Database  │             
@@ -41,16 +41,16 @@ on your database, and responds with raw data that Drizzle ORM can then map to re
 ```
 </Callout>
 
-Drizzle ORM also supports simply using asynchronous callback function for executing SQL.
+Drizzle ORM은 SQL 실행을 위한 비동기 콜백 함수를 간단히 사용하는 것도 지원합니다.
 
-- `sql` is a query string with placeholders.
-- `params` is an array of parameters.
-- One of the following values will set for `method` depending on the SQL statement - `run`, `all`, `values` or `get`.
+- `sql`은 플레이스홀더가 포함된 쿼리 문자열입니다.
+- `params`는 매개변수 배열입니다.
+- `method`는 SQL 문에 따라 `run`, `all`, `values` 또는 `get` 중 하나로 설정됩니다.
 
-Drizzle always waits for `{rows: string[][]}` or `{rows: string[]}` for the return value.
+Drizzle은 항상 반환 값으로 `{rows: string[][]}` 또는 `{rows: string[]}`를 기대합니다.
 
-- When the `method` is `get`, you should return a value as `{rows: string[]}`.
-- Otherwise, you should return `{rows: string[][]}`.
+- `method`가 `get`일 때는 `{rows: string[]}` 형태로 값을 반환해야 합니다.
+- 그 외의 경우에는 `{rows: string[][]}` 형태로 반환해야 합니다.
 
 <br/>
 
@@ -191,11 +191,11 @@ const db = drizzle(async (sql, params, method) => {
 });
 ```
 
-**Batch support**
+**배치 지원**
 
-Sqlite Proxy supports batch requests, the same as it's done for all other drivers. Check full [docs](/docs/batch-api)
+SQLite 프록시는 다른 모든 드라이버와 동일하게 배치 요청을 지원합니다. 전체 [문서](/docs/batch-api)를 확인하세요.
 
-You will need to specify a specific callback for batch queries and handle requests to proxy server:
+배치 쿼리를 위한 특정 콜백을 지정하고 프록시 서버로의 요청을 처리해야 합니다:
 
 ```ts
 import { drizzle } from 'drizzle-orm/sqlite-proxy';
@@ -216,13 +216,13 @@ const db = drizzle(async (sql, params, method) => {
   });
 ```
 
-And then you can use `db.batch([])` method, that will proxy all queries
+그런 다음 `db.batch([])` 메서드를 사용하여 모든 쿼리를 프록시할 수 있습니다
 
 <Callout>
-  Response from the batch should be an array of raw values (an array within an array), in the same order as they were sent to the proxy server
+  배치의 응답은 프록시 서버로 전송된 순서와 동일한 순서로 원시 값의 배열(배열 내 배열)이어야 합니다
 </Callout>
 
-Unless you plan on writing every SQL query by hand, a table declaration is helpful:
+모든 SQL 쿼리를 직접 작성할 계획이 아니라면 테이블 선언이 유용합니다:
 ```typescript copy
 import { sql } from "drizzle-orm";
 import { text, integer, sqliteTable } from "drizzle-orm/sqlite-core";
@@ -233,7 +233,7 @@ const users = sqliteTable('users', {
   intModifiers: integer('int_modifiers', { mode: 'boolean' }).notNull().default(false),
 });
 ```
-For more details about column types, see the **[SQLite column types in Drizzle.](/docs/column-types/sqlite)**
+컬럼 타입에 대한 자세한 내용은 **[Drizzle의 SQLite 컬럼 타입](/docs/column-types/sqlite)**을 참조하세요.
 </Section>
 </CodeTabs>
 

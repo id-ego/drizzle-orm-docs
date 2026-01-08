@@ -1,5 +1,5 @@
 ---
-title: "Drizzle with Xata"
+title: "Drizzle과 Xata"
 date: "2024-12-13"
 svgs: ['<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="9.63139" height="40.8516" rx="4.8157" transform="matrix(0.873028 0.48767 -0.497212 0.867629 43.4805 67.3037)" fill="currentColor"></rect><rect width="9.63139" height="40.8516" rx="4.8157" transform="matrix(0.873028 0.48767 -0.497212 0.867629 76.9395 46.5342)" fill="currentColor"></rect><rect width="9.63139" height="40.8516" rx="4.8157" transform="matrix(0.873028 0.48767 -0.497212 0.867629 128.424 46.5352)" fill="currentColor"></rect><rect width="9.63139" height="40.8516" rx="4.8157" transform="matrix(0.873028 0.48767 -0.497212 0.867629 94.957 67.3037)" fill="currentColor"></rect></svg>', '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>']
 ---
@@ -10,68 +10,68 @@ import Steps from '@mdx/Steps.astro';
 import Section from "@mdx/Section.astro";
 import Callout from '@mdx/Callout.astro';
 
-This tutorial demonstrates how to use Drizzle ORM with [Xata](https://xata.io). Xata is a PostgreSQL database platform designed to help developers operate and scale databases with enhanced productivity and performance, featuring instant copy-on-write database branches, zero-downtime schema changes, data anonymization, and AI-powered performance monitoring.
+이 튜토리얼은 Drizzle ORM을 [Xata](https://xata.io)와 함께 사용하는 방법을 설명합니다. Xata는 개발자가 향상된 생산성과 성능으로 데이터베이스를 운영하고 확장할 수 있도록 설계된 PostgreSQL 데이터베이스 플랫폼으로, 즉시 사용 가능한 copy-on-write 데이터베이스 브랜치, 무중단 스키마 변경, 데이터 익명화, AI 기반 성능 모니터링 기능을 제공합니다.
 
 <Prerequisites>
-- You should have installed Drizzle ORM and [Drizzle kit](/docs/kit-overview). You can do this by running the following command:
+- Drizzle ORM과 [Drizzle kit](/docs/kit-overview)이 설치되어 있어야 합니다. 다음 명령어를 실행하여 설치할 수 있습니다:
 <Npm>
 drizzle-orm
 -D drizzle-kit
 </Npm>
-- You should have installed `dotenv` package for managing environment variables. Read more about this package [here](https://www.npmjs.com/package/dotenv)
+- 환경 변수 관리를 위한 `dotenv` 패키지가 설치되어 있어야 합니다. 이 패키지에 대한 자세한 내용은 [여기](https://www.npmjs.com/package/dotenv)에서 확인하세요
 <Npm>
   dotenv
 </Npm>
 
-- You should have installed `postgres` package for connecting to the Postgres database. Read more about this package [here](https://www.npmjs.com/package/postgres)
+- Postgres 데이터베이스 연결을 위한 `postgres` 패키지가 설치되어 있어야 합니다. 이 패키지에 대한 자세한 내용은 [여기](https://www.npmjs.com/package/postgres)에서 확인하세요
 <Npm>
   postgres
 </Npm>
 
-- You should have a Xata account and database set up. Follow the [Xata documentation](https://xata.io/documentation/getting-started) to create your account and database
+- Xata 계정과 데이터베이스가 설정되어 있어야 합니다. 계정과 데이터베이스 생성 방법은 [Xata 문서](https://xata.io/documentation/getting-started)를 참조하세요
 </Prerequisites>
 
-Check [Xata documentation](https://xata.io/documentation/quickstarts/drizzle) to learn more about using Drizzle ORM with Xata.
+Drizzle ORM을 Xata와 함께 사용하는 방법에 대한 자세한 내용은 [Xata 문서](https://xata.io/documentation/quickstarts/drizzle)를 참조하세요.
 
-## Setup Xata and Drizzle ORM
+## Xata와 Drizzle ORM 설정
 
 <Steps>
-#### Create a new Xata database
+#### 새로운 Xata 데이터베이스 생성
 
-You can create a new Xata database by following these steps:
+다음 단계에 따라 새로운 Xata 데이터베이스를 생성할 수 있습니다:
 
-1. Sign up or log in to your [Xata account](https://xata.io/)
-2. Create a new database from the dashboard
-3. Choose your region and database name
-4. Your database will be created with a PostgreSQL endpoint
+1. [Xata 계정](https://xata.io/)에 가입하거나 로그인합니다
+2. 대시보드에서 새로운 데이터베이스를 생성합니다
+3. 리전과 데이터베이스 이름을 선택합니다
+4. PostgreSQL 엔드포인트가 포함된 데이터베이스가 생성됩니다
 
-#### Setup connection string variable
+#### 연결 문자열 변수 설정
 
-Navigate to the Xata dashboard and copy the PostgreSQL connection string. You can find this on the branch overview page.
+Xata 대시보드로 이동하여 PostgreSQL 연결 문자열을 복사합니다. 브랜치 개요 페이지에서 찾을 수 있습니다.
 
-Add `DATABASE_URL` variable to your `.env` or `.env.local` file:
+`.env` 또는 `.env.local` 파일에 `DATABASE_URL` 변수를 추가합니다:
 
 ```plaintext copy
 DATABASE_URL=<YOUR_XATA_DATABASE_URL>
 ```
 
-The connection string format will be:
+연결 문자열 형식은 다음과 같습니다:
 ```plaintext
 postgresql://postgres:<password>@<branch-id>.<region>.xata.tech/<database>?sslmode=require
 ```
 
-Example:
+예시:
 ```plaintext
 postgresql://postgres:password@t56hgfp7hd2sjfeiqcn66qpo8s.us-east-1.xata.tech/app?sslmode=require
 ```
 
 <Callout type="info">
-Xata provides branch-based development, allowing you to create isolated database branches for development, staging, and production environments.
+Xata는 브랜치 기반 개발을 제공하여 개발, 스테이징, 프로덕션 환경을 위한 격리된 데이터베이스 브랜치를 생성할 수 있습니다.
 </Callout>
 
-#### Connect Drizzle ORM to your database
+#### Drizzle ORM을 데이터베이스에 연결
 
-Create a `index.ts` file in the `src/db` directory and set up your database configuration:
+`src/db` 디렉토리에 `index.ts` 파일을 생성하고 데이터베이스 설정을 구성합니다:
 
 ```typescript copy filename="src/db/index.ts"
 import { config } from 'dotenv';
@@ -84,9 +84,9 @@ const client = postgres(process.env.DATABASE_URL!);
 export const db = drizzle({ client });
 ```
 
-#### Create tables
+#### 테이블 생성
 
-Create a `schema.ts` file in the `src/db` directory and declare your tables:
+`src/db` 디렉토리에 `schema.ts` 파일을 생성하고 테이블을 정의합니다:
 
 ```typescript copy filename="src/db/schema.ts"
 import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
@@ -118,11 +118,11 @@ export type InsertPost = typeof postsTable.$inferInsert;
 export type SelectPost = typeof postsTable.$inferSelect;
 ```
 
-#### Setup Drizzle config file
+#### Drizzle 설정 파일 구성
 
-**Drizzle config** - a configuration file that is used by [Drizzle Kit](/docs/kit-overview) and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config** - [Drizzle Kit](/docs/kit-overview)에서 사용하는 설정 파일로, 데이터베이스 연결, 마이그레이션 폴더, 스키마 파일에 대한 모든 정보를 포함합니다.
 
-Create a `drizzle.config.ts` file in the root of your project and add the following content:
+프로젝트 루트에 `drizzle.config.ts` 파일을 생성하고 다음 내용을 추가합니다:
 
 ```typescript copy filename="drizzle.config.ts"
 import { config } from 'dotenv';
@@ -140,19 +140,19 @@ export default defineConfig({
 });
 ```
 
-#### Applying changes to the database
+#### 데이터베이스에 변경사항 적용
 
-You can generate migrations using `drizzle-kit generate` command and then run them using the `drizzle-kit migrate` command.
+`drizzle-kit generate` 명령어로 마이그레이션을 생성한 다음 `drizzle-kit migrate` 명령어로 실행할 수 있습니다.
 
-Generate migrations:
+마이그레이션 생성:
 
 ```bash copy
 npx drizzle-kit generate
 ```
 
-These migrations are stored in the `migrations` directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+이러한 마이그레이션은 `drizzle.config.ts`에 지정된 대로 `migrations` 디렉토리에 저장됩니다. 이 디렉토리에는 데이터베이스 스키마를 업데이트하는 데 필요한 SQL 파일과 다양한 마이그레이션 단계에서 스키마의 스냅샷을 저장하는 `meta` 폴더가 포함됩니다.
 
-Example of a generated migration:
+생성된 마이그레이션 예시:
 
 ```sql
 CREATE TABLE IF NOT EXISTS "posts_table" (
@@ -179,30 +179,30 @@ EXCEPTION
 END $$;
 ```
 
-Run migrations:
+마이그레이션 실행:
 
 ```bash copy
 npx drizzle-kit migrate
 ```
 
-Learn more about [migration process](/docs/migrations).
+[마이그레이션 프로세스](/docs/migrations)에 대해 자세히 알아보세요.
 
-Alternatively, you can push changes directly to the database using [Drizzle kit push command](/docs/kit-overview#prototyping-with-db-push):
+또는 [Drizzle kit push 명령어](/docs/kit-overview#prototyping-with-db-push)를 사용하여 변경사항을 데이터베이스에 직접 푸시할 수 있습니다:
 
 ```bash copy
 npx drizzle-kit push
 ```
 
-<Callout type="warning">Push command is good for situations where you need to quickly test new schema designs or changes in a local development environment, allowing for fast iterations without the overhead of managing migration files.</Callout>
+<Callout type="warning">push 명령어는 로컬 개발 환경에서 새로운 스키마 디자인이나 변경사항을 빠르게 테스트해야 하는 상황에 적합하며, 마이그레이션 파일 관리의 오버헤드 없이 빠른 반복 작업을 가능하게 합니다.</Callout>
 
 <Callout type="info">
-**Xata Branch-Based Development**: Xata allows you to create database branches for different environments. You can use different connection strings for development, staging, and production branches, making it easy to test schema changes before deploying to production.
+**Xata 브랜치 기반 개발**: Xata를 사용하면 다양한 환경을 위한 데이터베이스 브랜치를 생성할 수 있습니다. 개발, 스테이징, 프로덕션 브랜치에 대해 서로 다른 연결 문자열을 사용할 수 있어 프로덕션에 배포하기 전에 스키마 변경사항을 쉽게 테스트할 수 있습니다.
 </Callout>
 </Steps>
 
-## Basic file structure
+## 기본 파일 구조
 
-This is the basic file structure of the project. In the `src/db` directory, we have database-related files including connection in `index.ts` and schema definitions in `schema.ts`.
+다음은 프로젝트의 기본 파일 구조입니다. `src/db` 디렉토리에는 `index.ts`의 연결 설정과 `schema.ts`의 스키마 정의를 포함한 데이터베이스 관련 파일이 있습니다.
 
 ```plaintext
 📦 <project root>
@@ -221,13 +221,13 @@ This is the basic file structure of the project. In the `src/db` directory, we h
  └ 📜 tsconfig.json
 ```
 
-## Query examples
+## 쿼리 예제
 
-For instance, we create `src/db/queries` folder and separate files for each operation: insert, select, update, delete.
+예를 들어, `src/db/queries` 폴더를 생성하고 각 작업별로 파일을 분리합니다: insert, select, update, delete.
 
-#### Insert data
+#### 데이터 삽입
 
-Read more about insert query in the [documentation](/docs/insert).
+insert 쿼리에 대한 자세한 내용은 [문서](/docs/insert)를 참조하세요.
 
 ```typescript copy filename="src/db/queries/insert.ts" {4, 8}
 import { db } from '../index';
@@ -242,14 +242,14 @@ export async function createPost(data: InsertPost) {
 }
 ```
 
-#### Select data
+#### 데이터 조회
 
-Read more about select query in the [documentation](/docs/select).
+select 쿼리에 대한 자세한 내용은 [문서](/docs/select)를 참조하세요.
 
 <Callout type='warning'>
-`getColumns` available starting from `drizzle-orm@1.0.0-beta.2`(read more [here](/docs/upgrade-v1))
+`getColumns`는 `drizzle-orm@1.0.0-beta.2`부터 사용 가능합니다 (자세한 내용은 [여기](/docs/upgrade-v1)에서 확인하세요)
 
-If you are on pre-1 version(like `0.45.1`) then use `getTableColumns`
+`0.45.1`과 같은 1.0 이전 버전을 사용하는 경우 `getTableColumns`를 사용하세요
 </Callout>
 
 ```typescript copy filename="src/db/queries/select.ts" {5, 16, 41}
@@ -315,11 +315,11 @@ export async function getPostsForLast24Hours(
 }
 ```
 
-Alternatively, you can use [relational query syntax](/docs/rqb).
+또는 [관계형 쿼리 문법](/docs/rqb)을 사용할 수 있습니다.
 
-#### Update data
+#### 데이터 업데이트
 
-Read more about update query in the [documentation](/docs/update).
+update 쿼리에 대한 자세한 내용은 [문서](/docs/update)를 참조하세요.
 
 ```typescript copy filename="src/db/queries/update.ts" {5}
 import { eq } from 'drizzle-orm';
@@ -331,9 +331,9 @@ export async function updatePost(id: SelectPost['id'], data: Partial<Omit<Select
 }
 ```
 
-#### Delete data
+#### 데이터 삭제
 
-Read more about delete query in the [documentation](/docs/delete).
+delete 쿼리에 대한 자세한 내용은 [문서](/docs/delete)를 참조하세요.
 
 ```typescript copy filename="src/db/queries/delete.ts" {5}
 import { eq } from 'drizzle-orm';
@@ -345,10 +345,10 @@ export async function deleteUser(id: SelectUser['id']) {
 }
 ```
 
-## Next Steps
+## 다음 단계
 
-Now that you have successfully set up Drizzle ORM with Xata, you can explore more advanced features:
+Drizzle ORM을 Xata와 함께 성공적으로 설정했으므로 더 고급 기능을 살펴볼 수 있습니다:
 
-- Learn about [Drizzle relations](/docs/rqb) for complex queries
-- Explore [Xata's documentation](https://xata.io/documentation/)
-- Implement [database migrations](/docs/migrations) for production deployments
+- 복잡한 쿼리를 위한 [Drizzle 관계](/docs/rqb)에 대해 알아보기
+- [Xata 문서](https://xata.io/documentation/) 살펴보기
+- 프로덕션 배포를 위한 [데이터베이스 마이그레이션](/docs/migrations) 구현하기

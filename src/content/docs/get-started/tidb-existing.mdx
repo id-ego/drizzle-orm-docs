@@ -20,7 +20,7 @@ import TransferCode from '@mdx/get-started/TransferCode.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and TiDB in existing project
+# 기존 프로젝트에서 Drizzle과 TiDB 시작하기
 
 <Prerequisites>  
   - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
@@ -31,46 +31,46 @@ import TransferCode from '@mdx/get-started/TransferCode.mdx';
 
 <FileStructure/>
 
-#### Step 1 - Install **@tidbcloud/serverless** package
+#### Step 1 - **@tidbcloud/serverless** 패키지 설치
 
 <InstallPackages lib='@tidbcloud/serverless'/>
 
-#### Step 2 - Setup connection variables
+#### Step 2 - 연결 변수 설정
 
 <SetupEnv env_variable='DATABASE_URL' />
 
-#### Step 3 - Setup Drizzle config file
+#### Step 3 - Drizzle 설정 파일 구성
 
 <SetupConfig dialect='mysql' env_variable='DATABASE_URL'/>
 
-#### Step 4 - Introspect your database
+#### Step 4 - 데이터베이스 인트로스펙션
 
 <IntrospectMySQL/>
 
-#### Step 5 - Transfer code to your actual schema file
+#### Step 5 - 실제 스키마 파일로 코드 이전
 
 <TransferCode/>
 
-#### Step 6 - Connect Drizzle ORM to the database
+#### Step 6 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectTiDB/>
 
-#### Step 7 - Query the database
+#### Step 7 - 데이터베이스 쿼리
 
 <QueryDatabase dialect='tidb-serverless' env_variable='DATABASE_URL'/>
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
 <RunFile/>
 
-#### Step 9 - Update your table schema (optional)
+#### Step 9 - 테이블 스키마 업데이트 (선택사항)
 
 <UpdateSchema/>
 
-#### Step 10 - Applying changes to the database (optional)
+#### Step 10 - 데이터베이스에 변경사항 적용 (선택사항)
 
 <ApplyChanges/>
 
-#### Step 11 - Query the database with a new field (optional)
+#### Step 11 - 새 필드로 데이터베이스 쿼리 (선택사항)
 
 <QueryDatabaseUpdated dialect='tidb-serverless' env_variable='DATABASE_URL' />

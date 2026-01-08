@@ -3,23 +3,23 @@ import Callout from '@mdx/Callout.astro';
 
 # drizzle-arktype
 
-`drizzle-arktype` is a plugin for **[Drizzle ORM](https://github.com/drizzle-team/drizzle-orm)** that allows you to generate **[Arktype](https://arktype.io/)** schemas from Drizzle ORM schemas.
+`drizzle-arktype`는 **[Drizzle ORM](https://github.com/drizzle-team/drizzle-orm)**의 플러그인으로, Drizzle ORM 스키마로부터 **[Arktype](https://arktype.io/)** 스키마를 생성할 수 있습니다.
 
-### Install the dependencies
+### 의존성 설치
 
 <Npm>
 drizzle-arktype
 </Npm>
 
 <Callout type="warning">
-This documentation is for `drizzle-arktype@0.1.0` and higher
+이 문서는 `drizzle-arktype@0.1.0` 이상 버전을 위한 문서입니다.
 
-You must also have Drizzle ORM v0.36.0 or greater and Arktype v2.0.0 or greater installed.
+Drizzle ORM v0.36.0 이상, Arktype v2.0.0 이상이 설치되어 있어야 합니다.
 </Callout>
 
-### Select schema
+### Select 스키마
 
-Defines the shape of data queried from the database - can be used to validate API responses.
+데이터베이스에서 조회한 데이터의 형태를 정의합니다. API 응답을 검증하는 데 사용할 수 있습니다.
 
 ```ts copy
 import { pgTable, text, integer } from 'drizzle-orm/pg-core';
@@ -40,7 +40,7 @@ const rows = await db.select().from(users).limit(1);
 const parsed: { id: number; name: string; age: number } = userSelectSchema(rows[0]); // Will parse successfully
 ```
 
-Views and enums are also supported.
+뷰(View)와 열거형(Enum)도 지원됩니다.
 
 ```ts copy
 import { pgEnum } from 'drizzle-orm/pg-core';
@@ -55,9 +55,9 @@ const usersViewSchema = createSelectSchema(usersView);
 const parsed: { id: number; name: string; age: number } = usersViewSchema(...);
 ```
 
-### Insert schema
+### Insert 스키마
 
-Defines the shape of data to be inserted into the database - can be used to validate API requests.
+데이터베이스에 삽입할 데이터의 형태를 정의합니다. API 요청을 검증하는 데 사용할 수 있습니다.
 
 ```ts copy
 import { pgTable, text, integer } from 'drizzle-orm/pg-core';
@@ -79,9 +79,9 @@ const parsed: { name: string, age: number } = userInsertSchema(user); // Will pa
 await db.insert(users).values(parsed);
 ```
 
-### Update schema
+### Update 스키마
 
-Defines the shape of data to be updated in the database - can be used to validate API requests.
+데이터베이스에서 업데이트할 데이터의 형태를 정의합니다. API 요청을 검증하는 데 사용할 수 있습니다.
 
 ```ts copy
 import { pgTable, text, integer } from 'drizzle-orm/pg-core';
@@ -104,9 +104,9 @@ const parsed: { name?: string | undefined, age?: number | undefined } = userUpda
 await db.update(users).set(parsed).where(eq(users.name, 'Jane'));
 ```
 
-### Refinements
+### Refinements (세부 조정)
 
-Each create schema function accepts an additional optional parameter that you can used to extend, modify or completely overwite a field's schema. Defining a callback function will extend or modify while providing a arktype schema will overwrite it.
+각 create 스키마 함수는 추가 선택적 매개변수를 받아 필드의 스키마를 확장, 수정 또는 완전히 덮어쓸 수 있습니다. 콜백 함수를 정의하면 확장하거나 수정하고, arktype 스키마를 제공하면 덮어씁니다.
 
 ```ts copy
 import { pgTable, text, integer, json } from 'drizzle-orm/pg-core';
@@ -136,7 +136,7 @@ const parsed: {
 } = userSelectSchema(...);
 ```
 
-### Data type reference
+### 데이터 타입 레퍼런스
 
 ```ts
 pg.boolean();

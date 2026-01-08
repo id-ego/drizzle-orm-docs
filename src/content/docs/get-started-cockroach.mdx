@@ -8,57 +8,57 @@ import Prerequisites from "@mdx/Prerequisites.astro";
 import CodeTabs from "@mdx/CodeTabs.astro";
 import WhatsNextPostgres from "@mdx/WhatsNextPostgres.astro";
 
-# Drizzle \<\> PostgreSQL
+# Drizzle \<\> CockroachDB
 
 <Callout type='error'>
-This page explains concepts available on drizzle versions `1.0.0-beta.2` and higher.
+이 페이지는 Drizzle 버전 `1.0.0-beta.2` 이상에서 사용 가능한 개념을 설명합니다.
 </Callout>
 
 <br/>
 
 <Prerequisites>
-- Database [connection basics](/docs/connect-overview) with Drizzle
-- node-postgres [basics](https://node-postgres.com/)
+- Drizzle을 사용한 데이터베이스 [연결 기본사항](/docs/connect-overview)
+- node-postgres [기본사항](https://node-postgres.com/)
 </Prerequisites>
 
-Drizzle has native support for PostgreSQL connections with the `node-postgres` driver.
+Drizzle은 `node-postgres` 드라이버를 사용한 CockroachDB 연결을 기본적으로 지원합니다.
 
-#### Step 1 - Install packages
+#### 1단계 - 패키지 설치
 <Npm>
 drizzle-orm@beta pg
 -D drizzle-kit@beta @types/pg
 </Npm>
 
-#### Step 2 - Initialize the driver and make a query
+#### 2단계 - 드라이버 초기화 및 쿼리 실행
 <CodeTabs items={["node-postgres", "node-postgres with config"]}>
 ```typescript copy
-// Make sure to install the 'pg' package 
+// 'pg' 패키지를 설치했는지 확인하세요
 import { drizzle } from 'drizzle-orm/cockroach';
 
 const db = drizzle(process.env.DATABASE_URL);
- 
+
 const result = await db.execute('select 1');
 ```
 ```typescript copy
-// Make sure to install the 'pg' package 
+// 'pg' 패키지를 설치했는지 확인하세요
 import { drizzle } from 'drizzle-orm/cockroach';
 
-// You can specify any property from the node-postgres connection options
-const db = drizzle({ 
-  connection: { 
+// node-postgres 연결 옵션의 모든 속성을 지정할 수 있습니다
+const db = drizzle({
+  connection: {
     connectionString: process.env.DATABASE_URL,
     ssl: true
   }
 });
- 
+
 const result = await db.execute('select 1');
 ```
 </CodeTabs>
 
-If you need to provide your existing driver:
+기존 드라이버를 제공해야 하는 경우:
 
 ```typescript copy
-// Make sure to install the 'pg' package 
+// 'pg' 패키지를 설치했는지 확인하세요
 import { drizzle } from "drizzle-orm/cockroach";
 import { Pool } from "pg";
 
@@ -66,10 +66,10 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 const db = drizzle({ client: pool });
- 
+
 const result = await db.execute('select 1');
 ```
 
-#### What's next?
+#### 다음 단계
 
 <WhatsNextPostgres/>

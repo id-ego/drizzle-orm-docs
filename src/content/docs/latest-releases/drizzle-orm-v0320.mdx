@@ -1,18 +1,18 @@
 ---
-title: DrizzleORM v0.32.0 release
+title: DrizzleORM v0.32.0 릴리스
 pubDate: 2024-07-10
-description: Generated columns, identity columns, sequences and more
+description: 생성 컬럼, Identity 컬럼, 시퀀스 등 새로운 기능 추가
 ---
 
-# Release notes for `drizzle-orm@0.32.0` and `drizzle-kit@0.23.0`
+# `drizzle-orm@0.32.0` 및 `drizzle-kit@0.23.0` 릴리스 노트
 
-> It's not mandatory to upgrade both packages, but if you want to use the new features in both queries and migrations, you will need to upgrade both packages
+> 두 패키지를 모두 업그레이드할 필요는 없지만, 쿼리와 마이그레이션 모두에서 새로운 기능을 사용하려면 두 패키지를 모두 업그레이드해야 합니다
 
-## New Features
+## 새로운 기능
 
-### 🎉 MySQL `$returningId()` function
+### 🎉 MySQL `$returningId()` 함수
 
-MySQL itself doesn't have native support for `RETURNING` after using `INSERT`. There is only one way to do it for `primary keys` with `autoincrement` (or `serial`) types, where you can access `insertId` and `affectedRows` fields. We've prepared an automatic way for you to handle such cases with Drizzle and automatically receive all inserted IDs as separate objects
+MySQL은 `INSERT` 후 `RETURNING`을 기본적으로 지원하지 않습니다. `autoincrement` (또는 `serial`) 타입을 가진 `primary keys`에 대해서만 `insertId`와 `affectedRows` 필드에 접근할 수 있는 방법이 있습니다. Drizzle에서는 이러한 경우를 자동으로 처리하여 삽입된 모든 ID를 별도의 객체로 자동으로 받을 수 있는 방법을 준비했습니다
 
 ```ts
 import { boolean, int, text, mysqlTable } from 'drizzle-orm/mysql-core';
@@ -28,7 +28,7 @@ const result = await db.insert(usersTable).values([{ name: 'John' }, { name: 'Jo
 //    ^? { id: number }[]
 ```
 
-Also with Drizzle, you can specify a `primary key` with `$default` function that will generate custom primary keys at runtime. We will also return those generated keys for you in the `$returningId()` call
+또한 Drizzle에서는 런타임에 커스텀 primary key를 생성하는 `$default` 함수를 사용하여 `primary key`를 지정할 수 있습니다. `$returningId()` 호출에서 생성된 키도 반환됩니다
 
 ```ts
 import { varchar, text, mysqlTable } from 'drizzle-orm/mysql-core';
@@ -44,13 +44,13 @@ const result = await db.insert(usersTableDefFn).values([{ name: 'John' }, { name
 //  ^? { customId: string }[]
 ```
 
-> If there is no primary keys -> type will be `{}[]` for such queries
+> primary key가 없는 경우 타입은 `{}[]`가 됩니다
 
-### 🎉 PostgreSQL Sequences
+### 🎉 PostgreSQL 시퀀스
 
-You can now specify sequences in Postgres within any schema you need and define all the available properties
+이제 PostgreSQL에서 필요한 모든 스키마 내에서 시퀀스를 지정하고 사용 가능한 모든 속성을 정의할 수 있습니다
 
-##### **Example**
+##### **예제**
 
 ```ts
 import { pgSchema, pgSequence } from "drizzle-orm/pg-core";
@@ -74,11 +74,11 @@ export const customSchema = pgSchema('custom_schema');
 export const customSequence = customSchema.sequence("name");
 ```
 
-### 🎉 PostgreSQL Identity Columns
+### 🎉 PostgreSQL Identity 컬럼
 
-[Source](https://wiki.postgresql.org/wiki/Don%27t_Do_This#Don.27t_use_serial): As mentioned, the `serial` type in Postgres is outdated and should be deprecated. Ideally, you should not use it. `Identity columns` are the recommended way to specify sequences in your schema, which is why we are introducing the `identity columns` feature
+[출처](https://wiki.postgresql.org/wiki/Don%27t_Do_This#Don.27t_use_serial): 언급했듯이 PostgreSQL의 `serial` 타입은 구식이며 사용하지 않는 것이 좋습니다. 이상적으로는 사용하지 말아야 합니다. `Identity 컬럼`은 스키마에서 시퀀스를 지정하는 권장 방법이며, 이것이 바로 `identity columns` 기능을 도입하는 이유입니다
 
-##### **Example**
+##### **예제**
 
 ```ts
 import { pgTable, integer, text } from 'drizzle-orm/pg-core' 
@@ -90,17 +90,17 @@ export const ingredients = pgTable("ingredients", {
 });
 ```
 
-You can specify all properties available for sequences in the `.generatedAlwaysAsIdentity()` function. Additionally, you can specify custom names for these sequences
+`.generatedAlwaysAsIdentity()` 함수에서 시퀀스에 사용 가능한 모든 속성을 지정할 수 있습니다. 또한 이러한 시퀀스의 커스텀 이름을 지정할 수도 있습니다
 
-PostgreSQL docs [reference](https://www.postgresql.org/docs/current/sql-createtable.html#SQL-CREATETABLE-PARMS-GENERATED-IDENTITY).
+PostgreSQL 문서 [참조](https://www.postgresql.org/docs/current/sql-createtable.html#SQL-CREATETABLE-PARMS-GENERATED-IDENTITY).
 
-### 🎉 PostgreSQL Generated Columns
+### 🎉 PostgreSQL 생성 컬럼
 
-You can now specify generated columns on any column supported by PostgreSQL to use with generated columns
+이제 PostgreSQL에서 생성 컬럼을 사용할 수 있도록 지원하는 모든 컬럼에 생성 컬럼을 지정할 수 있습니다
 
-##### **Example** with generated column for `tsvector`
+##### `tsvector`를 위한 생성 컬럼 **예제**
 
-> Note: we will add `tsVector` column type before latest release
+> 참고: 최신 릴리스 전에 `tsVector` 컬럼 타입을 추가할 예정입니다
 
 ```ts
 import { SQL, sql } from "drizzle-orm";
@@ -129,7 +129,7 @@ export const test = pgTable(
 );
 ```
 
-In case you don't need to reference any columns from your table, you can use just `sql` template or a `string`
+테이블의 컬럼을 참조할 필요가 없는 경우 `sql` 템플릿 또는 `string`만 사용할 수 있습니다
 
 ```ts
 export const users = pgTable("users", {
@@ -140,21 +140,21 @@ export const users = pgTable("users", {
 }),
 ```
 
-### 🎉 MySQL Generated Columns
+### 🎉 MySQL 생성 컬럼
 
-You can now specify generated columns on any column supported by MySQL to use with generated columns
+이제 MySQL에서 생성 컬럼을 사용할 수 있도록 지원하는 모든 컬럼에 생성 컬럼을 지정할 수 있습니다
 
-You can specify both `stored` and `virtual` options, for more info you can check [MySQL docs](https://dev.mysql.com/doc/refman/8.4/en/create-table-generated-columns.html)
+`stored`와 `virtual` 옵션을 모두 지정할 수 있으며, 자세한 정보는 [MySQL 문서](https://dev.mysql.com/doc/refman/8.4/en/create-table-generated-columns.html)를 확인하세요
 
-Also MySQL has a few limitation for such columns usage, which is described [here](https://dev.mysql.com/doc/refman/8.4/en/alter-table-generated-columns.html)
+또한 MySQL은 이러한 컬럼 사용에 몇 가지 제한이 있으며, 이는 [여기](https://dev.mysql.com/doc/refman/8.4/en/alter-table-generated-columns.html)에 설명되어 있습니다
 
-Drizzle Kit will also have limitations for `push` command:
+Drizzle Kit의 `push` 명령에도 제한사항이 있습니다:
 
-1. You can't change the generated constraint expression and type using `push`. Drizzle-kit will ignore this change. To make it work, you would need to `drop the column`, `push`, and then `add a column with a new expression`. This was done due to the complex mapping from the database side, where the schema expression will be modified on the database side and, on introspection, we will get a different string. We can't be sure if you changed this expression or if it was changed and formatted by the database. As long as these are generated columns and `push` is mostly used for prototyping on a local database, it should be fast to `drop` and `create` generated columns. Since these columns are `generated`, all the data will be restored
+1. `push`를 사용하여 생성 제약조건 표현식과 타입을 변경할 수 없습니다. Drizzle-kit은 이 변경사항을 무시합니다. 이를 적용하려면 `컬럼 삭제`, `push`, 그리고 `새 표현식으로 컬럼 추가`를 해야 합니다. 이는 데이터베이스 측의 복잡한 매핑으로 인해 스키마 표현식이 데이터베이스 측에서 수정되고 introspection 시 다른 문자열을 얻게 되기 때문입니다. 이 표현식을 변경했는지 또는 데이터베이스에서 변경 및 포맷했는지 확신할 수 없습니다. 이러한 컬럼이 생성 컬럼이고 `push`는 주로 로컬 데이터베이스에서 프로토타이핑에 사용되므로, 생성 컬럼을 `삭제`하고 `생성`하는 것은 빨라야 합니다. 이러한 컬럼이 `생성`되므로 모든 데이터가 복원됩니다
 
-2. `generate` should have no limitations
+2. `generate`에는 제한이 없어야 합니다
 
-##### **Example**
+##### **예제**
 
 ```ts
 export const users = mysqlTable("users", {
@@ -172,47 +172,47 @@ export const users = mysqlTable("users", {
 }),
 ```
 
-In case you don't need to reference any columns from your table, you can use just `sql` template or a `string` in `.generatedAlwaysAs()`
+테이블의 컬럼을 참조할 필요가 없는 경우 `.generatedAlwaysAs()`에서 `sql` 템플릿 또는 `string`만 사용할 수 있습니다
 
-### 🎉 SQLite Generated Columns
+### 🎉 SQLite 생성 컬럼
 
-You can now specify generated columns on any column supported by SQLite to use with generated columns
+이제 SQLite에서 생성 컬럼을 사용할 수 있도록 지원하는 모든 컬럼에 생성 컬럼을 지정할 수 있습니다
 
-You can specify both `stored` and `virtual` options, for more info you can check [SQLite docs](https://www.sqlite.org/gencol.html)
+`stored`와 `virtual` 옵션을 모두 지정할 수 있으며, 자세한 정보는 [SQLite 문서](https://www.sqlite.org/gencol.html)를 확인하세요
 
-Also SQLite has a few limitation for such columns usage, which is described [here](https://www.sqlite.org/gencol.html)
+또한 SQLite는 이러한 컬럼 사용에 몇 가지 제한이 있으며, 이는 [여기](https://www.sqlite.org/gencol.html)에 설명되어 있습니다
 
-Drizzle Kit will also have limitations for `push` and `generate` command:
+Drizzle Kit의 `push` 및 `generate` 명령에도 제한사항이 있습니다:
 
-1. You can't change the generated constraint expression with the stored type in an existing table. You would need to delete this table and create it again. This is due to SQLite limitations for such actions. We will handle this case in future releases (it will involve the creation of a new table with data migration).
+1. 기존 테이블에서 stored 타입의 생성 제약조건 표현식을 변경할 수 없습니다. 이 테이블을 삭제하고 다시 생성해야 합니다. 이는 SQLite의 이러한 작업에 대한 제한 때문입니다. 향후 릴리스에서 이 경우를 처리할 예정입니다 (데이터 마이그레이션과 함께 새 테이블 생성 포함).
 
-2. You can't add a `stored` generated expression to an existing column for the same reason as above. However, you can add a `virtual` expression to an existing column.
+2. 위와 동일한 이유로 기존 컬럼에 `stored` 생성 표현식을 추가할 수 없습니다. 하지만 기존 컬럼에 `virtual` 표현식은 추가할 수 있습니다.
 
-3. You can't change a `stored` generated expression in an existing column for the same reason as above. However, you can change a `virtual` expression.
+3. 위와 동일한 이유로 기존 컬럼에서 `stored` 생성 표현식을 변경할 수 없습니다. 하지만 `virtual` 표현식은 변경할 수 있습니다.
 
-4. You can't change the generated constraint type from `virtual` to `stored` for the same reason as above. However, you can change from `stored` to `virtual`.
+4. 위와 동일한 이유로 생성 제약조건 타입을 `virtual`에서 `stored`로 변경할 수 없습니다. 하지만 `stored`에서 `virtual`로는 변경할 수 있습니다.
 
-## New Drizzle Kit features
+## 새로운 Drizzle Kit 기능
 
-### 🎉 Migrations support for all the new orm features
+### 🎉 모든 새로운 ORM 기능에 대한 마이그레이션 지원
 
-PostgreSQL sequences, identity columns and generated columns for all dialects
+모든 dialect에 대한 PostgreSQL 시퀀스, identity 컬럼 및 생성 컬럼 지원
 
-### 🎉 New flag `--force` for `drizzle-kit push`
+### 🎉 `drizzle-kit push`를 위한 새로운 플래그 `--force`
 
-You can auto-accept all data-loss statements using the push command. It's only available in CLI parameters. Make sure you always use it if you are fine with running data-loss statements on your database
+push 명령을 사용하여 모든 데이터 손실 문을 자동으로 승인할 수 있습니다. CLI 매개변수에서만 사용할 수 있습니다. 데이터베이스에서 데이터 손실 문을 실행해도 괜찮다면 항상 이 플래그를 사용하세요
 
-### 🎉 New `migrations` flag `prefix`
+### 🎉 새로운 `migrations` 플래그 `prefix`
 
-You can now customize migration file prefixes to make the format suitable for your migration tools:
+이제 마이그레이션 파일 접두사를 사용자 정의하여 마이그레이션 도구에 적합한 형식으로 만들 수 있습니다:
 
-- `index` is the default type and will result in `0001_name.sql` file names;
-- `supabase` and `timestamp` are equal and will result in `20240627123900_name.sql` file names;
-- `unix` will result in unix seconds prefixes `1719481298_name.sql` file names;
-- `none` will omit the prefix completely;
+- `index`는 기본 타입이며 `0001_name.sql` 파일명을 생성합니다;
+- `supabase`와 `timestamp`는 동일하며 `20240627123900_name.sql` 파일명을 생성합니다;
+- `unix`는 유닉스 초 단위 접두사 `1719481298_name.sql` 파일명을 생성합니다;
+- `none`은 접두사를 완전히 생략합니다;
 
 
-##### **Example**: Supabase migrations format
+##### **예제**: Supabase 마이그레이션 형식
 ```ts
 import { defineConfig } from "drizzle-kit";
 

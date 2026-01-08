@@ -9,25 +9,25 @@ import CodeTabs from "@mdx/CodeTabs.astro";
 # Drizzle \<\> Cloudflare Durable Objects SQLite
 
 <Prerequisites>
-- Database [connection basics](/docs/connect-overview) with Drizzle
-- **Cloudflare SQLite Durable Objects** - SQLite database embedded within a Durable Object - [read here](https://developers.cloudflare.com/durable-objects/best-practices/access-durable-objects-storage/#sqlite-storage-backend)
+- Drizzle의 데이터베이스 [연결 기본 사항](/docs/connect-overview)
+- **Cloudflare SQLite Durable Objects** - Durable Object 내에 임베디드된 SQLite 데이터베이스 - [자세히 보기](https://developers.cloudflare.com/durable-objects/best-practices/access-durable-objects-storage/#sqlite-storage-backend)
 </Prerequisites>
-  
-Drizzle ORM fully supports the Cloudflare Durable Objects database and Cloudflare Workers environment.
-We embrace SQL dialects and dialect specific drivers and syntax and mirror most popular 
-SQLite-like `all`, `get`, `values` and `run` query methods syntax.
 
-To setup project for your Cloudflare Durable Objects please refer to **[official docs.](https://developers.cloudflare.com/durable-objects)**
+Drizzle ORM은 Cloudflare Durable Objects 데이터베이스와 Cloudflare Workers 환경을 완벽하게 지원합니다.
+SQL 방언과 방언별 드라이버 및 문법을 지원하며, 가장 널리 사용되는
+SQLite 스타일의 `all`, `get`, `values`, `run` 쿼리 메서드 문법을 제공합니다.
 
-#### Step 1 - Install packages
+Cloudflare Durable Objects 프로젝트 설정은 **[공식 문서](https://developers.cloudflare.com/durable-objects)**를 참조하세요.
+
+#### Step 1 - 패키지 설치
 <Npm>
 drizzle-orm
 -D drizzle-kit
 </Npm>
 
-#### Step 2 - Initialize the driver and make a query
+#### Step 2 - 드라이버 초기화 및 쿼리 실행
 
-You would need to have a `wrangler.toml` file for Durable Objects database and will look something like this:
+Durable Objects 데이터베이스를 위한 `wrangler.toml` 파일이 필요하며, 다음과 같이 작성합니다:
 ```toml {16-18,21-24}
 #:schema node_modules/wrangler/config-schema.json
 name = "sqlite-durable-objects"
@@ -55,7 +55,7 @@ globs = ["**/*.sql"]
 fallthrough = true
 ```
 
-Make your first Durable Objects SQLite query:
+첫 번째 Durable Objects SQLite 쿼리를 실행해 보세요:
 ```typescript copy
 /// <reference types="@cloudflare/workers-types" />
 import { drizzle, DrizzleSqliteDODatabase } from 'drizzle-orm/durable-sqlite';
@@ -140,6 +140,6 @@ export default {
 }
 ```
 
-#### What's next?
+#### 다음 단계
 
 <WhatsNextPostgres/>

@@ -1,14 +1,20 @@
+---
+title: 테이블 스키마
+description: 데이터베이스 스키마를 사용하여 Drizzle에서 테이블과 enum을 구성하는 방법
+slug: schemas
+---
+
 import Tab from '@mdx/Tab.astro';
 import Tabs from '@mdx/Tabs.astro';
 import IsSupportedChipGroup from '@mdx/IsSupportedChipGroup.astro';
 import Section from '@mdx/Section.astro';
 import Callout from '@mdx/Callout.astro';
 
-# Table schemas
+# 테이블 스키마
 
 <IsSupportedChipGroup chips={{ 'PostgreSQL': true, 'MySQL': true, 'SQLite': false, 'SingleStore': true, 'MSSQL': true, 'CockroachDB': true }} />
 
-If you declare an entity within a schema, query builder will prepend schema names in queries:<br/>
+스키마 내에서 엔티티를 선언하면, 쿼리 빌더는 쿼리에서 스키마 이름을 자동으로 앞에 붙입니다:<br/>
 `select * from "schema"."users"`
 
 <Tabs items={['PostgreSQL', 'MySQL', "SQLite", "SingleStore", 'MSSQL', 'CockroachDB']}>
@@ -65,7 +71,7 @@ If you declare an entity within a schema, query builder will prepend schema name
     </Section>
   </Tab>
   <Tab>
-  SQLite does not have support for schemas 😕
+  SQLite는 스키마를 지원하지 않습니다 😕
   </Tab>
   <Tab>
     <Section>

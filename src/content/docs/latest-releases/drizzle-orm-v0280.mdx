@@ -1,15 +1,15 @@
 ---
-title: DrizzleORM v0.28.0 release
+title: DrizzleORM v0.28.0 릴리스
 pubDate: 2023-08-06
-description: Removed support for filtering by nested relations, Added Relational Queries mode config for mysql2 driver, improved IntelliSense performance for large schemas, improved Relational Queries Permormance and Read Usage. Added possibility to insert rows with default values for all columns.
+description: 중첩 관계를 통한 필터링 지원 제거, mysql2 드라이버의 Relational Queries 모드 설정 추가, 대규모 스키마의 IntelliSense 성능 향상, Relational Queries 성능 및 읽기 사용량 개선, 모든 컬럼에 기본값을 사용하는 행 삽입 기능 추가.
 ---
 import Section from "@mdx/Section.astro";
 
-## Breaking changes
+## 주요 변경 사항
 
-### Removed support for filtering by nested relations
+### 중첩 관계를 통한 필터링 지원 제거
 
-Current example won't work in `0.28.0`:
+다음 예제는 `0.28.0`에서 작동하지 않습니다:
 
 ```ts
 const usersWithPosts = await db.query.users.findMany({
@@ -20,21 +20,21 @@ const usersWithPosts = await db.query.users.findMany({
 });
 ```
 
-The `table` object in the `where` callback won't have fields from `with` and `extras`. We removed them to be able to build more efficient relational queries, which improved row reads and performance.
+`where` 콜백의 `table` 객체는 더 이상 `with` 및 `extras`의 필드를 포함하지 않습니다. 더 효율적인 관계형 쿼리를 구축하기 위해 이를 제거했으며, 이를 통해 행 읽기 및 성능이 향상되었습니다.
 
-If you have used those fields in the `where` callback before, there are several workarounds:
+이전에 `where` 콜백에서 해당 필드를 사용했다면, 다음과 같은 해결 방법이 있습니다:
 
-1. Applying those filters manually on the code level after the rows are fetched;
-2. Using the core API.
+1. 행을 조회한 후 코드 레벨에서 수동으로 필터 적용
+2. Core API 사용
 
-### Added Relational Queries `mode` config for `mysql2` driver
+### `mysql2` 드라이버의 Relational Queries `mode` 설정 추가
 
-Drizzle relational queries always generate exactly one SQL statement to run on the database and it has certain caveats. To have best in class support for every database out there we've introduced modes.
+Drizzle 관계형 쿼리는 항상 데이터베이스에서 실행할 정확히 하나의 SQL 문을 생성하며, 특정 주의사항이 있습니다. 모든 데이터베이스를 최상의 수준으로 지원하기 위해 모드를 도입했습니다.
 
-Drizzle relational queries use lateral joins of subqueries under the hood and for now PlanetScale does not support them.
+Drizzle 관계형 쿼리는 내부적으로 서브쿼리의 lateral join을 사용하는데, 현재 PlanetScale은 이를 지원하지 않습니다.
 
-When using `mysql2` driver with regular MySQL database - you should specify mode: "default".
-When using `mysql2` driver with PlanetScale - you need to specify mode: "planetscale".
+일반 MySQL 데이터베이스와 `mysql2` 드라이버를 사용하는 경우 - `mode: "default"`를 지정해야 합니다.
+PlanetScale과 `mysql2` 드라이버를 사용하는 경우 - `mode: "planetscale"`을 지정해야 합니다.
 
 ```ts copy {9}
 import { drizzle } from 'drizzle-orm/mysql2';
@@ -48,25 +48,25 @@ const client = await mysql.createConnection({
 const db = drizzle({ client, schema, mode: 'planetscale' });
 ```
 
-## Improved IntelliSense performance for large schemas
+## 대규모 스키마의 IntelliSense 성능 향상
 
-We've run the diagnostics on a database schema with 85 tables, 666 columns, 26 enums, 172 indexes and 133 foreign keys. We've optimized internal types which resulted in **430%** speed up in IntelliSense.
+85개의 테이블, 666개의 컬럼, 26개의 enum, 172개의 인덱스, 133개의 외래 키를 가진 데이터베이스 스키마로 진단을 수행했습니다. 내부 타입을 최적화하여 IntelliSense에서 **430%** 속도 향상을 달성했습니다.
 
-## Improved Relational Queries Permormance and Read Usage
+## Relational Queries 성능 및 읽기 사용량 개선
 
-In this release we've fully changed a way query is generated for Relational Queri API.
+이번 릴리스에서는 Relational Query API의 쿼리 생성 방식을 완전히 변경했습니다.
 
-As a summary we've made current set of changes in query generation startegy:
+쿼리 생성 전략의 주요 변경 사항은 다음과 같습니다:
 
-1. Lateral Joins: In the new version we're utilizing lateral joins, denoted by the "LEFT JOIN LATERAL" clauses, to retrieve specific data from related tables efficiently For MySQL in PlanetScale and SQLite, we've used simple subquery selects, which improved a query plan and overall performance
+1. Lateral Join: 새 버전에서는 "LEFT JOIN LATERAL" 절을 사용하여 관련 테이블에서 특정 데이터를 효율적으로 조회합니다. PlanetScale의 MySQL과 SQLite의 경우 단순 서브쿼리 조회를 사용하여 쿼리 계획과 전체 성능을 개선했습니다.
 
-2. Selective Data Retrieval: In the new version we're retrieving only the necessary data from tables. This targeted data retrieval reduces the amount of unnecessary information fetched, resulting in a smaller dataset to process and faster execution.
+2. 선택적 데이터 조회: 새 버전에서는 테이블에서 필요한 데이터만 조회합니다. 이러한 타겟 데이터 조회는 불필요한 정보 가져오기를 줄여 처리할 데이터셋을 줄이고 실행 속도를 높입니다.
 
-3. Reduced Aggregations: In the new version we've reduced the number of aggregation functions (e.g., COUNT, json_agg). By using json_build_array directly within the lateral joins, drizzle is aggregating the data in a more streamlined manner, leading to improved query performance.
+3. 집계 감소: 새 버전에서는 집계 함수(예: COUNT, json_agg)의 수를 줄였습니다. lateral join 내에서 json_build_array를 직접 사용함으로써 Drizzle은 더 간소화된 방식으로 데이터를 집계하여 쿼리 성능을 향상시킵니다.
 
-4. Simplified Grouping: In the new version the GROUP BY clause is removed, as the lateral joins and subqueries already handle data aggregation more efficiently.
+4. 그룹화 단순화: 새 버전에서는 lateral join과 서브쿼리가 이미 데이터 집계를 더 효율적으로 처리하므로 GROUP BY 절이 제거되었습니다.
 
-For this drizzle query
+다음 Drizzle 쿼리의 경우
 
 <Section>
 ```ts copy
@@ -90,7 +90,7 @@ const items = await db.query.comments.findMany({
 ```
 
 ```sql
--- Query generated now
+-- 현재 생성되는 쿼리
 select "comments"."id",
        "comments"."user_id",
        "comments"."post_id",
@@ -119,7 +119,7 @@ limit 1
 ```
 
 ```sql
--- Query generated before
+-- 이전에 생성되던 쿼리
 SELECT "id",
        "user_id",
        "post_id",
@@ -168,16 +168,16 @@ LIMIT 1
 ```
 </Section>
 
-Read more about [Relational Queries](/docs/rqb) in the documentation.
+문서에서 [Relational Queries](/docs/rqb)에 대해 자세히 알아보세요.
 
-## Possibility to insert rows with default values for all columns
+## 모든 컬럼에 기본값을 사용하는 행 삽입 기능
 
-You can now provide an empty object or an array of empty objects, and Drizzle will insert all defaults into the database.
+이제 빈 객체 또는 빈 객체 배열을 제공할 수 있으며, Drizzle이 모든 기본값을 데이터베이스에 삽입합니다.
 
 ```ts copy {2,5}
-// Insert 1 row with all defaults
+// 모든 기본값으로 1개 행 삽입
 await db.insert(usersTable).values({});
 
-// Insert 2 rows with all defaults
+// 모든 기본값으로 2개 행 삽입
 await db.insert(usersTable).values([{}, {}]);
 ```

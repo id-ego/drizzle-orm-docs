@@ -6,20 +6,20 @@ import WhatsNextPostgres from "@mdx/WhatsNextPostgres.astro";
 
 # Drizzle \<\> MySQL
 
-To use Drizzle with a MySQL database, you should use the `mysql2` driver
+MySQL 데이터베이스와 Drizzle을 함께 사용하려면 `mysql2` 드라이버를 사용해야 합니다.
 
-According to the **[official website](https://github.com/sidorares/node-mysql2)**, 
-`mysql2` is a MySQL client for Node.js with focus on performance.  
+**[공식 웹사이트](https://github.com/sidorares/node-mysql2)**에 따르면,
+`mysql2`는 성능에 중점을 둔 Node.js용 MySQL 클라이언트입니다.
 
-Drizzle ORM natively supports `mysql2` with `drizzle-orm/mysql2` package.
+Drizzle ORM은 `drizzle-orm/mysql2` 패키지를 통해 `mysql2`를 기본적으로 지원합니다.
 
-#### Step 1 - Install packages
+#### Step 1 - 패키지 설치
 <Npm>
 drizzle-orm mysql2
 -D drizzle-kit
 </Npm>
 
-#### Step 2 - Initialize the driver and make a query
+#### Step 2 - 드라이버 초기화 및 쿼리 실행
 <CodeTabs items={['mysql2', 'mysql with config']}>
 ```typescript copy
 import { drizzle } from "drizzle-orm/mysql2";
@@ -31,14 +31,14 @@ const response = await db.select().from(...)
 ```typescript copy
 import { drizzle } from "drizzle-orm/mysql2";
 
-// You can specify any property from the mysql2 connection options
+// mysql2 연결 옵션의 모든 속성을 지정할 수 있습니다
 const db = drizzle({ connection:{ uri: process.env.DATABASE_URL }});
 
 const response = await db.select().from(...)
 ```
 </CodeTabs>
 
-If you need to provide your existing driver:
+기존 드라이버를 제공해야 하는 경우:
 
 <CodeTabs items={['Client connection', 'Pool connection']}>
   ```typescript copy
@@ -70,11 +70,11 @@ If you need to provide your existing driver:
 </CodeTabs>
 
 <Callout type="warning" emoji="⚙️">
-  For the built in `migrate` function with DDL migrations we and drivers strongly encourage you to use single `client` connection.  
+  DDL 마이그레이션을 사용하는 내장 `migrate` 함수의 경우, 저희와 드라이버 개발팀은 단일 `client` 연결 사용을 강력히 권장합니다.
 
-  For querying purposes feel free to use either `client` or `pool` based on your business demands.
+  쿼리 목적으로는 비즈니스 요구사항에 따라 `client` 또는 `pool`을 자유롭게 사용하실 수 있습니다.
 </Callout>
 
-#### What's next?
+#### 다음 단계
 
 <WhatsNextPostgres/>

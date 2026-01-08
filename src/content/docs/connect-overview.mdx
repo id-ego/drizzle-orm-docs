@@ -11,8 +11,8 @@ import Section from "@mdx/Section.astro";
 import LinksList from "@mdx/LinksList.astro"
 import Flex from "@mdx/Flex.astro"
 
-# Database connection with Drizzle
-Drizzle ORM runs SQL queries on your database via **database drivers**.
+# Drizzle로 데이터베이스 연결하기
+Drizzle ORM은 **데이터베이스 드라이버**를 통해 데이터베이스에서 SQL 쿼리를 실행합니다.
 <CodeTabs items={["index.ts", "schema.ts"]}>
 
 <CodeTab>
@@ -54,7 +54,7 @@ export const users = pgTable("users", {
 ```
 </CodeTabs>
 
-Under the hood Drizzle will create a **node-postgres** driver instance which you can access via `db.$client` if necessary
+내부적으로 Drizzle은 **node-postgres** 드라이버 인스턴스를 생성하며, 필요한 경우 `db.$client`를 통해 접근할 수 있습니다
 <Section>
 ```ts
 import { drizzle } from "drizzle-orm/node-postgres"
@@ -74,7 +74,7 @@ const db = drizzle({ client: pool });
 ```
 </Section>
 
-Drizzle is by design natively compatible with every **edge** or **serverless** runtime, whenever you'd need access to a serverless database - we've got you covered
+Drizzle은 설계상 모든 **엣지(edge)** 또는 **서버리스** 런타임과 기본적으로 호환됩니다. 서버리스 데이터베이스에 접근해야 할 때 언제든지 지원합니다
 
 <CodeTabs items={["Neon HTTP", "Neon with websockets", "Vercel Postgres", "PlanetScale HTTP", "Cloudflare d1"]}>
 ```ts
@@ -104,7 +104,7 @@ const db = drizzle({ connection: env.DB });
 ```
 </CodeTabs>
 
-And yes, we do support runtime specific drivers like [Bun SQLite](/docs/connect-bun-sqlite) or [Expo SQLite](/docs/connect-expo-sqlite):
+물론, [Bun SQLite](/docs/connect-bun-sqlite)나 [Expo SQLite](/docs/connect-expo-sqlite)와 같은 런타임별 드라이버도 지원합니다:
 <Section>
 ```ts
 import { drizzle } from "drizzle-orm/bun-sqlite"
@@ -121,8 +121,8 @@ const db = drizzle(expo);
 ```
 </Section>
 
-#### Database connection URL
-Just in case if you're not familiar with database connection URL concept
+#### 데이터베이스 연결 URL
+데이터베이스 연결 URL 개념에 익숙하지 않은 경우를 위한 설명입니다
 ```
 postgresql://alex:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname
              └──┘ └───────┘ └─────────────────────────────────────────────┘ └────┘
@@ -132,13 +132,13 @@ postgresql://alex:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbna
                    │- password
 
 ```
-#### Next steps
-Feel free to check out per-driver documentations  
+#### 다음 단계
+드라이버별 문서를 자유롭게 확인해보세요
 
 <rem/>
 <Flex>
-  <LinksList 
-    title='PostgreSQL drivers'
+  <LinksList
+    title='PostgreSQL 드라이버'
     links={[
         ["PostgreSQL", "/docs/get-started-postgresql"], 
         ["Neon", "/docs/connect-neon"], 
@@ -148,16 +148,16 @@ Feel free to check out per-driver documentations
         ["PGLite", "/docs/connect-pglite"],
       ]}
   />
-  <LinksList 
-    title='MySQL drivers'
+  <LinksList
+    title='MySQL 드라이버'
     links={[
         ["MySQL", "/docs/get-started-mysql"], 
         ["PlanetsScale", "/docs/connect-planetscale"], 
         ["TiDB", "/docs/connect-tidb"],
       ]}
   />
-  <LinksList 
-  title='SQLite drivers'
+  <LinksList
+  title='SQLite 드라이버'
   links={[
       ["SQLite", "/docs/get-started-sqlite"], 
       ["Turso Cloud", "/docs/connect-turso"], 
@@ -167,16 +167,16 @@ Feel free to check out per-driver documentations
       ["SQLite Cloud", "/docs/connect-sqlite-cloud"],
     ]}
   />
-  <LinksList 
-  title='Native SQLite'
+  <LinksList
+  title='네이티브 SQLite'
   links={[
       ["Expo SQLite", "/docs/get-started/expo-new"], 
       ["OP SQLite", "/docs/connect-op-sqlite"], 
       ["React Native SQLite", "/docs/connect-react-native-sqlite"],
     ]}
   />
-  <LinksList 
-  title='Others'
+  <LinksList
+  title='기타'
   links={[
       ["Drizzle Proxy", "/docs/connect-drizzle-proxy"], 
     ]}

@@ -1,5 +1,5 @@
 ---
-title: Unique and Case-Insensitive Email Handling
+title: 고유하고 대소문자 구분 없는 이메일 처리
 slug: unique-case-insensitive-email
 ---
 
@@ -10,18 +10,18 @@ import CodeTab from '@mdx/CodeTab.astro';
 import Callout from '@mdx/Callout.astro';
 
 <Prerequisites>
-- Get started with [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql) and [SQLite](/docs/get-started-sqlite)
-- [Indexes](/docs/indexes-constraints#indexes)
-- [Insert statement](/docs/insert) and [Select method](/docs/select)
-- [sql operator](/docs/sql)
-- You should have `drizzle-orm@0.31.0` and `drizzle-kit@0.22.0` or higher.
+- [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql), [SQLite](/docs/get-started-sqlite) 시작하기
+- [인덱스](/docs/indexes-constraints#indexes)
+- [Insert 문](/docs/insert) 및 [Select 메서드](/docs/select)
+- [sql 연산자](/docs/sql)
+- `drizzle-orm@0.31.0` 및 `drizzle-kit@0.22.0` 이상 버전이 필요합니다.
 </Prerequisites>
 
 ### PostgreSQL
 
-To implement a unique and case-insensitive `email` handling in PostgreSQL with Drizzle, you can create a unique index on the lowercased `email` column. This way, you can ensure that the `email` is unique regardless of the case.
+Drizzle에서 PostgreSQL의 고유하고 대소문자를 구분하지 않는 `email` 처리를 구현하려면, 소문자로 변환된 `email` 컬럼에 고유 인덱스를 생성할 수 있습니다. 이렇게 하면 대소문자에 관계없이 `email`이 고유함을 보장할 수 있습니다.
 
-Drizzle has simple and flexible API, which lets you easily create such an index using SQL-like syntax:
+Drizzle은 간단하고 유연한 API를 제공하여 SQL과 유사한 구문을 사용해 이러한 인덱스를 쉽게 생성할 수 있습니다:
 <CodeTabs items={["schema.ts", "migration.sql"]}>
   <CodeTab>
   ```ts copy {12,13}
@@ -58,7 +58,7 @@ Drizzle has simple and flexible API, which lets you easily create such an index 
   ```
 </CodeTabs>
 
-This is how you can select user by `email` with `lower` function:
+`lower` 함수를 사용하여 `email`로 사용자를 조회하는 방법은 다음과 같습니다:
 
 <Section>
 ```ts copy {10}
@@ -82,9 +82,9 @@ select * from "users" where lower(email) = 'john@email.com';
 
 ### MySQL
 
-In MySQL, the default collation setting for string comparison is case-insensitive, which means that when performing operations like searching or comparing strings in SQL queries, the case of the characters does not affect the results. However, because collation settings can vary and may be configured to be case-sensitive, we will explicitly ensure that the `email` is unique regardless of case by creating a unique index on the lowercased `email` column.
+MySQL에서는 문자열 비교를 위한 기본 콜레이션(collation) 설정이 대소문자를 구분하지 않습니다. 이는 SQL 쿼리에서 문자열을 검색하거나 비교할 때 문자의 대소문자가 결과에 영향을 미치지 않는다는 의미입니다. 그러나 콜레이션 설정은 다양하게 변경될 수 있고 대소문자를 구분하도록 구성될 수 있기 때문에, 소문자로 변환된 `email` 컬럼에 고유 인덱스를 생성하여 대소문자에 관계없이 `email`이 고유함을 명시적으로 보장합니다.
 
-Drizzle has simple and flexible API, which lets you easily create such an index using SQL-like syntax:
+Drizzle은 간단하고 유연한 API를 제공하여 SQL과 유사한 구문을 사용해 이러한 인덱스를 쉽게 생성할 수 있습니다:
 <CodeTabs items={["schema.ts", "migration.sql"]}>
   <CodeTab>
   ```ts copy {12,13}
@@ -122,10 +122,10 @@ Drizzle has simple and flexible API, which lets you easily create such an index 
 </CodeTabs>
 
 <Callout type="warning">
-Functional indexes are supported in MySQL starting from version `8.0.13`. For the correct syntax, the expression should be enclosed in parentheses, for example, `(lower(column))`.
+함수형 인덱스는 MySQL 버전 `8.0.13`부터 지원됩니다. 올바른 구문을 위해 표현식은 괄호로 감싸야 합니다. 예: `(lower(column))`.
 </Callout>
 
-This is how you can select user by `email` with `lower` function:
+`lower` 함수를 사용하여 `email`로 사용자를 조회하는 방법은 다음과 같습니다:
 
 <Section>
 ```ts copy {10}
@@ -149,9 +149,9 @@ select * from `users` where lower(email) = 'john@email.com';
 
 ### SQLite
 
-To implement a unique and case-insensitive `email` handling in SQLite with Drizzle, you can create a unique index on the lowercased `email` column. This way, you can ensure that the `email` is unique regardless of the case.
+Drizzle에서 SQLite의 고유하고 대소문자를 구분하지 않는 `email` 처리를 구현하려면, 소문자로 변환된 `email` 컬럼에 고유 인덱스를 생성할 수 있습니다. 이렇게 하면 대소문자에 관계없이 `email`이 고유함을 보장할 수 있습니다.
 
-Drizzle has simple and flexible API, which lets you easily create such an index using SQL-like syntax:
+Drizzle은 간단하고 유연한 API를 제공하여 SQL과 유사한 구문을 사용해 이러한 인덱스를 쉽게 생성할 수 있습니다:
 
 <CodeTabs items={["schema.ts", "migration.sql"]}>
   <CodeTab>
@@ -189,7 +189,7 @@ Drizzle has simple and flexible API, which lets you easily create such an index 
   ```
 </CodeTabs>
 
-This is how you can select user by `email` with `lower` function:
+`lower` 함수를 사용하여 `email`로 사용자를 조회하는 방법은 다음과 같습니다:
 
 <Section>
 ```ts copy {10}

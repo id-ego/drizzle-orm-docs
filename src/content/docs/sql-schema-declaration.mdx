@@ -7,14 +7,13 @@ import Section from '@mdx/Section.astro';
 import Flex from "@mdx/Flex.astro"
 import LinksList from "@mdx/LinksList.astro"
 
-# Drizzle schema
+# Drizzle 스키마
 
-Drizzle lets you define a schema in TypeScript with various models and properties supported by the underlying database. 
-When you define your schema, it serves as the source of truth for future modifications in queries (using Drizzle-ORM)
-and migrations (using Drizzle-Kit).
+Drizzle을 사용하면 기본 데이터베이스에서 지원하는 다양한 모델과 속성을 TypeScript로 스키마를 정의할 수 있습니다.
+스키마를 정의하면 향후 쿼리(Drizzle ORM 사용) 및 마이그레이션(Drizzle Kit 사용)에서 수정 사항의 기준이 됩니다.
 
-<Callout> 
-If you are using Drizzle-Kit for the migration process, make sure to export all the models defined in your schema files so that Drizzle-Kit can import them and use them in the migration diff process. 
+<Callout>
+마이그레이션 프로세스에 Drizzle Kit을 사용하는 경우, 스키마 파일에 정의된 모든 모델을 export해야 Drizzle Kit이 이를 import하여 마이그레이션 diff 프로세스에 사용할 수 있습니다.
 </Callout>
 
 <CodeTabs items={["Using imports", "Using callback", "Using import *"]}>
@@ -50,18 +49,17 @@ export const usersTable = p.pgTable("users", {
 ```
 </CodeTabs>
 
-## Organize your schema files 
-You can declare your SQL schema directly in TypeScript either in a single `schema.ts` file,
-or you can spread them around — whichever you prefer, all the freedom!
+## 스키마 파일 구성
+TypeScript에서 SQL 스키마를 단일 `schema.ts` 파일로 선언하거나 여러 파일로 분산할 수 있습니다. 원하는 방식을 자유롭게 선택하세요!
 
-#### Schema in 1 file
-The most common way to declare your schema with Drizzle is to put all your tables into one `schema.ts` file.
+#### 1개 파일에 스키마 정의
+Drizzle로 스키마를 선언하는 가장 일반적인 방법은 모든 테이블을 하나의 `schema.ts` 파일에 배치하는 것입니다.
 
-> Note: You can name your schema file whatever you like. For example, it could be `models.ts`, or something else.
+> 참고: 스키마 파일 이름은 원하는 대로 지정할 수 있습니다. 예를 들어 `models.ts` 또는 다른 이름을 사용할 수 있습니다.
 
-This approach works well if you don't have too many table models defined, or if you're okay with keeping them all in one file
+이 방식은 정의된 테이블 모델이 많지 않거나 모든 테이블을 한 파일에 보관해도 괜찮은 경우에 적합합니다.
 
-Example:
+예제:
 ```plaintext
 📦 <project root>
  └ 📂 src
@@ -69,9 +67,7 @@ Example:
        └ 📜 schema.ts
 ```
 
-In the `drizzle.config.ts` file, you need to specify the path to your schema file. With this configuration, Drizzle will 
-read from the `schema.ts` file and use this information during the migration generation process. For more information 
-about the `drizzle.config.ts` file and migrations with Drizzle, please check: [link](/docs/drizzle-config-file)
+`drizzle.config.ts` 파일에서 스키마 파일 경로를 지정해야 합니다. 이 설정으로 Drizzle은 `schema.ts` 파일을 읽고 마이그레이션 생성 프로세스에서 이 정보를 사용합니다. `drizzle.config.ts` 파일 및 Drizzle 마이그레이션에 대한 자세한 내용은 다음을 확인하세요: [링크](/docs/drizzle-config-file)
 ```ts
 import { defineConfig } from "drizzle-kit";
 
@@ -81,13 +77,12 @@ export default defineConfig({
 })
 ```
 
-#### Schema in multiple files
+#### 여러 파일에 스키마 정의
 
-You can place your Drizzle models — such as tables, enums, sequences, etc. — not only in one file but in any file you prefer. 
-The only thing you must ensure is that you export all the models from those files so that the Drizzle kit can import 
-them and use them in migrations.
+Drizzle 모델(테이블, enum, sequence 등)을 한 파일뿐만 아니라 원하는 모든 파일에 배치할 수 있습니다.
+단, Drizzle Kit이 마이그레이션에서 import하여 사용할 수 있도록 해당 파일에서 모든 모델을 export해야 합니다.
 
-One use case would be to separate each table into its own file.
+사용 사례 중 하나는 각 테이블을 별도의 파일로 분리하는 것입니다.
 ```plaintext
 📦 <project root>
  └ 📂 src
@@ -101,9 +96,7 @@ One use case would be to separate each table into its own file.
           └ 📜 etc.ts
 ```
 
-In the `drizzle.config.ts` file, you need to specify the path to your schema folder. With this configuration, Drizzle will 
-read from the `schema` folder and find all the files recursively and get all the drizzle tables from there. For more information 
-about the `drizzle.config.ts` file and migrations with Drizzle, please check: [link](/docs/drizzle-config-file)
+`drizzle.config.ts` 파일에서 스키마 폴더 경로를 지정해야 합니다. 이 설정으로 Drizzle은 `schema` 폴더를 읽고 재귀적으로 모든 파일을 찾아 모든 Drizzle 테이블을 가져옵니다. `drizzle.config.ts` 파일 및 Drizzle 마이그레이션에 대한 자세한 내용은 다음을 확인하세요: [링크](/docs/drizzle-config-file)
 
 ```ts
 import { defineConfig } from "drizzle-kit";
@@ -114,7 +107,7 @@ export default defineConfig({
 })
 ```
 
-You can also group them in any way you like, such as creating groups for user-related tables, messaging-related tables, product-related tables, etc. 
+사용자 관련 테이블, 메시징 관련 테이블, 제품 관련 테이블 등과 같이 원하는 방식으로 그룹화할 수도 있습니다.
 ```plaintext
 📦 <project root>
  └ 📂 src
@@ -125,23 +118,22 @@ You can also group them in any way you like, such as creating groups for user-re
           └ 📜 products.ts
 ```
 
-## Shape your data schema
+## 데이터 스키마 구성
 
-Drizzle schema consists of several model types from database you are using. With drizzle you can specify:
-- Tables with columns, constraints, etc.
-- Schemas(PostgreSQL only)
-- Enums
-- Sequences(PostgreSQL only)
-- Views
-- Materialized Views
-- etc.
+Drizzle 스키마는 사용 중인 데이터베이스의 여러 모델 타입으로 구성됩니다. Drizzle로 다음을 지정할 수 있습니다:
+- 컬럼, 제약조건 등이 포함된 테이블
+- 스키마(PostgreSQL 전용)
+- Enum
+- Sequence(PostgreSQL 전용)
+- 뷰
+- 구체화 뷰(Materialized View)
+- 기타
 
-Let's go one by one and check how the schema should be defined with drizzle
+Drizzle로 스키마를 정의하는 방법을 하나씩 살펴보겠습니다.
 
-#### **Tables and columns declaration** 
+#### **테이블 및 컬럼 선언**
 
-A table in Drizzle should be defined with at least 1 column, the same as it should be done in database. There is one important thing to know,
-there is no such thing as a common table object in drizzle. You need to choose a dialect you are using, PostgreSQL, MySQL or SQLite
+Drizzle의 테이블은 데이터베이스에서와 마찬가지로 최소 1개의 컬럼으로 정의되어야 합니다. 한 가지 중요한 점은 Drizzle에는 공통 테이블 객체가 없다는 것입니다. 사용하는 dialect(PostgreSQL, MySQL, SQLite)를 선택해야 합니다.
 
 ![](@/assets/images/table-structure.svg)
 
@@ -169,15 +161,15 @@ export const users = sqliteTable('users', {
 ```
 </CodeTabs>
 
-By default, Drizzle will use the TypeScript key names for columns in database queries. 
-Therefore, the schema and query from the example will generate the SQL query shown below
+기본적으로 Drizzle은 데이터베이스 쿼리에서 컬럼에 대해 TypeScript 키 이름을 사용합니다.
+따라서 예제의 스키마와 쿼리는 아래와 같은 SQL 쿼리를 생성합니다.
 
 <Callout>
-This example uses a db object, whose initialization is not covered in this part of the documentation. To learn how to connect to the database, please refer to the [Connections Docs](/docs/get-started-postgresql)
+이 예제는 db 객체를 사용하는데, 초기화 방법은 이 문서에서 다루지 않습니다. 데이터베이스 연결 방법을 알아보려면 [연결 문서](/docs/get-started-postgresql)를 참조하세요.
 </Callout>
 
 \
-**TypeScript key = database key**
+**TypeScript 키 = 데이터베이스 키**
 <Section>
 ```ts
 // schema.ts
@@ -197,7 +189,7 @@ SELECT "id", "first_name" from users;
 ```
 </Section>
 
-If you want to use different names in your TypeScript code and in the database, you can use column aliases
+TypeScript 코드와 데이터베이스에서 서로 다른 이름을 사용하려면 컬럼 별칭을 사용할 수 있습니다.
 
 <Section>
 ```ts
@@ -218,14 +210,12 @@ SELECT "id", "first_name" from users;
 ```
 </Section>
 
-### Camel and Snake casing
+### Camel 및 Snake 케이싱
 
-Database model names often use `snake_case` conventions, while in TypeScript, it is common to use `camelCase` for naming models. 
-This can lead to a lot of alias definitions in the schema. To address this, Drizzle provides a way to automatically 
-map `camelCase` from TypeScript to `snake_case` in the database by including one optional parameter during Drizzle database initialization
+데이터베이스 모델 이름은 주로 `snake_case` 규칙을 사용하는 반면, TypeScript에서는 모델 이름에 `camelCase`를 사용하는 것이 일반적입니다.
+이로 인해 스키마에 많은 별칭을 정의해야 할 수 있습니다. 이 문제를 해결하기 위해 Drizzle은 데이터베이스 초기화 시 선택적 매개변수를 포함하여 TypeScript의 `camelCase`를 데이터베이스의 `snake_case`로 자동 매핑하는 방법을 제공합니다.
 
-For such mapping, you can use the `casing` option in the Drizzle DB declaration. This parameter will 
-help you specify the database model naming convention and will attempt to map all JavaScript keys accordingly
+이러한 매핑을 위해 Drizzle DB 선언에서 `casing` 옵션을 사용할 수 있습니다. 이 매개변수는 데이터베이스 모델 명명 규칙을 지정하고 모든 JavaScript 키를 그에 따라 매핑하려고 시도합니다.
 
 <Section>
 ```ts
@@ -251,16 +241,14 @@ SELECT "id", "first_name" from users;
 ```
 </Section>
 
-### Advanced
+### 고급 기능
 
-There are a few tricks you can use with Drizzle ORM. As long as Drizzle is entirely in TypeScript files, 
-you can essentially do anything you would in a simple TypeScript project with your code.
+Drizzle ORM에서 사용할 수 있는 몇 가지 기법이 있습니다. Drizzle이 완전히 TypeScript 파일에 있는 한, 일반 TypeScript 프로젝트에서 하는 것과 동일한 작업을 본질적으로 수행할 수 있습니다.
 
-One common feature is to separate columns into different places and then reuse them. 
-For example, consider the `updated_at`, `created_at`, and `deleted_at` columns. Many tables/models may need these 
-three fields to track and analyze the creation, deletion, and updates of entities in a system
+일반적인 기능 중 하나는 컬럼을 다른 위치로 분리한 다음 재사용하는 것입니다.
+예를 들어 `updated_at`, `created_at`, `deleted_at` 컬럼을 생각해 보세요. 많은 테이블/모델이 시스템의 엔티티 생성, 삭제, 업데이트를 추적하고 분석하기 위해 이 세 가지 필드가 필요할 수 있습니다.
 
-We can define those columns in a separate file and then import and spread them across all the table objects you have
+이러한 컬럼을 별도의 파일에 정의한 다음 import하여 모든 테이블 객체에 spread할 수 있습니다.
 
 <Section>
 ```ts
@@ -287,25 +275,25 @@ export const posts = pgTable('posts', {
 ```
 </Section>
 
-#### **Schemas**
+#### **스키마**
 
 <Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
 <Tab>
 \
-In PostgreSQL, there is an entity called a `schema` (which we believe should be called `folders`). This creates a structure in PostgreSQL:
+PostgreSQL에는 `schema`라는 엔티티가 있습니다(우리는 이것을 `folders`라고 불러야 한다고 생각합니다). 이는 PostgreSQL에서 다음과 같은 구조를 생성합니다:
 
 ![](@/assets/images/postgresql-db-structure.png)
 
-You can manage your PostgreSQL schemas with `pgSchema` and place any other models inside it.
+`pgSchema`로 PostgreSQL 스키마를 관리하고 그 안에 다른 모델을 배치할 수 있습니다.
 
-Define the schema you want to manage using Drizzle
+Drizzle로 관리하려는 스키마를 정의합니다.
 ```ts
 import { pgSchema } from "drizzle-orm/pg-core"
 
 export const customSchema = pgSchema('custom');
 ```
 
-Then place the table inside the schema object
+그런 다음 스키마 객체 내부에 테이블을 배치합니다.
 ```ts {5-7}
 import { integer, pgSchema } from "drizzle-orm/pg-core";
 
@@ -318,20 +306,20 @@ export const users = customSchema.table('users', {
 </Tab>
 <Tab>
 \
-In MySQL, there is an entity called `Schema`, but in MySQL terms, this is equivalent to a `Database`. 
+MySQL에는 `Schema`라는 엔티티가 있지만 MySQL 용어로는 이것이 `Database`와 동일합니다.
 
-You can define them with `drizzle-orm` and use them in queries, but they won't be detected by `drizzle-kit` or included in the migration flow
+`drizzle-orm`으로 정의하고 쿼리에서 사용할 수 있지만 `drizzle-kit`에서는 감지되지 않으며 마이그레이션 플로우에 포함되지 않습니다.
 
 ![](@/assets/images/mysql-db-structure.png)
 
-Define the schema you want to manage using Drizzle
+Drizzle로 관리하려는 스키마를 정의합니다.
 ```ts
 import { mysqlSchema } from "drizzle-orm/mysql-core"
 
 export const customSchema = mysqlSchema('custom');
 ```
 
-Then place the table inside the schema object
+그런 다음 스키마 객체 내부에 테이블을 배치합니다.
 ```ts {5-7}
 import { int, mysqlSchema } from "drizzle-orm/mysql-core";
 
@@ -344,17 +332,17 @@ export const users = customSchema.table('users', {
 </Tab>
 <Tab>
 \
-In SQLite, there is no concept of a schema, so you can only define tables within a single SQLite file context
+SQLite에는 스키마 개념이 없으므로 단일 SQLite 파일 컨텍스트 내에서만 테이블을 정의할 수 있습니다.
 
 ![](@/assets/images/sqlite-db-structure.png)
 </Tab>
 </Tabs>
 
-### Example
+### 예제
 
-Once you know the basics, let's define a schema example for a real project to get a better view and understanding
+기본 사항을 알았으니 실제 프로젝트를 위한 스키마 예제를 정의하여 더 나은 이해를 얻어봅시다.
 
-> All examples will use `generateUniqueString`. The implementation for it will be provided after all the schema examples
+> 모든 예제는 `generateUniqueString`을 사용합니다. 구현 코드는 모든 스키마 예제 다음에 제공됩니다.
 
 <CodeTabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
 ```ts copy
@@ -484,7 +472,7 @@ export const comments = table("comments", {
 ```
 </CodeTabs>
 
-**`generateUniqueString` implementation:**
+**`generateUniqueString` 구현:**
 ```ts
 function generateUniqueString(length: number = 12): string {
   const characters =
@@ -501,26 +489,26 @@ function generateUniqueString(length: number = 12): string {
 ```
 
 
-#### What's next?
+#### 다음 단계
 <br/>
 <Flex>
-  <LinksList 
-    title='Manage schema'
+  <LinksList
+    title='스키마 관리'
     links={[
-        ["Column types", "/docs/column-types/pg"], 
-        ["Indexes and Constraints", "/docs/indexes-constraints"],
-        ["Database Views", "/docs/views"],
-        ["Database Schemas", "/docs/schemas"],
-        ["Sequences", "/docs/sequences"],
-        ["Extensions", "/docs/extensions/pg"],
+        ["컬럼 타입", "/docs/column-types/pg"],
+        ["인덱스 및 제약조건", "/docs/indexes-constraints"],
+        ["데이터베이스 뷰", "/docs/views"],
+        ["데이터베이스 스키마", "/docs/schemas"],
+        ["Sequence", "/docs/sequences"],
+        ["확장 기능", "/docs/extensions/pg"],
       ]}
   />
-  <LinksList 
+  <LinksList
     title='Zero to Hero'
     links={[
-        ["Database connection", "/docs/connect-overview"], 
-        ["Data querying", "/docs/data-querying"], 
-        ["Migrations", "/docs/migrations"], 
+        ["데이터베이스 연결", "/docs/connect-overview"],
+        ["데이터 쿼리", "/docs/data-querying"],
+        ["마이그레이션", "/docs/migrations"],
       ]}
   />
 </Flex>

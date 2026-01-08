@@ -9,25 +9,25 @@ import Npx from '@mdx/Npx.astro';
 import Steps from '@mdx/Steps.astro';
 import Prerequisites from "@mdx/Prerequisites.astro"
 
-# Migrations with Drizzle Kit
+# Drizzle Kit을 이용한 마이그레이션
 <Prerequisites>
-- Get started with Drizzle and `drizzle-kit` - [read here](/docs/get-started)
-- Drizzle schema fundamentals - [read here](/docs/sql-schema-declaration)
-- Database connection basics - [read here](/docs/connect-overview)
-- Drizzle migrations fundamentals - [read here](/docs/migrations)
+- Drizzle과 `drizzle-kit` 시작하기 - [여기서 읽기](/docs/get-started)
+- Drizzle 스키마 기초 - [여기서 읽기](/docs/sql-schema-declaration)
+- 데이터베이스 연결 기초 - [여기서 읽기](/docs/connect-overview)
+- Drizzle 마이그레이션 기초 - [여기서 읽기](/docs/migrations)
 </Prerequisites>
 
 
-**Drizzle Kit** is a CLI tool for managing SQL database migrations with Drizzle.
+**Drizzle Kit**은 Drizzle과 함께 SQL 데이터베이스 마이그레이션을 관리하는 CLI 도구입니다.
 <Npm>
   -D drizzle-kit
 </Npm>
 <Callout type="warning">
-Make sure to first go through Drizzle [get started](/docs/get-started) and [migration fundamentals](/docs/migrations) and pick SQL migration flow that suits your business needs best. 
+먼저 Drizzle [시작하기](/docs/get-started)와 [마이그레이션 기초](/docs/migrations)를 읽고 비즈니스 요구사항에 가장 적합한 SQL 마이그레이션 플로우를 선택하세요.
 </Callout>
 
-Based on your schema, Drizzle Kit let's you generate and run SQL migration files, 
-push schema directly to the database, pull schema from database, spin up drizzle studio and has a couple of utility commands.
+Drizzle Kit은 스키마를 기반으로 SQL 마이그레이션 파일을 생성하고 실행하며,
+스키마를 데이터베이스에 직접 푸시하고, 데이터베이스에서 스키마를 풀하며, Drizzle Studio를 실행하는 등 여러 유틸리티 명령을 제공합니다.
 <Npx>
 drizzle-kit generate
 drizzle-kit migrate
@@ -41,23 +41,23 @@ drizzle-kit studio
 
 |                                                      |                                                                                                                                                                    |
 | :--------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`drizzle-kit generate`](/docs/drizzle-kit-generate) | lets you generate SQL migration files based on your Drizzle schema either upon declaration or on subsequent changes, [see here](/docs/drizzle-kit-generate).       |
-| [`drizzle-kit migrate`](/docs/drizzle-kit-migrate)   | lets you apply generated SQL migration files to your database, [see here](/docs/drizzle-kit-migrate).                                                              |
-| [`drizzle-kit pull`](/docs/drizzle-kit-pull)         | lets you pull(introspect) database schema, convert it to Drizzle schema and save it to your codebase, [see here](/docs/drizzle-kit-pull)                           |
-| [`drizzle-kit push`](/docs/drizzle-kit-push)         | lets you push your Drizzle schema to database either upon declaration or on subsequent schema changes, [see here](/docs/drizzle-kit-push)                          |
-| [`drizzle-kit studio`](/docs/drizzle-kit-studio)     | will connect to your database and spin up proxy server for Drizzle Studio which you can use for convenient database browsing, [see here](/docs/drizzle-kit-studio) |
-| [`drizzle-kit check`](/docs/drizzle-kit-check)       | will walk through all generate migrations and check for any race conditions(collisions) of generated migrations, [see here](/docs/drizzle-kit-check)               |
-| [`drizzle-kit up`](/docs/drizzle-kit-up)             | used to upgrade snapshots of previously generated migrations, [see here](/docs/drizzle-kit-up)                                                                     |
+| [`drizzle-kit generate`](/docs/drizzle-kit-generate) | Drizzle 스키마를 기반으로 선언 시점 또는 후속 변경 시점에 SQL 마이그레이션 파일을 생성합니다, [여기서 확인](/docs/drizzle-kit-generate).       |
+| [`drizzle-kit migrate`](/docs/drizzle-kit-migrate)   | 생성된 SQL 마이그레이션 파일을 데이터베이스에 적용합니다, [여기서 확인](/docs/drizzle-kit-migrate).                                                              |
+| [`drizzle-kit pull`](/docs/drizzle-kit-pull)         | 데이터베이스 스키마를 풀(인트로스펙션)하여 Drizzle 스키마로 변환하고 코드베이스에 저장합니다, [여기서 확인](/docs/drizzle-kit-pull)                           |
+| [`drizzle-kit push`](/docs/drizzle-kit-push)         | Drizzle 스키마를 선언 시점 또는 후속 스키마 변경 시점에 데이터베이스로 푸시합니다, [여기서 확인](/docs/drizzle-kit-push)                          |
+| [`drizzle-kit studio`](/docs/drizzle-kit-studio)     | 데이터베이스에 연결하고 Drizzle Studio용 프록시 서버를 실행하여 편리한 데이터베이스 탐색을 제공합니다, [여기서 확인](/docs/drizzle-kit-studio) |
+| [`drizzle-kit check`](/docs/drizzle-kit-check)       | 생성된 모든 마이그레이션을 검토하여 마이그레이션 간 경쟁 조건(충돌)을 확인합니다, [여기서 확인](/docs/drizzle-kit-check)               |
+| [`drizzle-kit up`](/docs/drizzle-kit-up)             | 이전에 생성된 마이그레이션의 스냅샷을 업그레이드하는 데 사용됩니다, [여기서 확인](/docs/drizzle-kit-up)                                                                     |
 <br/>
 
-Drizzle Kit is configured through [drizzle.config.ts](/docs/drizzle-config-file) configuration file or via CLI params.<br/>
-It's required to at least provide SQL `dialect` and `schema` path for Drizzle Kit to know how to generate migrations.
+Drizzle Kit은 [drizzle.config.ts](/docs/drizzle-config-file) 설정 파일이나 CLI 파라미터를 통해 구성됩니다.<br/>
+Drizzle Kit이 마이그레이션을 생성하려면 최소한 SQL `dialect`와 `schema` 경로를 제공해야 합니다.
 ```
 📦 <project root>
  ├ 📂 drizzle
  ├ 📂 src
  ├ 📜 .env
- ├ 📜 drizzle.config.ts  <--- Drizzle config file
+ ├ 📜 drizzle.config.ts  <--- Drizzle 설정 파일
  ├ 📜 package.json
  └ 📜 tsconfig.json
 ```
@@ -105,7 +105,7 @@ export default defineConfig({
 ```
 </CodeTabs>
 
-You can provide Drizzle Kit config path via CLI param, it's very useful when you have multiple database stages or multiple databases or different databases on the same project:
+CLI 파라미터를 통해 Drizzle Kit 설정 파일 경로를 지정할 수 있습니다. 이는 여러 데이터베이스 단계가 있거나, 여러 데이터베이스를 사용하거나, 동일한 프로젝트에서 다른 데이터베이스를 사용할 때 매우 유용합니다:
 
 <Npx>
   drizzle-kit push --config=drizzle-dev.drizzle.config

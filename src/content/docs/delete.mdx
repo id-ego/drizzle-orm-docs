@@ -3,11 +3,11 @@ import Callout from '@mdx/Callout.astro';
 import Section from '@mdx/Section.astro';
 
 # SQL Delete
-You can delete all rows in the table:
+테이블의 모든 행을 삭제할 수 있습니다:
 ```typescript copy
 await db.delete(users);
 ```
-And you can delete with filters and conditions:
+필터와 조건을 사용하여 삭제할 수도 있습니다:
 ```typescript copy
 await db.delete(users).where(eq(users.name, 'Dan'));
 ```
@@ -16,7 +16,7 @@ await db.delete(users).where(eq(users.name, 'Dan'));
 
 <IsSupportedChipGroup chips={{ 'PostgreSQL': false, 'MySQL': true, 'SQLite': true, 'SingleStore': true, 'MSSQL': false, 'CockroachDB': false }} />
 
-Use `.limit()` to add `limit` clause to the query - for example:
+쿼리에 `limit` 절을 추가하려면 `.limit()`을 사용합니다 - 예시:
 <Section>
 ```typescript
 await db.delete(users).where(eq(users.name, 'Dan')).limit(2);
@@ -27,7 +27,7 @@ delete from "users" where "users"."name" = $1 limit $2;
 </Section>
 
 ### Order By
-Use `.orderBy()` to add `order by` clause to the query, sorting the results by the specified fields:
+쿼리에 `order by` 절을 추가하여 지정된 필드로 결과를 정렬하려면 `.orderBy()`를 사용합니다:
 <Section>
 ```typescript
 import { asc, desc } from 'drizzle-orm';
@@ -50,7 +50,7 @@ delete from "users" where "users"."name" = $1 order by "name" asc, "name2" desc;
 
 ### Returning
 <IsSupportedChipGroup chips={{ 'PostgreSQL': true, 'SQLite': true, 'MySQL': false, 'SingleStore': false, 'MSSQL': false, 'CockroachDB': true }} />
-You can delete a row and get it back in PostgreSQL and SQLite:
+PostgreSQL과 SQLite에서는 삭제한 행의 데이터를 반환받을 수 있습니다:
 ```typescript copy
 const deletedUser = await db.delete(users)
   .where(eq(users.name, 'Dan'))
@@ -64,21 +64,21 @@ const deletedUserIds: { deletedId: number }[] = await db.delete(users)
 
 ## Output
 <IsSupportedChipGroup chips={{ 'MSSQL': true }} />
-You can insert a row and get it back in PostgreSQL and SQLite like such:
+MSSQL에서는 삭제한 행의 데이터를 반환받을 수 있습니다:
 ```typescript copy
-await db.insert(users).values({ name: "Dan" }).output();
+await db.delete(users).where(eq(users.name, "Dan")).output();
 
 // partial return
-await db.insert(users).values({ name: "Partial Dan" }).output({ insertedId: users.id });
+await db.delete(users).where(eq(users.name, "Dan")).output({ deletedId: users.id });
 ```
 
 ## WITH DELETE clause
 
 <Callout>
-  Check how to use WITH statement with [select](/docs/select#with-clause), [insert](/docs/insert#with-insert-clause), [update](/docs/update#with-update-clause)
+  WITH 문을 [select](/docs/select#with-clause), [insert](/docs/insert#with-insert-clause), [update](/docs/update#with-update-clause)에서 사용하는 방법을 확인하세요
 </Callout>
 
-Using the `with` clause can help you simplify complex queries by splitting them into smaller subqueries called common table expressions (CTEs):
+`with` 절을 사용하면 복잡한 쿼리를 공통 테이블 표현식(CTE)이라고 하는 더 작은 서브쿼리로 분할하여 단순화할 수 있습니다:
 <Section>
 ```typescript copy
 const averageAmount = db.$with('average_amount').as(

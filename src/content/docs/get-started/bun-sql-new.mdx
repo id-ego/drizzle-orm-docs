@@ -19,53 +19,53 @@ import ConnectBun from '@mdx/get-started/postgresql/ConnectBun.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and Bun:SQLite
+# Drizzle과 Bun:SQLite 시작하기
 
-<Prerequisites>  
-  - **bun** - javaScript all-in-one toolkit - [read here](https://bun.sh/)
-  - **Bun SQL** - native bindings for working with PostgreSQL databases - [read here](https://bun.sh/docs/api/sql)
+<Prerequisites>
+  - **bun** - JavaScript 올인원 툴킷 - [자세히 보기](https://bun.sh/)
+  - **Bun SQL** - PostgreSQL 데이터베이스 작업을 위한 네이티브 바인딩 - [자세히 보기](https://bun.sh/docs/api/sql)
 </Prerequisites>
 
 <Callout type='error'>
-In version `1.2.0`, Bun has issues with executing concurrent statements, which may lead to errors if you try to run several queries simultaneously.
-We've created a [github issue](https://github.com/oven-sh/bun/issues/16774) that you can track. Once it's fixed, you should no longer encounter any such errors on Bun's SQL side
+버전 `1.2.0`에서 Bun은 동시 문 실행에 문제가 있어, 여러 쿼리를 동시에 실행하려고 하면 오류가 발생할 수 있습니다.
+이 문제를 추적할 수 있는 [GitHub 이슈](https://github.com/oven-sh/bun/issues/16774)를 생성했습니다. 이 문제가 해결되면 Bun SQL 측면에서 더 이상 이러한 오류가 발생하지 않습니다.
 </Callout>
 
 <FileStructure />
 
-#### Step 1 - Install required packages
+#### Step 1 - 필요한 패키지 설치
 <Npm>
   drizzle-orm
   -D drizzle-kit @types/bun
 </Npm>
 
-#### Step 2 - Setup connection variables
+#### Step 2 - 연결 변수 설정
 
 <SetupEnv env_variable='DATABASE_URL' />
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### Step 3 - 데이터베이스에 Drizzle ORM 연결
 
 <ConnectBun/>
 
-#### Step 4 - Create a table
+#### Step 4 - 테이블 생성
 
 <CreateTable/>
 
-#### Step 5 - Setup Drizzle config file
+#### Step 5 - Drizzle 설정 파일 설정
 
 <SetupConfig dialect='postgresql' env_variable='DATABASE_URL'/>
 
-#### Step 6 - Applying changes to the database
+#### Step 6 - 데이터베이스에 변경사항 적용
 
 <ApplyChanges />
 
-#### Step 7 - Seed and Query the database
+#### Step 7 - 데이터베이스 시드 및 쿼리
 
 <QueryDatabase dialect='bun-sql' env_variable='DATABASE_URL'/>
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
-To run a script with `bun`, use the following command:
+`bun`으로 스크립트를 실행하려면 다음 명령어를 사용합니다:
 ```bash copy
 bun src/index.ts
 ```

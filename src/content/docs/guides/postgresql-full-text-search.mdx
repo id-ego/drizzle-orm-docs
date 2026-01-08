@@ -1,5 +1,5 @@
 ---
-title: PostgreSQL full-text search
+title: PostgreSQL 전문 검색
 slug: postgresql-full-text-search
 ---
 
@@ -7,18 +7,19 @@ import Section from "@mdx/Section.astro";
 import Prerequisites from "@mdx/Prerequisites.astro";
 import CodeTabs from '@mdx/CodeTabs.astro';
 import CodeTab from '@mdx/CodeTab.astro';
+import Callout from "@mdx/Callout.astro";
 
 <Prerequisites>
-- Get started with [PostgreSQL](/docs/get-started-postgresql)
-- [Select statement](/docs/select)
-- [Indexes](/docs/indexes-constraints#indexes)
-- [sql operator](/docs/sql)
-- You should have `drizzle-orm@0.31.0` and `drizzle-kit@0.22.0` or higher.  
+- [PostgreSQL](/docs/get-started-postgresql) 시작하기
+- [Select 문](/docs/select)
+- [인덱스](/docs/indexes-constraints#indexes)
+- [sql 연산자](/docs/sql)
+- `drizzle-orm@0.31.0` 및 `drizzle-kit@0.22.0` 이상 버전이 필요합니다.
 </Prerequisites>
 
-This guide demonstrates how to implement full-text search in PostgreSQL with Drizzle ORM. Full-text search is a technique used to search for text within a document or a set of documents. A document is the unit of searching in a full text search system. PostgreSQL provides a set of functions to work with full-text search, such as `to_tsvector` and `to_tsquery`:
+이 가이드는 Drizzle ORM을 사용하여 PostgreSQL에서 전문 검색(full-text search)을 구현하는 방법을 설명합니다. 전문 검색은 문서 또는 문서 집합 내에서 텍스트를 검색하는 기술입니다. 문서는 전문 검색 시스템에서 검색의 단위입니다. PostgreSQL은 `to_tsvector` 및 `to_tsquery`와 같은 전문 검색 작업을 위한 함수 세트를 제공합니다:
 
-The `to_tsvector` function parses a textual document into tokens, reduces the tokens to lexemes, and returns a `tsvector` which lists the lexemes together with their positions in the document:
+`to_tsvector` 함수는 텍스트 문서를 토큰으로 파싱하고, 토큰을 어휘소(lexeme)로 축소한 후, 문서 내 위치와 함께 어휘소를 나열하는 `tsvector`를 반환합니다:
 
 <Section>
 ```ts copy {6}
@@ -41,7 +42,7 @@ await db.execute(
 ```
 </Section>
 
-The `to_tsquery` function converts a keyword to normalized tokens and returns a `tsquery` that matches the lexemes in a `tsvector`. The `@@` operator is used for direct matches:
+`to_tsquery` 함수는 키워드를 정규화된 토큰으로 변환하고, `tsvector`의 어휘소와 일치하는 `tsquery`를 반환합니다. `@@` 연산자는 직접 일치를 위해 사용됩니다:
 
 <Section>
 ```ts copy {2, 3}
@@ -56,7 +57,7 @@ await db.execute(
 ```
 </Section>
 
-As for now, Drizzle doesn't support `tsvector` type natively, so you need to convert your data in the `text` column on the fly. To enhance the performance, you can create a `GIN` index on your column like this:
+현재 Drizzle은 `tsvector` 타입을 기본적으로 지원하지 않으므로, `text` 컬럼의 데이터를 즉시 변환해야 합니다. 성능을 향상시키기 위해 다음과 같이 컬럼에 `GIN` 인덱스를 생성할 수 있습니다:
 
 <CodeTabs items={["schema.ts", "migration.sql", "db_data"]}>
   <CodeTab>
@@ -99,7 +100,7 @@ As for now, Drizzle doesn't support `tsvector` type natively, so you need to con
   ```
 </CodeTabs>
 
-To implement full-text search in PostgreSQL with Drizzle ORM, you can use the `to_tsvector` and `to_tsquery` functions with `sql` operator:
+Drizzle ORM을 사용하여 PostgreSQL에서 전문 검색을 구현하려면 `sql` 연산자와 함께 `to_tsvector` 및 `to_tsquery` 함수를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {9}
@@ -124,7 +125,7 @@ await db
 ```
 </Section>
 
-To match by any of the keywords, you can use the `|` operator:
+키워드 중 하나라도 일치시키려면 `|` 연산자를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {6}
@@ -144,7 +145,7 @@ await db
 ```
 </Section>
 
-To match multiple keywords, you can use the `plainto_tsquery` function:
+여러 키워드를 일치시키려면 `plainto_tsquery` 함수를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {7}
@@ -167,7 +168,7 @@ select * from posts
 ```
 </Section>
 
-To match a phrase, you can use the `phraseto_tsquery` function:
+구문을 일치시키려면 `phraseto_tsquery` 함수를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {8}
@@ -191,7 +192,7 @@ select * from posts
 ```
 </Section>
 
-You can also use `websearch_to_tsquery` function which is a simplified version of `to_tsquery` with an alternative syntax, similar to the one used by web search engines:
+웹 검색 엔진에서 사용하는 것과 유사한 대체 구문을 가진 `to_tsquery`의 간소화된 버전인 `websearch_to_tsquery` 함수를 사용할 수도 있습니다:
 
 <Section>
 ```ts copy {7}
@@ -219,7 +220,7 @@ select * from posts
 ```
 </Section>
 
-To implement full-text search on multiple columns, you can create index on multiple columns and concatenate the columns with `to_tsvector` function:
+여러 컬럼에 대해 전문 검색을 구현하려면 여러 컬럼에 인덱스를 생성하고 `to_tsvector` 함수로 컬럼을 연결할 수 있습니다:
 
 <CodeTabs items={["schema.ts", "migration.sql", "db_data"]}>
   <CodeTab>
@@ -307,9 +308,9 @@ To implement full-text search on multiple columns, you can create index on multi
   ```
 </CodeTabs>
 
-The `setweight` function is used to label the entries of a tsvector with a given weight, where a weight is one of the letters A, B, C, or D. This is typically used to mark entries coming from different parts of a document, such as title versus body.
+`setweight` 함수는 tsvector의 항목에 주어진 가중치로 레이블을 지정하는 데 사용되며, 가중치는 A, B, C 또는 D 중 하나입니다. 이는 일반적으로 제목과 본문과 같이 문서의 다른 부분에서 오는 항목을 표시하는 데 사용됩니다.
 
-This is how you can query on multiple columns:
+다음과 같이 여러 컬럼에 대해 쿼리할 수 있습니다:
 
 <Section>
 ```ts copy {5-7}
@@ -345,12 +346,12 @@ await db.select().from(posts)
 ```
 </Section>
 
-To rank the search results, you can use the `ts_rank` or `ts_rank_cd` functions and `orderBy` method:
+검색 결과의 순위를 매기려면 `ts_rank` 또는 `ts_rank_cd` 함수와 `orderBy` 메서드를 사용할 수 있습니다:
 
 <Callout type='warning'>
-`getColumns` available starting from `drizzle-orm@1.0.0-beta.2`(read more [here](/docs/upgrade-v1))
+`getColumns`는 `drizzle-orm@1.0.0-beta.2`부터 사용할 수 있습니다(자세한 내용은 [여기](/docs/upgrade-v1)를 참조하세요)
 
-If you are on pre-1 version(like `0.45.1`) then use `getTableColumns`
+`0.45.1`과 같은 pre-1 버전을 사용 중이라면 `getTableColumns`를 사용하세요
 </Callout>
 
 <Section>
@@ -413,4 +414,4 @@ await db
 ```
 </Section>
 
-The `ts_rank` function focuses on the frequency of query terms throughout the document. The `ts_rank_cd` function focuses on the proximity of query terms within the document.
+`ts_rank` 함수는 문서 전체에서 쿼리 용어의 빈도에 중점을 둡니다. `ts_rank_cd` 함수는 문서 내에서 쿼리 용어의 근접성에 중점을 둡니다.

@@ -1,8 +1,14 @@
+---
+title: SQL 업데이트
+description: Drizzle ORM에서 UPDATE 쿼리를 작성하는 방법을 알아보세요
+slug: update
+---
+
 import IsSupportedChipGroup from '@mdx/IsSupportedChipGroup.astro';
 import Callout from '@mdx/Callout.astro';
 import Section from '@mdx/Section.astro';
 
-# SQL Update
+# SQL 업데이트
 
 ```typescript copy
 await db.update(users)
@@ -10,9 +16,9 @@ await db.update(users)
   .where(eq(users.name, 'Dan'));
 ```
 
-The object that you pass to `update` should have keys that match column names in your database schema.
-Values of `undefined` are ignored in the object: to set a column to `null`, pass `null`.
-You can pass SQL as a value to be used in the update object, like this:
+`set()`에 전달하는 객체는 데이터베이스 스키마의 컬럼명과 일치하는 키를 가져야 합니다.
+`undefined` 값은 객체에서 무시됩니다. 컬럼을 `null`로 설정하려면 `null`을 전달하세요.
+다음과 같이 SQL 표현식을 값으로 전달하여 업데이트 객체에 사용할 수 있습니다:
 
 ```typescript copy
 await db.update(users)
@@ -24,7 +30,7 @@ await db.update(users)
 
 <IsSupportedChipGroup chips={{ 'PostgreSQL': false, 'MySQL': true, 'SQLite': true, 'SingleStore': true, 'MSSQL': false, 'CockroachDB': false }} />
 
-Use `.limit()` to add `limit` clause to the query - for example:
+`.limit()`을 사용하여 쿼리에 `limit` 절을 추가할 수 있습니다:
 <Section>
 ```typescript
 await db.update(usersTable).set({ verified: true }).limit(2);
@@ -34,8 +40,8 @@ update "users" set "verified" = $1 limit $2;
 ```
 </Section>
 
-### Order By
-Use `.orderBy()` to add `order by` clause to the query, sorting the results by the specified fields:
+### 정렬 (Order By)
+`.orderBy()`를 사용하여 쿼리에 `order by` 절을 추가하고, 지정된 필드를 기준으로 결과를 정렬할 수 있습니다:
 <Section>
 ```typescript
 import { asc, desc } from 'drizzle-orm';
@@ -43,7 +49,7 @@ import { asc, desc } from 'drizzle-orm';
 await db.update(usersTable).set({ verified: true }).orderBy(usersTable.name);
 await db.update(usersTable).set({ verified: true }).orderBy(desc(usersTable.name));
 
-// order by multiple fields
+// 여러 필드로 정렬
 await db.update(usersTable).set({ verified: true }).orderBy(usersTable.name, usersTable.name2);
 await db.update(usersTable).set({ verified: true }).orderBy(asc(usersTable.name), desc(usersTable.name2));
 ```
@@ -56,9 +62,9 @@ update "users" set "verified" = $1 order by "name" asc, "name2" desc;
 ```
 </Section>
 
-### Returning
+### 반환 (Returning)
 <IsSupportedChipGroup chips={{ 'PostgreSQL': true, 'SQLite': true, 'MySQL': false , 'SingleStore': false, 'MSSQL': false, 'CockroachDB': true }} />
-You can update a row and get it back in PostgreSQL and SQLite:
+PostgreSQL과 SQLite에서는 업데이트한 행의 데이터를 반환받을 수 있습니다:
 ```typescript copy
 const updatedUserId: { updatedId: number }[] = await db.update(users)
   .set({ name: 'Mr. Dan' })
@@ -66,9 +72,9 @@ const updatedUserId: { updatedId: number }[] = await db.update(users)
   .returning({ updatedId: users.id });
 ```
 
-### Output
+### 출력 (Output)
 <IsSupportedChipGroup chips={{ 'MSSQL': true }} />
-You can update a row and get back the row before updated and after:
+업데이트한 행의 데이터를 반환받을 수 있으며, 업데이트 전후의 상태를 모두 확인할 수 있습니다:
 
 ```typescript copy
 type User = typeof users.$inferSelect;
@@ -79,7 +85,7 @@ const updatedUserId: User[] = await db.update(users)
   .output();
 ```
 
-To return partial users after update: 
+업데이트 후 부분 사용자 정보를 반환하려면:
 
 ```ts
 const updatedUserId: { inserted: { updatedId: number }}[] = await db.update(users)
@@ -88,7 +94,7 @@ const updatedUserId: { inserted: { updatedId: number }}[] = await db.update(user
   .output({ inserted: { updatedId: users.id }});
 ```
 
-To return rows that were in database before update:
+업데이트 전 데이터베이스에 있던 행을 반환하려면:
 
 ```ts
 type User = typeof users.$inferSelect;
@@ -99,7 +105,7 @@ const updatedUserId: { deleted: User }[] = await db.update(users)
   .output({ deleted: true });
 ```
 
-To return both previous and new version on a row:
+행의 이전 버전과 새 버전을 모두 반환하려면:
 
 ```ts
 type User = typeof users.$inferSelect;
@@ -110,13 +116,13 @@ const updatedUserId: { deleted: User, inserted: User }[] = await db.update(users
   .output({ deleted: true, inserted: true });
 ```
 
-## `with update` clause
+## WITH 절을 사용한 업데이트
 
 <Callout>
-  Check how to use WITH statement with [select](/docs/select#with-clause), [insert](/docs/insert#with-insert-clause), [delete](/docs/delete#with-delete-clause)
+  WITH 문을 사용하는 방법은 [select](/docs/select#with-clause), [insert](/docs/insert#with-insert-clause), [delete](/docs/delete#with-delete-clause)에서도 확인할 수 있습니다.
 </Callout>
 
-Using the `with` clause can help you simplify complex queries by splitting them into smaller subqueries called common table expressions (CTEs):
+`with` 절을 사용하면 복잡한 쿼리를 공통 테이블 표현식(CTE)이라는 더 작은 하위 쿼리로 분할하여 단순화할 수 있습니다:
 <Section>
 ```typescript copy
 const averagePrice = db.$with('average_price').as(
@@ -145,18 +151,18 @@ returning "id"
 
 <IsSupportedChipGroup chips={{ 'PostgreSQL': true, 'MySQL': false, 'SQLite': true, 'SingleStore': false, 'MSSQL': false, 'CockroachDB': true }} />
 
-As the SQLite documentation mentions:
+SQLite 문서에서 설명하는 바와 같이:
 
-> The UPDATE-FROM idea is an extension to SQL that allows an UPDATE statement to be driven by other tables in the database. 
-The "target" table is the specific table that is being updated. With UPDATE-FROM you can join the target table 
-against other tables in the database in order to help compute which rows need updating and what 
-the new values should be on those rows
+> UPDATE-FROM은 UPDATE 문이 데이터베이스의 다른 테이블을 활용할 수 있도록 하는 SQL 확장입니다.
+"대상" 테이블은 실제로 업데이트되는 테이블입니다. UPDATE-FROM을 사용하면 대상 테이블을
+데이터베이스의 다른 테이블과 조인하여 어떤 행을 업데이트할지,
+그리고 해당 행의 새로운 값은 무엇인지 결정할 수 있습니다.
 
-Similarly, the PostgreSQL documentation states:
+PostgreSQL 문서에서는 다음과 같이 설명합니다:
 
-> A table expression allowing columns from other tables to appear in the WHERE condition and update expressions
+> WHERE 조건 및 업데이트 표현식에서 다른 테이블의 컬럼을 참조할 수 있도록 하는 테이블 표현식
 
-Drizzle also supports this feature starting from version `drizzle-orm@0.36.3`
+Drizzle은 `drizzle-orm@0.36.3` 버전부터 이 기능을 지원합니다.
 
 <Section>
 ```ts
@@ -167,15 +173,15 @@ await db
   .where(and(eq(cities.name, 'Seattle'), eq(users.name, 'John')))
 ```
 ```sql
-update "users" set "city_id" = "cities"."id" 
-from "cities" 
+update "users" set "city_id" = "cities"."id"
+from "cities"
 where ("cities"."name" = $1 and "users"."name" = $2)
 
 -- params: [ 'Seattle', 'John' ]
 ```
 </Section>
 
-You can also alias tables that are joined (in PG, you can also alias the updating table too).
+조인되는 테이블에 별칭을 지정할 수 있습니다. PostgreSQL에서는 업데이트되는 테이블에도 별칭을 지정할 수 있습니다:
 <Section>
 ```ts
 const c = alias(cities, 'c');
@@ -192,7 +198,7 @@ from "cities" "c"
 
 <IsSupportedChipGroup chips={{ 'PostgreSQL': true, 'MySQL': false, 'SQLite': false, 'SingleStore': false, 'MSSQL': false, 'CockroachDB': true }} />
 
-In Postgres, you can also return columns from the joined tables.
+PostgreSQL에서는 조인된 테이블의 컬럼도 반환할 수 있습니다.
 <Section>
 ```ts
 const updatedUsers = await db

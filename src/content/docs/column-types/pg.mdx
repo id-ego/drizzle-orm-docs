@@ -1,25 +1,25 @@
 ---
-title: PostgreSQL column types
+title: PostgreSQL 컬럼 타입
 ---
 
 import Section from '@mdx/Section.astro';
 import Callout from '@mdx/Callout.astro';
 
-We have native support for all of them, yet if that's not enough for you, feel free to create **[custom types](/docs/custom-types)**.
+모든 PostgreSQL 컬럼 타입을 기본적으로 지원하며, 이것으로 충분하지 않다면 **[커스텀 타입](/docs/custom-types)**을 자유롭게 만들 수 있습니다.
 
-<Callout title='important' type='warning'>
-All examples in this part of the documentation do not use database column name aliases, and column names are generated from TypeScript keys. 
+<Callout title='중요' type='warning'>
+이 문서의 모든 예제는 데이터베이스 컬럼명 별칭을 사용하지 않으며, 컬럼명은 TypeScript 키에서 생성됩니다.
 
-You can use database aliases in column names if you want, and you can also use the `casing` parameter to define a mapping strategy for Drizzle. 
+원하는 경우 컬럼명에 데이터베이스 별칭을 사용할 수 있으며, Drizzle에 대한 매핑 전략을 정의하기 위해 `casing` 파라미터를 사용할 수도 있습니다.
 
-You can read more about it [here](/docs/sql-schema-declaration#shape-your-data-schema)
+자세한 내용은 [여기](/docs/sql-schema-declaration#shape-your-data-schema)에서 확인할 수 있습니다.
 </Callout>
 
 ### integer
-`integer` `int` `int4`  
-Signed 4-byte integer     
+`integer` `int` `int4`
+부호 있는 4바이트 정수
 
-If you need `integer autoincrement` please refer to **[serial.](#serial)**
+`integer autoincrement`가 필요한 경우 **[serial](#serial)**을 참조하세요.
 
 <Section>
 ```typescript
@@ -59,10 +59,10 @@ CREATE TABLE "table" (
 </Section>
 
 ### smallint
-`smallint` `int2`  
-Small-range signed 2-byte integer   
+`smallint` `int2`
+작은 범위의 부호 있는 2바이트 정수
 
-If you need `smallint autoincrement` please refer to **[smallserial.](#smallserial)**
+`smallint autoincrement`가 필요한 경우 **[smallserial](#smallserial)**을 참조하세요.
 <Section>
 ```typescript
 import { smallint, pgTable } from "drizzle-orm/pg-core";
@@ -99,12 +99,12 @@ CREATE TABLE "table" (
 </Section>
 
 ### bigint
-`bigint` `int8`  
-Signed 8-byte integer  
+`bigint` `int8`
+부호 있는 8바이트 정수
 
-If you need `bigint autoincrement` please refer to **[bigserial.](#bigserial)**
+`bigint autoincrement`가 필요한 경우 **[bigserial](#bigserial)**을 참조하세요.
 
-If you're expecting values above 2^31 but below 2^53, you can utilise `mode: 'number'` and deal with javascript number as opposed to bigint.
+2^31 이상 2^53 미만의 값을 예상하는 경우 `mode: 'number'`를 사용하여 bigint 대신 JavaScript number로 처리할 수 있습니다.
 <Section>
 ```typescript
 import { bigint, pgTable } from "drizzle-orm/pg-core";
@@ -149,10 +149,10 @@ CREATE TABLE "table" (
 ## ---
 
 ### serial
-`serial` `serial4`  
-Auto incrementing 4-bytes integer, notational convenience for creating unique identifier columns (similar to the `AUTO_INCREMENT` property supported by some other databases). 
+`serial` `serial4`
+자동 증가하는 4바이트 정수로, 고유 식별자 컬럼을 생성하는 표기법적 편의 기능입니다 (일부 다른 데이터베이스에서 지원하는 `AUTO_INCREMENT` 속성과 유사).
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-SERIAL)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-SERIAL)**를 참조하세요.
 <Section>
 ```typescript
 import { serial, pgTable } from "drizzle-orm/pg-core";
@@ -170,10 +170,10 @@ CREATE TABLE "table" (
 </Section>
 
 ### smallserial
-`smallserial` `serial2`  
-Auto incrementing 2-bytes integer, notational convenience for creating unique identifier columns (similar to the `AUTO_INCREMENT` property supported by some other databases). 
+`smallserial` `serial2`
+자동 증가하는 2바이트 정수로, 고유 식별자 컬럼을 생성하는 표기법적 편의 기능입니다 (일부 다른 데이터베이스에서 지원하는 `AUTO_INCREMENT` 속성과 유사).
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-SERIAL)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-SERIAL)**를 참조하세요.
 <Section>
 ```typescript
 import { smallserial, pgTable } from "drizzle-orm/pg-core";
@@ -191,12 +191,12 @@ CREATE TABLE "table" (
 </Section>
 
 ### bigserial
-`bigserial` `serial8`  
-Auto incrementing 8-bytes integer, notational convenience for creating unique identifier columns (similar to the `AUTO_INCREMENT` property supported by some other databases).
+`bigserial` `serial8`
+자동 증가하는 8바이트 정수로, 고유 식별자 컬럼을 생성하는 표기법적 편의 기능입니다 (일부 다른 데이터베이스에서 지원하는 `AUTO_INCREMENT` 속성과 유사).
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-SERIAL)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-SERIAL)**를 참조하세요.
 
-If you're expecting values above 2^31 but below 2^53, you can utilise `mode: 'number'` and deal with javascript number as opposed to bigint.
+2^31 이상 2^53 미만의 값을 예상하는 경우 `mode: 'number'`를 사용하여 bigint 대신 JavaScript number로 처리할 수 있습니다.
 <Section>
 ```typescript
 import { bigserial, pgTable } from "drizzle-orm/pg-core";
@@ -216,9 +216,9 @@ CREATE TABLE "table" (
 ### ---
 
 ### boolean
-PostgreSQL provides the standard SQL type boolean.
+PostgreSQL은 표준 SQL 타입인 boolean을 제공합니다.
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-boolean.html)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-boolean.html)**를 참조하세요.
 
 <Section>
 ```typescript
@@ -241,9 +241,9 @@ CREATE TABLE "table" (
 
 ### bytea
 
-PostgreSQL provides the standard SQL type bytea.
+PostgreSQL은 표준 SQL 타입인 bytea를 제공합니다.
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-binary.html)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-binary.html)**를 참조하세요.
 
 <Section>
 ```typescript
@@ -265,12 +265,12 @@ CREATE TABLE IF NOT EXISTS "table" (
 ## ---
 
 ### text
-`text`  
-Variable-length(unlimited) character string.
+`text`
+가변 길이(무제한) 문자열입니다.
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-character.html)**
-  
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-character.html)**를 참조하세요.
+
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert`와 `select` 타입을 추론할 수 있으며, 런타임 값을 검사하지는 **않습니다**.
 <Section>
 ```typescript
 import { text, pgTable } from "drizzle-orm/pg-core";
@@ -291,14 +291,14 @@ CREATE TABLE "table" (
 </Section>
 
 ### varchar
-`character varying(n)` `varchar(n)`  
-Variable-length character string, can store strings up to **`n`** characters (not bytes). 
+`character varying(n)` `varchar(n)`
+가변 길이 문자열로, 최대 **`n`**개의 문자(바이트가 아님)를 저장할 수 있습니다.
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-character.html)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-character.html)**를 참조하세요.
 
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert`와 `select` 타입을 추론할 수 있으며, 런타임 값을 검사하지는 **않습니다**.
 
-The `length` parameter is optional according to PostgreSQL docs.
+PostgreSQL 문서에 따르면 `length` 파라미터는 선택사항입니다.
 <Section>
 ```typescript
 import { varchar, pgTable } from "drizzle-orm/pg-core";
@@ -321,14 +321,14 @@ CREATE TABLE "table" (
 </Section>
 
 ### char
-`character(n)` `char(n)`  
-Fixed-length, blank padded character string, can store strings up to **`n`** characters(not bytes).
+`character(n)` `char(n)`
+고정 길이의 공백으로 채워지는 문자열로, 최대 **`n`**개의 문자(바이트가 아님)를 저장할 수 있습니다.
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-character.html)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-character.html)**를 참조하세요.
 
-You can define `{ enum: ["value1", "value2"] }` config to infer `insert` and `select` types, it **won't** check runtime values.
+`{ enum: ["value1", "value2"] }` 설정을 정의하여 `insert`와 `select` 타입을 추론할 수 있으며, 런타임 값을 검사하지는 **않습니다**.
 
-The `length` parameter is optional according to PostgreSQL docs.
+PostgreSQL 문서에 따르면 `length` 파라미터는 선택사항입니다.
 <Section>
 ```typescript
 import { char, pgTable } from "drizzle-orm/pg-core";
@@ -353,10 +353,10 @@ CREATE TABLE "table" (
 ## ---
 
 ### numeric
-`numeric` `decimal`  
-Exact numeric of selectable precision. Can store numbers with a very large number of digits, up to 131072 digits before the decimal point and up to 16383 digits after the decimal point.
+`numeric` `decimal`
+선택 가능한 정밀도를 가진 정확한 숫자입니다. 소수점 앞에 최대 131072자리, 소수점 뒤에 최대 16383자리까지 매우 큰 자릿수의 숫자를 저장할 수 있습니다.
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-NUMERIC-DECIMAL)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-NUMERIC-DECIMAL)**를 참조하세요.
 
 <Section>
 ```typescript
@@ -383,18 +383,18 @@ CREATE TABLE "table" (
 </Section>
 
 ### decimal
-An alias of **[numeric.](#numeric)**
+**[numeric](#numeric)**의 별칭입니다.
 
 ### real
-`real` `float4`  
-Single precision floating-point number (4 bytes)
+`real` `float4`
+단정밀도 부동소수점 숫자 (4바이트)
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-numeric.html)**  
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-numeric.html)**를 참조하세요.
 
 <Section>
 ```typescript
 import { sql } from "drizzle-orm";
-import { real, pgTable } from "drizzle-orm/pg-core";  
+import { real, pgTable } from "drizzle-orm/pg-core";
 
 const table = pgTable('table', {
 	real1: real(),
@@ -413,10 +413,10 @@ CREATE TABLE "table" (
 </Section>
 
 ### double precision
-`double precision` `float8`  
-Double precision floating-point number (8 bytes)
+`double precision` `float8`
+배정밀도 부동소수점 숫자 (8바이트)
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-numeric.html)**  
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-numeric.html)**를 참조하세요.
 
 <Section>
 ```typescript
@@ -443,10 +443,10 @@ CREATE TABLE "table" (
 
 
 ### json
-`json`  
-Textual JSON data, as specified in **[RFC 7159.](https://tools.ietf.org/html/rfc7159)**
+`json`
+**[RFC 7159](https://tools.ietf.org/html/rfc7159)**에 명시된 텍스트 형식의 JSON 데이터입니다.
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-json.html)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-json.html)**를 참조하세요.
 <Section>
 ```typescript
 import { sql } from "drizzle-orm";
@@ -467,9 +467,9 @@ CREATE TABLE "table" (
 );
 ```
 </Section>
-  
-You can specify `.$type<..>()` for json object inference, it **won't** check runtime values. 
-It provides compile time protection for default values, insert and select schemas.
+
+`.$type<..>()`을 지정하여 JSON 객체 추론을 할 수 있으며, 런타임 값을 검사하지는 **않습니다**.
+기본값, insert 및 select 스키마에 대한 컴파일 타임 보호를 제공합니다.
 ```typescript
 // will be inferred as { foo: string }
 json: json().$type<{ foo: string }>();
@@ -482,10 +482,10 @@ json: json().$type<string[]>().default({});
 ```
 
 ### jsonb
-`jsonb`  
-Binary JSON data, decomposed.
+`jsonb`
+분해된 바이너리 JSON 데이터입니다.
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-json.html)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-json.html)**를 참조하세요.
 <Section>
 ```typescript
 import { jsonb, pgTable } from "drizzle-orm/pg-core";
@@ -505,8 +505,8 @@ CREATE TABLE "table" (
 ```
 </Section>
 
-You can specify `.$type<..>()` for json object inference, it **won't** check runtime values. 
-It provides compile time protection for default values, insert and select schemas.
+`.$type<..>()`을 지정하여 JSON 객체 추론을 할 수 있으며, 런타임 값을 검사하지는 **않습니다**.
+기본값, insert 및 select 스키마에 대한 컴파일 타임 보호를 제공합니다.
 
 ```typescript
 // will be inferred as { foo: string }
@@ -524,9 +524,9 @@ jsonb: jsonb().$type<string[]>().default({});
 ### uuid
 `uuid`
 
-The data type uuid stores Universally Unique Identifiers (UUID) as defined by RFC 4122, ISO/IEC 9834-8:2005, and related standards
+RFC 4122, ISO/IEC 9834-8:2005 및 관련 표준에 정의된 범용 고유 식별자(UUID)를 저장하는 데이터 타입입니다.
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-uuid.html)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-uuid.html)**를 참조하세요.
 
 ```ts
 import { uuid, pgTable } from "drizzle-orm/pg-core";
@@ -549,10 +549,10 @@ CREATE TABLE "table" (
 ## ---
 
 ### time
-`time` `timetz` `time with timezone` `time without timezone`  
-Time of day with or without time zone.
+`time` `timetz` `time with timezone` `time without timezone`
+타임존을 포함하거나 포함하지 않는 시간입니다.
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-datetime.html)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-datetime.html)**를 참조하세요.
 
 <Section>
 ```typescript
@@ -577,10 +577,10 @@ CREATE TABLE "table" (
 </Section>
 
 ### timestamp
-`timestamp` `timestamptz` `timestamp with time zone` `timestamp without time zone`  
-Date and time with or without time zone.
+`timestamp` `timestamptz` `timestamp with time zone` `timestamp without time zone`
+타임존을 포함하거나 포함하지 않는 날짜와 시간입니다.
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-datetime.html)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-datetime.html)**를 참조하세요.
 <Section>
 ```typescript
 import { sql } from "drizzle-orm";
@@ -603,7 +603,7 @@ CREATE TABLE "table" (
 ```
 </Section>
 
-You can specify either `date` or `string` infer modes:
+`date` 또는 `string` 추론 모드를 지정할 수 있습니다:
 ```typescript
 // will infer as date
 timestamp: timestamp({ mode: "date" }),
@@ -612,29 +612,27 @@ timestamp: timestamp({ mode: "date" }),
 timestamp: timestamp({ mode: "string" }),
 ```
 
-> The `string` mode does not perform any mappings for you. This mode was added to Drizzle ORM to provide developers
-with the possibility to handle dates and date mappings themselves, depending on their needs.
-Drizzle will pass raw dates as strings `to` and `from` the database, so the behavior should be as predictable as possible 
-and aligned 100% with the database behavior
+> `string` 모드는 매핑을 수행하지 않습니다. 이 모드는 개발자가 필요에 따라 날짜 및 날짜 매핑을 직접 처리할 수 있도록 Drizzle ORM에 추가되었습니다.
+Drizzle은 원시 날짜를 데이터베이스 `와` `에서` 문자열로 전달하므로, 동작은 가능한 한 예측 가능하고 데이터베이스 동작과 100% 일치해야 합니다.
 
-> The `date` mode is the regular way to work with dates. Drizzle will take care of all mappings between the database and the JS Date object
+> `date` 모드는 날짜를 다루는 일반적인 방법입니다. Drizzle이 데이터베이스와 JS Date 객체 간의 모든 매핑을 처리합니다.
 
 <Callout type='info' emoji='ℹ️'>
- How mapping works for `timestamp` and `timestamp with timezone`:
+ `timestamp` 및 `timestamp with timezone`의 매핑 작동 방식:
 
- As PostgreSQL docs stated:
- > In a literal that has been determined to be timestamp without time zone, PostgreSQL will silently ignore any time zone indication. 
- > That is, the resulting value is derived from the date/time fields in the input value, and is not adjusted for time zone.
+ PostgreSQL 문서에 명시된 바와 같이:
+ > timestamp without time zone으로 결정된 리터럴에서 PostgreSQL은 타임존 표시를 자동으로 무시합니다.
+ > 즉, 결과 값은 입력 값의 날짜/시간 필드에서 파생되며 타임존에 대해 조정되지 않습니다.
  >
- > For timestamp with time zone, the internally stored value is always in UTC (Universal Coordinated Time, traditionally known as Greenwich Mean Time, GMT). 
- An input value that has an explicit time zone specified is converted to UTC using the appropriate offset for that time zone. 
- If no time zone is stated in the input string, then it is assumed to be in the time zone indicated by the system's TimeZone parameter, 
- and is converted to UTC using the offset for the timezone zone.
+ > timestamp with time zone의 경우, 내부적으로 저장되는 값은 항상 UTC(협정 세계시, 전통적으로 그리니치 표준시, GMT로 알려짐)입니다.
+ 명시적인 타임존이 지정된 입력 값은 해당 타임존에 대한 적절한 오프셋을 사용하여 UTC로 변환됩니다.
+ 입력 문자열에 타임존이 명시되지 않은 경우, 시스템의 TimeZone 파라미터로 표시된 타임존에 있는 것으로 가정하고
+ 해당 타임존의 오프셋을 사용하여 UTC로 변환됩니다.
 
- So for `timestamp with timezone` you will get back string converted to a timezone set in your Postgres instance. 
- You can check timezone using this sql query: 
- 
- ```sql 
+ 따라서 `timestamp with timezone`의 경우 Postgres 인스턴스에 설정된 타임존으로 변환된 문자열을 받게 됩니다.
+ 다음 SQL 쿼리로 타임존을 확인할 수 있습니다:
+
+ ```sql
  show timezone;
  ```
 
@@ -642,10 +640,10 @@ and aligned 100% with the database behavior
 </Callout>
 
 ### date
-`date`  
-Calendar date (year, month, day)
+`date`
+달력 날짜 (년, 월, 일)
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-datetime.html)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-datetime.html)**를 참조하세요.
 <Section>
 ```typescript
 import { date, pgTable } from "drizzle-orm/pg-core";
@@ -661,7 +659,7 @@ CREATE TABLE "table" (
 );
 ```
 </Section>
-You can specify either `date` or `string` infer modes:
+`date` 또는 `string` 추론 모드를 지정할 수 있습니다:
 ```typescript
 // will infer as date
 date: date({ mode: "date" }),
@@ -670,10 +668,10 @@ date: date({ mode: "date" }),
 date: date({ mode: "string" }),
 ```
 ### interval
-`interval`  
-Time span
+`interval`
+시간 간격
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-datetime.html)** 
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-datetime.html)**를 참조하세요.
 
 <Section>
 ```typescript
@@ -699,16 +697,16 @@ CREATE TABLE "table" (
 ## ---
 
 ### point
-`point`  
-Geometric point type
+`point`
+기하학적 점 타입
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-GEOMETRIC-POINTS)** 
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-GEOMETRIC-POINTS)**를 참조하세요.
 
-Type `point` has 2 modes for mappings from the database: `tuple` and `xy`.
+`point` 타입은 데이터베이스에서 매핑하기 위한 2가지 모드가 있습니다: `tuple`과 `xy`.
 
-- `tuple` will be accepted for insert and mapped on select to a tuple. So, the database Point(1,2) will be typed as [1,2] with drizzle.
+- `tuple`은 insert에 사용되며 select 시 튜플로 매핑됩니다. 따라서 데이터베이스의 Point(1,2)는 drizzle에서 [1,2]로 타입이 지정됩니다.
 
-- `xy` will be accepted for insert and mapped on select to an object with x, y coordinates. So, the database Point(1,2) will be typed as `{ x: 1, y: 2 }` with drizzle
+- `xy`는 insert에 사용되며 select 시 x, y 좌표를 가진 객체로 매핑됩니다. 따라서 데이터베이스의 Point(1,2)는 drizzle에서 `{ x: 1, y: 2 }`로 타입이 지정됩니다.
 
 <Section>
 ```typescript
@@ -727,16 +725,16 @@ CREATE TABLE "items" (
 </Section>
 
 ### line
-`line`  
-Geometric line type
+`line`
+기하학적 선 타입
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LINE)** 
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LINE)**를 참조하세요.
 
-Type `line` has 2 modes for mappings from the database: `tuple` and `abc`.
+`line` 타입은 데이터베이스에서 매핑하기 위한 2가지 모드가 있습니다: `tuple`과 `abc`.
 
-- `tuple` will be accepted for insert and mapped on select to a tuple. So, the database Line{1,2,3} will be typed as [1,2,3] with drizzle.
+- `tuple`은 insert에 사용되며 select 시 튜플로 매핑됩니다. 따라서 데이터베이스의 Line{1,2,3}은 drizzle에서 [1,2,3]으로 타입이 지정됩니다.
 
-- `abc` will be accepted for insert and mapped on select to an object with a, b, and c constants from the equation `Ax + By + C = 0`. So, the database Line{1,2,3} will be typed as `{ a: 1, b: 2, c: 3 }` with drizzle.
+- `abc`는 insert에 사용되며 select 시 `Ax + By + C = 0` 방정식의 a, b, c 상수를 가진 객체로 매핑됩니다. 따라서 데이터베이스의 Line{1,2,3}은 drizzle에서 `{ a: 1, b: 2, c: 3 }`으로 타입이 지정됩니다.
 
 <Section>
 ```typescript
@@ -756,13 +754,13 @@ CREATE TABLE "items" (
 
 ## ---
 
-### enum 
-`enum` `enumerated types`  
-Enumerated (enum) types are data types that comprise a static, ordered set of values. 
-They are equivalent to the enum types supported in a number of programming languages. 
-An example of an enum type might be the days of the week, or a set of status values for a piece of data.
+### enum
+`enum` `enumerated types`
+열거형(enum) 타입은 정적이고 순서가 있는 값의 집합으로 구성된 데이터 타입입니다.
+여러 프로그래밍 언어에서 지원하는 enum 타입과 동등합니다.
+enum 타입의 예로는 요일이나 데이터의 상태 값 집합이 있습니다.
 
-For more info please refer to the official PostgreSQL **[docs.](https://www.postgresql.org/docs/current/datatype-enum.html)**
+자세한 내용은 공식 PostgreSQL **[문서](https://www.postgresql.org/docs/current/datatype-enum.html)**를 참조하세요.
 <Section>
 ```typescript
 import { pgEnum, pgTable } from "drizzle-orm/pg-core";
@@ -786,9 +784,9 @@ CREATE TABLE "table" (
 ## ---
 
 ### Customizing data type
-Every column builder has a `.$type()` method, which allows you to customize the data type of the column. 
+모든 컬럼 빌더에는 `.$type()` 메서드가 있으며, 이를 통해 컬럼의 데이터 타입을 커스터마이즈할 수 있습니다.
 
-This is useful, for example, with unknown or branded types:
+이는 예를 들어 unknown 또는 branded 타입에 유용합니다:
 ```ts
 type UserId = number & { __brand: 'user_id' };
 type Data = {
@@ -805,27 +803,27 @@ const users = pgTable('users', {
 ### Identity Columns
 
 <Callout type="info">
-To use this feature you would need to have `drizzle-orm@0.32.0` or higher and `drizzle-kit@0.23.0` or higher
+이 기능을 사용하려면 `drizzle-orm@0.32.0` 이상과 `drizzle-kit@0.23.0` 이상이 필요합니다.
 </Callout>
 
-PostgreSQL supports identity columns as a way to automatically generate unique integer values for a column. These values are generated using sequences and can be defined using the GENERATED AS IDENTITY clause.
+PostgreSQL은 컬럼에 대한 고유 정수 값을 자동으로 생성하는 방법으로 identity 컬럼을 지원합니다. 이러한 값은 시퀀스를 사용하여 생성되며 GENERATED AS IDENTITY 절을 사용하여 정의할 수 있습니다.
 
-**Types of Identity Columns**
-- `GENERATED ALWAYS AS IDENTITY`: The database always generates a value for the column. Manual insertion or updates to this column are not allowed unless the OVERRIDING SYSTEM VALUE clause is used.
-- `GENERATED BY DEFAULT AS IDENTITY`: The database generates a value by default, but manual values can also be inserted or updated. If a manual value is provided, it will be used instead of the system-generated value.
+**Identity 컬럼의 타입**
+- `GENERATED ALWAYS AS IDENTITY`: 데이터베이스가 항상 컬럼에 대한 값을 생성합니다. OVERRIDING SYSTEM VALUE 절을 사용하지 않는 한 이 컬럼에 대한 수동 삽입이나 업데이트는 허용되지 않습니다.
+- `GENERATED BY DEFAULT AS IDENTITY`: 데이터베이스가 기본적으로 값을 생성하지만, 수동 값도 삽입하거나 업데이트할 수 있습니다. 수동 값이 제공되면 시스템 생성 값 대신 해당 값이 사용됩니다.
 
-**Key Features**
-- Automatic Value Generation: Utilizes sequences to generate unique values for each new row.
-- Customizable Sequence Options: You can define starting values, increments, and other sequence options.
-- Support for Multiple Identity Columns: PostgreSQL allows more than one identity column per table.
+**주요 기능**
+- 자동 값 생성: 시퀀스를 활용하여 각 새 행에 대한 고유 값을 생성합니다.
+- 커스터마이즈 가능한 시퀀스 옵션: 시작 값, 증분 및 기타 시퀀스 옵션을 정의할 수 있습니다.
+- 여러 Identity 컬럼 지원: PostgreSQL은 테이블당 둘 이상의 identity 컬럼을 허용합니다.
 
-**Limitations**
-- Manual Insertion Restrictions: For columns defined with GENERATED ALWAYS AS IDENTITY, manual insertion or updates require the OVERRIDING SYSTEM VALUE clause.
-- Sequence Constraints: Identity columns depend on sequences, which must be managed correctly to avoid conflicts or gaps.
+**제한사항**
+- 수동 삽입 제한: GENERATED ALWAYS AS IDENTITY로 정의된 컬럼의 경우 수동 삽입이나 업데이트에 OVERRIDING SYSTEM VALUE 절이 필요합니다.
+- 시퀀스 제약: Identity 컬럼은 시퀀스에 의존하므로, 충돌이나 간격을 피하기 위해 올바르게 관리해야 합니다.
 
-**Usage example**
+**사용 예제**
 ```ts
-import { pgTable, integer, text } from 'drizzle-orm/pg-core' 
+import { pgTable, integer, text } from 'drizzle-orm/pg-core'
 
 export const ingredients = pgTable("ingredients", {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
@@ -834,18 +832,15 @@ export const ingredients = pgTable("ingredients", {
 });
 ```
 
-You can specify all properties available for sequences in the `.generatedAlwaysAsIdentity()` function. Additionally, you can specify custom names for these sequences
+`.generatedAlwaysAsIdentity()` 함수에서 시퀀스에 사용 가능한 모든 속성을 지정할 수 있습니다. 또한 이러한 시퀀스에 대한 커스텀 이름을 지정할 수도 있습니다.
 
-PostgreSQL docs [reference](https://www.postgresql.org/docs/current/sql-createtable.html#SQL-CREATETABLE-PARMS-GENERATED-IDENTITY).
+PostgreSQL 문서 [참조](https://www.postgresql.org/docs/current/sql-createtable.html#SQL-CREATETABLE-PARMS-GENERATED-IDENTITY).
 
 ### Default value
-The `DEFAULT` clause specifies a default value to use for the column if no value
-is explicitly provided by the user when doing an `INSERT`.
-If there is no explicit `DEFAULT` clause attached to a column definition,
-then the default value of the column is `NULL`.
+`DEFAULT` 절은 `INSERT` 수행 시 사용자가 명시적으로 값을 제공하지 않은 경우 컬럼에 사용할 기본값을 지정합니다.
+컬럼 정의에 명시적인 `DEFAULT` 절이 없으면 컬럼의 기본값은 `NULL`입니다.
 
-An explicit `DEFAULT` clause may specify that the default value is `NULL`,
-a string constant, a blob constant, a signed-number, or any constant expression enclosed in parentheses.
+명시적인 `DEFAULT` 절은 기본값이 `NULL`, 문자열 상수, blob 상수, 부호 있는 숫자 또는 괄호로 묶인 상수 표현식임을 지정할 수 있습니다.
 
 <Section>
 ```typescript
@@ -870,13 +865,12 @@ CREATE TABLE "table" (
 ```
 </Section>
 
-When using `$default()` or `$defaultFn()`, which are simply different aliases for the same function, 
-you can generate defaults at runtime and use these values in all insert queries. 
+단순히 동일한 함수에 대한 별칭인 `$default()` 또는 `$defaultFn()`을 사용하는 경우, 런타임에 기본값을 생성하고 모든 insert 쿼리에서 이러한 값을 사용할 수 있습니다.
 
-These functions can assist you in utilizing various implementations such as `uuid`, `cuid`, `cuid2`, and many more.
+이러한 함수는 `uuid`, `cuid`, `cuid2` 등 다양한 구현을 활용하는 데 도움이 됩니다.
 
 <Callout type="info" emoji="ℹ️">
-	Note: This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`
+	참고: 이 값은 `drizzle-kit` 동작에 영향을 주지 않으며, `drizzle-orm`에서 런타임에만 사용됩니다.
 </Callout>
 
 ```ts
@@ -888,16 +882,14 @@ const table = pgTable('table', {
 });
 ```
 
-When using `$onUpdate()` or `$onUpdateFn()`, which are simply different aliases for the same function, 
-you can generate defaults at runtime and use these values in all update queries. 
+단순히 동일한 함수에 대한 별칭인 `$onUpdate()` 또는 `$onUpdateFn()`을 사용하는 경우, 런타임에 기본값을 생성하고 모든 update 쿼리에서 이러한 값을 사용할 수 있습니다.
 
-Adds a dynamic update value to the column. The function will be called when the row is updated, 
-and the returned value will be used as the column value if none is provided.
-If no default (or $defaultFn) value is provided, the function will be called
-when the row is inserted as well, and the returned value will be used as the column value.
+행이 업데이트될 때 호출될 동적 업데이트 값을 컬럼에 추가합니다.
+함수가 호출되면 반환된 값이 컬럼 값으로 사용됩니다(값이 제공되지 않은 경우).
+기본(또는 $defaultFn) 값이 제공되지 않은 경우, 행이 삽입될 때도 함수가 호출되고 반환된 값이 컬럼 값으로 사용됩니다.
 
 <Callout type="info" emoji="ℹ️">
-	Note: This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`
+	참고: 이 값은 `drizzle-kit` 동작에 영향을 주지 않으며, `drizzle-orm`에서 런타임에만 사용됩니다.
 </Callout>
 
 ```ts
@@ -912,7 +904,7 @@ const table = pgTable('table', {
 
 
 ### Not null
-`NOT NULL` constraint dictates that the associated column may not contain a `NULL` value.
+`NOT NULL` 제약조건은 관련 컬럼에 `NULL` 값을 포함할 수 없음을 지정합니다.
 
 <Section>
 ```typescript
@@ -932,8 +924,8 @@ CREATE TABLE "table" (
 
 
 ### Primary key
-A primary key constraint indicates that a column, or group of columns, can be used as a unique identifier for rows in the table. 
-This requires that the values be both unique and not null.
+기본 키 제약조건은 컬럼 또는 컬럼 그룹이 테이블의 행에 대한 고유 식별자로 사용될 수 있음을 나타냅니다.
+이를 위해서는 값이 고유하고 null이 아니어야 합니다.
 <Section>
 ```typescript
 import { serial, pgTable } from "drizzle-orm/pg-core";

@@ -1,27 +1,27 @@
 ---
 pubDate: 2023-11-29
-title: DrizzleORM v0.29.1 release
-description: Fixed issues include forwarding arguments correctly when using the withReplica feature, resolving the selectDistinctOn not working with multiple columns problem, and providing detailed JSDoc for all query builders in all dialects. Additionally, introduced new helpers for aggregate functions in SQL and a new ESLint Drizzle Plugin package.
+title: DrizzleORM v0.29.1 릴리스
+description: withReplica 기능 사용 시 인자 전달 오류 수정, 여러 컬럼에서 selectDistinctOn이 작동하지 않는 문제 해결, 모든 dialect의 쿼리 빌더에 대한 상세한 JSDoc 제공. 또한 SQL 집계 함수를 위한 새로운 헬퍼와 새로운 ESLint Drizzle Plugin 패키지를 도입했습니다.
 ---
 import Npm from "@mdx/Npm.astro";
 
-## Fixes
+## 수정 사항
 
-- Forward args correctly when using withReplica feature ([#1536](https://github.com/drizzle-team/drizzle-orm/pull/1536))
-- Fix selectDistinctOn not working with multiple columns ([#1466](https://github.com/drizzle-team/drizzle-orm/pull/1466))
+- withReplica 기능 사용 시 인자를 올바르게 전달하도록 수정 ([#1536](https://github.com/drizzle-team/drizzle-orm/pull/1536))
+- 여러 컬럼에서 selectDistinctOn이 작동하지 않는 문제 수정 ([#1466](https://github.com/drizzle-team/drizzle-orm/pull/1466))
 
-## New Features/Helpers
+## 새로운 기능/헬퍼
 
-### Detailed JSDoc for all query builders in all dialects
+### 모든 dialect의 쿼리 빌더에 대한 상세한 JSDoc
 
-You can now access more information, hints, documentation links, etc. while developing and using JSDoc right in your IDE. Previously, we had them only for filter expressions, but now you can see them for all parts of the Drizzle query builder
+이제 IDE에서 JSDoc을 통해 개발 중에 더 많은 정보, 힌트, 문서 링크 등을 확인할 수 있습니다. 이전에는 필터 표현식에만 제공되었지만, 이제 Drizzle 쿼리 빌더의 모든 부분에서 확인할 수 있습니다.
 
-### New helpers for aggregate functions in SQL
+### SQL 집계 함수를 위한 새로운 헬퍼
 
-> Remember, aggregation functions are often used with the GROUP BY clause of the SELECT statement. So if you are selecting using aggregating functions and other columns in one query,
-be sure to use the `.groupBy` clause
+> 집계 함수는 SELECT 문의 GROUP BY 절과 함께 자주 사용됩니다. 따라서 하나의 쿼리에서 집계 함수와 다른 컬럼을 함께 조회하는 경우,
+반드시 `.groupBy` 절을 사용해야 합니다.
 
-Here is a list of functions and equivalent using `sql` template:
+다음은 함수 목록과 `sql` 템플릿을 사용한 동등한 표현입니다:
 
 count
 
@@ -29,12 +29,12 @@ count
 await db.select({ value: count() }).from(users);
 await db.select({ value: count(users.id) }).from(users);
 
-// It's equivalent to writing
-await db.select({ 
-  value: sql`count('*'))`.mapWith(Number) 
+// 다음과 동등합니다
+await db.select({
+  value: sql`count('*'))`.mapWith(Number)
 }).from(users);
-await db.select({ 
-  value: sql`count(${users.id})`.mapWith(Number) 
+await db.select({
+  value: sql`count(${users.id})`.mapWith(Number)
 }).from(users);
 ```
 
@@ -43,9 +43,9 @@ countDistinct
 ```ts copy {1,5}
 await db.select({ value: countDistinct(users.id) }).from(users);
 
-// It's equivalent to writing
-await db.select({ 
-  value: sql`count(${users.id})`.mapWith(Number) 
+// 다음과 동등합니다
+await db.select({
+  value: sql`count(${users.id})`.mapWith(Number)
 }).from(users);
 ```
 
@@ -54,9 +54,9 @@ avg
 ```ts copy {1,5}
 await db.select({ value: avg(users.id) }).from(users);
 
-// It's equivalent to writing
-await db.select({ 
-  value: sql`avg(${users.id})`.mapWith(String) 
+// 다음과 동등합니다
+await db.select({
+  value: sql`avg(${users.id})`.mapWith(String)
 }).from(users);
 ```
 
@@ -65,9 +65,9 @@ avgDistinct
 ```ts copy {1,5}
 await db.select({ value: avgDistinct(users.id) }).from(users);
 
-// It's equivalent to writing
-await db.select({ 
-  value: sql`avg(distinct ${users.id})`.mapWith(String) 
+// 다음과 동등합니다
+await db.select({
+  value: sql`avg(distinct ${users.id})`.mapWith(String)
 }).from(users);
 ```
 
@@ -76,9 +76,9 @@ sum
 ```ts copy {1,5}
 await db.select({ value: sum(users.id) }).from(users);
 
-// It's equivalent to writing
-await db.select({ 
-  value: sql`sum(${users.id})`.mapWith(String) 
+// 다음과 동등합니다
+await db.select({
+  value: sql`sum(${users.id})`.mapWith(String)
 }).from(users);
 ```
 
@@ -87,9 +87,9 @@ sumDistinct
 ```ts copy {1,5}
 await db.select({ value: sumDistinct(users.id) }).from(users);
 
-// It's equivalent to writing
-await db.select({ 
-  value: sql`sum(distinct ${users.id})`.mapWith(String) 
+// 다음과 동등합니다
+await db.select({
+  value: sql`sum(distinct ${users.id})`.mapWith(String)
 }).from(users);
 ```
 
@@ -98,9 +98,9 @@ max
 ```ts copy {1,5}
 await db.select({ value: max(users.id) }).from(users);
 
-// It's equivalent to writing
-await db.select({ 
-  value: sql`max(${expression})`.mapWith(users.id) 
+// 다음과 동등합니다
+await db.select({
+  value: sql`max(${expression})`.mapWith(users.id)
 }).from(users);
 ```
 
@@ -109,35 +109,35 @@ min
 ```ts copy {1,5}
 await db.select({ value: min(users.id) }).from(users);
 
-// It's equivalent to writing
-await db.select({ 
-  value: sql`min(${users.id})`.mapWith(users.id) 
+// 다음과 동등합니다
+await db.select({
+  value: sql`min(${users.id})`.mapWith(users.id)
 }).from(users);
 ```
 
-To find more information check docs: [aggregation helpers](/docs/select#aggregations-helpers)
+더 많은 정보는 문서를 확인하세요: [집계 헬퍼](/docs/select#aggregations-helpers)
 
-## New Packages
+## 새로운 패키지
 
 ### Drizzle ESLint Plugin
 
-For cases where it's impossible to perform type checks for specific scenarios, or where it's possible but error messages would be challenging to understand, we've decided to create an ESLint package with recommended rules. This package aims to assist developers in handling crucial scenarios during development. For more information you can check [docs](/docs/eslint-plugin).
+특정 시나리오에서 타입 검사를 수행하기 어렵거나, 가능하더라도 오류 메시지를 이해하기 어려운 경우를 위해 권장 규칙이 포함된 ESLint 패키지를 만들었습니다. 이 패키지는 개발 중 중요한 시나리오를 처리하는 데 도움을 주는 것을 목표로 합니다. 자세한 정보는 [문서](/docs/eslint-plugin)를 확인하세요.
 
-### Install
+### 설치
 
 <Npm>
 eslint eslint-plugin-drizzle
 </Npm>
 
-You can install those packages for typescript support in your IDE
+IDE에서 TypeScript 지원을 위해 다음 패키지를 설치할 수 있습니다
 
 <Npm>
 @typescript-eslint/eslint-plugin @typescript-eslint/parser
 </Npm>
 
-### Usage
+### 사용법
 
-Create a `.eslintrc.yml` file, add `drizzle` to the `plugins`, and specify the rules you want to use. You can find a list of all existing rules below
+`.eslintrc.yml` 파일을 생성하고, `plugins`에 `drizzle`을 추가한 후, 사용할 규칙을 지정합니다. 모든 기존 규칙 목록은 아래에서 확인할 수 있습니다
 
 ```yaml copy {6,8,9}
 root: true
@@ -151,9 +151,9 @@ rules:
   'drizzle/enforce-update-with-where': "error"
 ```
 
-#### All config
+#### All 설정
 
-This plugin exports an all config that makes use of all rules (except for deprecated ones).
+이 플러그인은 모든 규칙을 사용하는 all 설정을 내보냅니다(더 이상 사용되지 않는 규칙 제외).
 
 ```yaml copy
 root: true
@@ -166,7 +166,7 @@ plugins:
   - drizzle
 ```
 
-At the moment, `all` is equivalent to `recommended`
+현재 `all`은 `recommended`와 동일합니다
 
 ```yaml copy
 root: true
@@ -179,19 +179,19 @@ plugins:
   - drizzle
 ```
 
-### Rules
+### 규칙
 
-**enforce-delete-with-where**: Enforce using `delete` with `the.where()` clause in the `.delete()` statement. Most of the time, you don't need to delete all rows in the table and require some kind of `WHERE` statements.
+**enforce-delete-with-where**: `.delete()` 문에서 `delete`를 `the.where()` 절과 함께 사용하도록 강제합니다. 대부분의 경우 테이블의 모든 행을 삭제할 필요가 없으며 일종의 `WHERE` 문이 필요합니다.
 
-Error Message:
+오류 메시지:
 
 ```plaintext
 Without `.where(...)` you will delete all the rows in a table. If you didn't want to do it, please use `db.delete(...).where(...)` instead. Otherwise you can ignore this rule here
 ```
 
-Optionally, you can define a `drizzleObjectName` in the plugin options that accept a `string` or `string[]`. This is useful when you have objects or classes with a delete method that's not from Drizzle. Such a `delete` method will trigger the ESLint rule. To avoid that, you can define the name of the Drizzle object that you use in your codebase (like db) so that the rule would only trigger if the delete method comes from this object:
+선택적으로 플러그인 옵션에서 `string` 또는 `string[]`을 허용하는 `drizzleObjectName`을 정의할 수 있습니다. 이는 Drizzle이 아닌 delete 메서드를 가진 객체나 클래스가 있을 때 유용합니다. 이러한 `delete` 메서드는 ESLint 규칙을 트리거합니다. 이를 방지하려면 코드베이스에서 사용하는 Drizzle 객체의 이름(예: db)을 정의하여 해당 객체의 delete 메서드에서만 규칙이 트리거되도록 할 수 있습니다:
 
-Example, config 1:
+예제, 설정 1:
 
 ```json copy
 "rules": {
@@ -208,15 +208,15 @@ class MyClass {
 
 const myClassObj = new MyClass();
 
-// ---> Will be triggered by ESLint Rule
+// ---> ESLint 규칙에 의해 트리거됩니다
 myClassObj.delete()
 
 const db = drizzle(...)
-// ---> Will be triggered by ESLint Rule
+// ---> ESLint 규칙에 의해 트리거됩니다
 db.delete()
 ```
 
-Example, config 2:
+예제, 설정 2:
 
 ```json copy
 "rules": {
@@ -233,25 +233,25 @@ class MyClass {
 
 const myClassObj = new MyClass();
 
-// ---> Will NOT be triggered by ESLint Rule
+// ---> ESLint 규칙에 의해 트리거되지 않습니다
 myClassObj.delete()
 
 const db = drizzle(...)
-// ---> Will be triggered by ESLint Rule
+// ---> ESLint 규칙에 의해 트리거됩니다
 db.delete()
 ```
 
-**enforce-update-with-where**: Enforce using `update` with `the.where()` clause in the `.update()` statement. Most of the time, you don't need to update all rows in the table and require some kind of `WHERE` statements.
+**enforce-update-with-where**: `.update()` 문에서 `update`를 `the.where()` 절과 함께 사용하도록 강제합니다. 대부분의 경우 테이블의 모든 행을 업데이트할 필요가 없으며 일종의 `WHERE` 문이 필요합니다.
 
-Error Message:
+오류 메시지:
 
 ```plaintext
 Without `.where(...)` you will update all the rows in a table. If you didn't want to do it, please use `db.update(...).set(...).where(...)` instead. Otherwise you can ignore this rule here
 ```
 
-Optionally, you can define a `drizzleObjectName` in the plugin options that accept a `string` or `string[]`. This is useful when you have objects or classes with a delete method that's not from Drizzle. Such as `update` method will trigger the ESLint rule. To avoid that, you can define the name of the Drizzle object that you use in your codebase (like db) so that the rule would only trigger if the delete method comes from this object:
+선택적으로 플러그인 옵션에서 `string` 또는 `string[]`을 허용하는 `drizzleObjectName`을 정의할 수 있습니다. 이는 Drizzle이 아닌 delete 메서드를 가진 객체나 클래스가 있을 때 유용합니다. 이러한 `update` 메서드는 ESLint 규칙을 트리거합니다. 이를 방지하려면 코드베이스에서 사용하는 Drizzle 객체의 이름(예: db)을 정의하여 해당 객체의 delete 메서드에서만 규칙이 트리거되도록 할 수 있습니다:
 
-Example, config 1:
+예제, 설정 1:
 
 ```json copy
 "rules": {
@@ -268,15 +268,15 @@ class MyClass {
 
 const myClassObj = new MyClass();
 
-// ---> Will be triggered by ESLint Rule
+// ---> ESLint 규칙에 의해 트리거됩니다
 myClassObj.update()
 
 const db = drizzle(...)
-// ---> Will be triggered by ESLint Rule
+// ---> ESLint 규칙에 의해 트리거됩니다
 db.update()
 ```
 
-Example, config 2:
+예제, 설정 2:
 
 ```json copy
 "rules": {
@@ -293,10 +293,10 @@ class MyClass {
 
 const myClassObj = new MyClass();
 
-// ---> Will NOT be triggered by ESLint Rule
+// ---> ESLint 규칙에 의해 트리거되지 않습니다
 myClassObj.update()
 
 const db = drizzle(...)
-// ---> Will be triggered by ESLint Rule
+// ---> ESLint 규칙에 의해 트리거됩니다
 db.update()
 ```

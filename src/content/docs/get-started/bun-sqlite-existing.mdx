@@ -20,71 +20,71 @@ import UpdateSchema from '@mdx/get-started/sqlite/UpdateSchema.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and Bun:SQLite in existing project
+# 기존 프로젝트에서 Drizzle과 Bun:SQLite 시작하기
 
-<Prerequisites>  
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **bun** - javaScript all-in-one toolkit - [read here](https://bun.sh/)
-  - **bun:sqlite** - native implementation of a high-performance SQLite3 driver - [read here](https://bun.sh/docs/api/sqlite)
+<Prerequisites>
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **bun** - JavaScript 올인원 툴킷 - [자세히 보기](https://bun.sh/)
+  - **bun:sqlite** - 고성능 SQLite3 드라이버의 네이티브 구현 - [자세히 보기](https://bun.sh/docs/api/sqlite)
 </Prerequisites>
 
 <FileStructure />
 
-#### Step 1 - Install required packages
+#### Step 1 - 필수 패키지 설치
 
 <Npm>
   drizzle-orm dotenv
   -D drizzle-kit tsx @types/bun
 </Npm>
 
-#### Step 2 - Setup connection variables
+#### Step 2 - 연결 변수 설정
 
 <SetupEnv env_variable='DB_FILE_NAME' />
 
-<Callout type='info' title='important'>
-For example, if you have an SQLite database file in the root of your project, you can use this example:
+<Callout type='info' title='중요'>
+예를 들어, 프로젝트 루트에 SQLite 데이터베이스 파일이 있다면 다음 예시를 사용할 수 있습니다:
 ```plaintext copy
 DB_FILE_NAME=mydb.sqlite
 ```
 </Callout>
 
 
-#### Step 3 - Setup Drizzle config file
+#### Step 3 - Drizzle 설정 파일 생성
 
 <SetupConfig dialect='sqlite' env_variable='DB_FILE_NAME'/>
 
-#### Step 4 - Introspect your database
+#### Step 4 - 데이터베이스 인트로스펙션
 
 <IntrospectSqlite/>
 
-#### Step 5 - Transfer code to your actual schema file
+#### Step 5 - 실제 스키마 파일로 코드 이동
 
 <TransferCode/>
 
-#### Step 6 - Connect Drizzle ORM to the database
+#### Step 6 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectBun/>
 
-#### Step 7 - Query the database
+#### Step 7 - 데이터베이스 쿼리
 
 <QueryDatabase dialect='bun-sqlite' env_variable='DB_FILE_NAME' />
 
-#### Step 8 - Run index.ts file
+#### Step 8 - index.ts 파일 실행
 
-To run a script with `bun`, use the following command:
+`bun`으로 스크립트를 실행하려면 다음 명령어를 사용합니다:
 ```bash copy
 bun src/index.ts
 ```
 
-#### Step 9 - Update your table schema (optional)
+#### Step 9 - 테이블 스키마 업데이트 (선택사항)
 
 <UpdateSchema/>
 
-#### Step 9 - Applying changes to the database (optional)
+#### Step 10 - 데이터베이스에 변경사항 적용 (선택사항)
 
 <ApplyChanges/>
 
-#### Step 10 - Query the database with a new field (optional)
+#### Step 11 - 새 필드로 데이터베이스 쿼리 (선택사항)
 
 <QueryDatabaseUpdated dialect='bun-sqlite' env_variable='DB_FILE_NAME' />

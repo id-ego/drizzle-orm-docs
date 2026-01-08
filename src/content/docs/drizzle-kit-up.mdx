@@ -7,28 +7,34 @@ import Callout from "@mdx/Callout.astro";
 import Prerequisites from "@mdx/Prerequisites.astro";
 import Npx from "@mdx/Npx.astro";
 
+---
+title: "drizzle-kit up"
+description: "Drizzle Kit의 up 명령어를 사용하여 스키마 스냅샷을 최신 버전으로 업그레이드하는 방법을 알아보세요."
+slug: "drizzle-kit-up"
+---
+
 # `drizzle-kit up`
 
 <Prerequisites>
-- Get started with Drizzle and `drizzle-kit` - [read here](/docs/get-started)
-- Drizzle schema fundamentals - [read here](/docs/sql-schema-declaration)
-- Database connection basics - [read here](/docs/connect-overview)
-- Drizzle migrations fundamentals - [read here](/docs/migrations)
-- Drizzle Kit [overview](/docs/kit-overview) and [config file](/docs/drizzle-config-file)
-- `drizzle-kit generate` command - [read here](/docs/drizzle-kit-generate)
+- Drizzle과 `drizzle-kit` 시작하기 - [여기 읽기](/docs/get-started)
+- Drizzle 스키마 기본 개념 - [여기 읽기](/docs/sql-schema-declaration)
+- 데이터베이스 연결 기본 개념 - [여기 읽기](/docs/connect-overview)
+- Drizzle 마이그레이션 기본 개념 - [여기 읽기](/docs/migrations)
+- Drizzle Kit [개요](/docs/kit-overview) 및 [설정 파일](/docs/drizzle-config-file)
+- `drizzle-kit generate` 명령어 - [여기 읽기](/docs/drizzle-kit-generate)
 </Prerequisites>
 
-`drizzle-kit up` command lets you upgrade drizzle schema snapshots to a newer version. 
-It's required whenever we introduce breaking changes to the json snapshots of the schema and upgrade the internal version.
+`drizzle-kit up` 명령어는 Drizzle 스키마 스냅샷을 최신 버전으로 업그레이드할 수 있게 해줍니다.
+이 명령어는 스키마의 JSON 스냅샷에 중요한 변경 사항을 도입하고 내부 버전을 업그레이드할 때마다 필요합니다.
 
 <br/>
 <hr/>
 <br/>
 
-`drizzle-kit up` command requires you to specify both `dialect` and database connection credentials, 
-you can provide them either via [drizzle.config.ts](/docs/drizzle-config-file) config file or via CLI options
+`drizzle-kit up` 명령어는 `dialect`와 데이터베이스 연결 자격 증명을 모두 지정해야 합니다.
+[drizzle.config.ts](/docs/drizzle-config-file) 설정 파일이나 CLI 옵션을 통해 제공할 수 있습니다.
 
-<CodeTabs items={["With config file", "As CLI options"]}>
+<CodeTabs items={["설정 파일 사용", "CLI 옵션 사용"]}>
 <Section>
 ```ts {5,8}
 // drizzle.config.ts
@@ -47,8 +53,8 @@ npx drizzle-kit up --dialect=postgresql
 ```
 </CodeTabs>
 
-### Multiple configuration files in one project
-You can have multiple config files in the project, it's very useful when you have multiple database stages or multiple databases on the same project:
+### 하나의 프로젝트에 여러 설정 파일 사용하기
+프로젝트에 여러 설정 파일을 가질 수 있으며, 이는 여러 데이터베이스 스테이지나 동일한 프로젝트에서 여러 데이터베이스를 사용할 때 매우 유용합니다:
 <Npx>
   drizzle-kit migrate --config=drizzle-dev.config.ts
   drizzle-kit migrate --config=drizzle-prod.config.ts
@@ -64,15 +70,15 @@ You can have multiple config files in the project, it's very useful when you hav
  └ 📜 tsconfig.json
 ```
 
-### Extended list of configurations
-We recommend configuring `drizzle-kit` through [drizzle.config.ts](/docs/drizzle-config-file) file, 
-yet you can provide all configuration options through CLI if necessary, e.g. in CI/CD pipelines, etc.
+### 확장된 설정 목록
+[drizzle.config.ts](/docs/drizzle-config-file) 파일을 통해 `drizzle-kit`을 설정하는 것을 권장하지만,
+필요한 경우(예: CI/CD 파이프라인 등) CLI를 통해 모든 설정 옵션을 제공할 수도 있습니다.
 <rem025/>
 |           |            |                                                                         |
 | :-------- | :--------- | :---------------------------------------------------------------------- |
-| `dialect` | `required` | Database dialect you are using. Can be `postgresql`,`mysql` or `sqlite` |
-| `out`     |            | Migrations folder, default=`./drizzle`                                  |
-| `config`  |            | Configuration file path, default=`drizzle.config.ts`                           |
+| `dialect` | `required` | 사용 중인 데이터베이스 dialect. `postgresql`, `mysql` 또는 `sqlite` 중 하나 |
+| `out`     |            | 마이그레이션 폴더, 기본값=`./drizzle`                                  |
+| `config`  |            | 설정 파일 경로, 기본값=`drizzle.config.ts`                           |
 <br/>
 <Npx>
 drizzle-kit up --dialect=postgresql

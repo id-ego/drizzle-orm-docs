@@ -16,51 +16,51 @@ import SetupConfig from '@mdx/get-started/SetupConfig.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and SingleStore
+# Drizzle과 SingleStore 시작하기
 
-<Prerequisites>  
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **mysql2** - package for querying your MySQL database - [read here](https://github.com/sidorares/node-mysql2)
+<Prerequisites>
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **mysql2** - MySQL 데이터베이스 쿼리 패키지 - [자세히 보기](https://github.com/sidorares/node-mysql2)
 </Prerequisites>
 
-To use Drizzle with a SingleStore database, you should use the `singlestore` driver
+SingleStore 데이터베이스에서 Drizzle을 사용하려면 `singlestore` 드라이버를 사용해야 합니다.
 
-According to the **[official website](https://github.com/sidorares/node-mysql2)**, 
-`mysql2` is a MySQL client for Node.js with focus on performance.  
+**[공식 웹사이트](https://github.com/sidorares/node-mysql2)**에 따르면,
+`mysql2`는 성능에 중점을 둔 Node.js용 MySQL 클라이언트입니다.
 
-Drizzle ORM natively supports `mysql2` with `drizzle-orm/singlestore` package for SingleStore database.
+Drizzle ORM은 SingleStore 데이터베이스를 위해 `drizzle-orm/singlestore` 패키지와 함께 `mysql2`를 기본적으로 지원합니다.
 
 <FileStructure/>
 
-#### Step 1 - Install **mysql2** package
+#### 1단계 - **mysql2** 패키지 설치
 
 <InstallPackages lib='mysql2'/>
 
-#### Step 2 - Setup connection variables
+#### 2단계 - 연결 변수 설정
 
 <SetupEnv env_variable='DATABASE_URL' />
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### 3단계 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectSingleStore/>
 
-#### Step 4 - Create a table
+#### 4단계 - 테이블 생성
 
 <CreateSingleStoreTable/>
 
-#### Step 5 - Setup Drizzle config file
+#### 5단계 - Drizzle 설정 파일 설정
 
 <SetupConfig dialect='singlestore' env_variable='DATABASE_URL'/>
 
-#### Step 6 - Applying changes to the database
+#### 6단계 - 데이터베이스에 변경사항 적용
 
 <ApplyChanges />
 
-#### Step 7 - Seed and Query the database
+#### 7단계 - 데이터베이스 시드 및 쿼리
 
 <QueryDatabase dialect='singlestore' env_variable='DATABASE_URL'/>
 
-#### Step 8 - Run index.ts file
+#### 8단계 - index.ts 파일 실행
 
 <RunFile/>

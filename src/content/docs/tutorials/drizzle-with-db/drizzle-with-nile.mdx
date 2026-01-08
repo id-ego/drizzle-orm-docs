@@ -1,5 +1,5 @@
 ---
-title: "Drizzle with Nile Database"
+title: "Drizzle와 Nile Database 사용하기"
 date: "2025-01-15"
 ---
 
@@ -12,52 +12,52 @@ import TransferCode from '@mdx/get-started/TransferCode.mdx';
 import ApplyChanges from '@mdx/get-started/ApplyChanges.mdx';
 import RunFile from '@mdx/get-started/RunFile.mdx';
 
-This tutorial demonstrates how to use Drizzle ORM with [Nile Database](https://thenile.dev). Nile is Postgres, re-engineered for multi-tenant applications. 
+이 튜토리얼은 Drizzle ORM을 [Nile Database](https://thenile.dev)와 함께 사용하는 방법을 보여줍니다. Nile은 멀티 테넌트 애플리케이션을 위해 재설계된 Postgres입니다.
 
-This tutorial will demonstrate how to use Drizzle with Nile's virtual tenant databases to developer a secure, scalable, multi-tenant application. 
+이 튜토리얼에서는 Drizzle과 Nile의 가상 테넌트 데이터베이스를 사용하여 안전하고 확장 가능한 멀티 테넌트 애플리케이션을 개발하는 방법을 알아봅니다.
 
-We'll walk through building this example application step-by-step. If you want to peek at the complete example, you can take a look at its [Github repository](https://github.com/niledatabase/niledatabase/tree/main/examples/quickstart/drizzle).
+예제 애플리케이션을 단계별로 구축해 보겠습니다. 전체 예제를 먼저 보고 싶다면 [Github 저장소](https://github.com/niledatabase/niledatabase/tree/main/examples/quickstart/drizzle)를 참고하세요.
 
 <Prerequisites>
-- You should have installed Drizzle ORM and [Drizzle kit](/docs/kit-overview). You can do this by running the following command:
+- Drizzle ORM과 [Drizzle kit](/docs/kit-overview)을 설치해야 합니다. 다음 명령어로 설치할 수 있습니다:
 <Npm>
 drizzle-orm
 -D drizzle-kit
 </Npm>
-- You should have installed `dotenv` package for managing environment variables. Read more about this package [here](https://www.npmjs.com/package/dotenv)
+- 환경 변수 관리를 위해 `dotenv` 패키지를 설치해야 합니다. 자세한 내용은 [여기](https://www.npmjs.com/package/dotenv)를 참고하세요
 <Npm>
   dotenv
 </Npm>
-- You should have installed `node-postgres` package for connecting to the Postgres database. Read more about this package [here](https://www.npmjs.com/package/node-postgres)
+- Postgres 데이터베이스 연결을 위해 `node-postgres` 패키지를 설치해야 합니다. 자세한 내용은 [여기](https://www.npmjs.com/package/node-postgres)를 참고하세요
 <Npm>
   node-postgres
 </Npm>
-- You should have installed `express` package for the web framework. Read more about express [here](https://expressjs.com/)
+- 웹 프레임워크로 `express` 패키지를 설치해야 합니다. Express에 대한 자세한 내용은 [여기](https://expressjs.com/)를 참고하세요
 <Npm>
   express
 </Npm>
 
-- This guide uses [AsyncLocalStorage](https://nodejs.org/api/async_context.html) to manage the tenant context. If your framework or runtime does not support `AsyncLocalStorage`, you can refer to [Drizzle\<\>Nile](../connect-nile) doc for alternative options. 
+- 이 가이드는 테넌트 컨텍스트 관리를 위해 [AsyncLocalStorage](https://nodejs.org/api/async_context.html)를 사용합니다. 프레임워크나 런타임이 `AsyncLocalStorage`를 지원하지 않는 경우 [Drizzle\<\>Nile](../connect-nile) 문서에서 대안을 확인하세요.
 </Prerequisites>
 
-## Setup Nile and Drizzle ORM
+## Nile과 Drizzle ORM 설정하기
 
 <Steps>
-#### Signup to Nile and create a database
+#### Nile에 가입하고 데이터베이스 생성하기
 
-If you haven't already, sign up to [Nile](https://console.thenile.dev) and follow the app instructions to create a new database.
+아직 가입하지 않았다면 [Nile](https://console.thenile.dev)에 가입하고 앱 안내에 따라 새 데이터베이스를 생성하세요.
 
-#### Get database connection string
+#### 데이터베이스 연결 문자열 가져오기
 
-On the left side-bar menu, select the "Settings" option, click on the Postgres logo, and click "generate credentials". Copy the connection string and add it to the `.env` file in your project:
+왼쪽 사이드바 메뉴에서 "Settings" 옵션을 선택하고, Postgres 로고를 클릭한 다음 "generate credentials"를 클릭합니다. 연결 문자열을 복사하여 프로젝트의 `.env` 파일에 추가하세요:
 
 ```plaintext copy
 NILEDB_URL=postgres://youruser:yourpassword@us-west-2.db.thenile.dev:5432:5432/your_db_name
 ```
 
-#### Connect Drizzle ORM to your database
+#### Drizzle ORM을 데이터베이스에 연결하기
 
-Create a `db.ts` file in the `src/db` directory and set up your database configuration:
+`src/db` 디렉토리에 `db.ts` 파일을 생성하고 데이터베이스 설정을 구성하세요:
 
 ```typescript copy filename="src/db/db.ts"
 import { drizzle } from 'drizzle-orm/node-postgres';
@@ -82,11 +82,11 @@ export function tenantDB<T>(cb: (tx: any) => T | Promise<T>): Promise<T> {
 }
 ```
 
-#### Setup Drizzle config file
+#### Drizzle 설정 파일 설정하기
 
-**Drizzle config** - a configuration file that is used by [Drizzle Kit](/docs/kit-overview) and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config** - [Drizzle Kit](/docs/kit-overview)에서 사용하는 설정 파일로, 데이터베이스 연결, 마이그레이션 폴더, 스키마 파일에 대한 모든 정보를 포함합니다.
 
-Create a `drizzle.config.ts` file in the root of your project and add the following content:
+프로젝트 루트에 `drizzle.config.ts` 파일을 생성하고 다음 내용을 추가하세요:
 
 ```typescript copy filename="drizzle.config.ts"
 import 'dotenv/config';
@@ -101,20 +101,20 @@ export default defineConfig({
 });
 ```
 
-#### Introspect Nile database
+#### Nile 데이터베이스 인트로스펙트하기
 
-Nile databases have built-in tables. The most important of these is the `tenants` table, which is used to create and manage tenants. 
-In order to use this table from our application, we'll use Drizzle Kit CLI to generate a schema file that includes this schema.
+Nile 데이터베이스에는 내장 테이블이 있습니다. 가장 중요한 테이블은 테넌트를 생성하고 관리하는 데 사용되는 `tenants` 테이블입니다.
+애플리케이션에서 이 테이블을 사용하기 위해 Drizzle Kit CLI를 사용하여 이 스키마를 포함하는 스키마 파일을 생성하겠습니다.
 
 ```bash copy
 npx drizzle-kit pull
 ```
 
-The result of introspection will be a `schema.ts` file, `meta` folder with snapshots of your database schema, sql file with the migration and `relations.ts` file for [relational queries](/docs/rqb).
+인트로스펙션 결과로 `schema.ts` 파일, 데이터베이스 스키마 스냅샷이 포함된 `meta` 폴더, 마이그레이션 sql 파일, [관계형 쿼리](/docs/rqb)를 위한 `relations.ts` 파일이 생성됩니다.
 
 <TransferCode/>
 
-Here is an example of the generated `schema.ts` file:
+다음은 생성된 `schema.ts` 파일의 예시입니다:
 
 ```typescript copy filename="src/db/schema.ts"
 // table schema generated by introspection
@@ -130,9 +130,9 @@ export const tenants = pgTable("tenants", {
 });
 ```
 
-#### Create additional tables
+#### 추가 테이블 생성하기
 
-In addition to the built-in tables, our application will need some tables to store its data. We will add them to `src/db/schema.ts` that we previously generated, so this file will look like this:
+내장 테이블 외에도 애플리케이션이 데이터를 저장하기 위한 테이블이 필요합니다. 이전에 생성한 `src/db/schema.ts`에 추가하면 파일은 다음과 같이 됩니다:
 
 ```typescript copy filename="src/db/schema.ts"
 // table schema generated by introspection
@@ -157,16 +157,16 @@ export const todos = pgTable("todos", {
 });
 ```
 
-#### Apply changes to the database
+#### 데이터베이스에 변경사항 적용하기
 
 <ApplyChanges />
 
-#### Initialize the webapp
+#### 웹 애플리케이션 초기화하기
 
-Now that we have set up Drizzle to connect to Nile and we have our schema in place, we can use them in a multi-tenant web application. 
-We are using Express as the web framework in this example, although Nile and Drizzle can be used from any web framework.
+이제 Drizzle을 Nile에 연결하도록 설정하고 스키마를 준비했으므로, 멀티 테넌트 웹 애플리케이션에서 사용할 수 있습니다.
+이 예제에서는 Express를 웹 프레임워크로 사용하지만, Nile과 Drizzle은 모든 웹 프레임워크에서 사용할 수 있습니다.
 
-To keep the example simple, we'll implement the webapp in a single file - `src/app.ts`. We'll start by initializing the webapp:
+예제를 간단하게 유지하기 위해 단일 파일 `src/app.ts`에 웹앱을 구현하겠습니다. 먼저 웹앱을 초기화합니다:
 
 ```typescript copy filename="src/app.ts"
 import express from "express";
@@ -184,11 +184,11 @@ app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 app.use(express.json());
 ```
 
-#### Initialize the tenant-aware middleware
+#### 테넌트 인식 미들웨어 초기화하기
 
-Next, we'll add middleware to the example. This middleware grabs the tenant ID from the path parameters and stores it in the `AsyncLocalStorage`. 
-The `tenantDB` wrapper that we created in `src/db/index.ts` uses this tenant ID to set `nile.tenant_id` when executing queries, 
-which then guarantees that the queries will execute against this tenant's virtual database.
+다음으로 예제에 미들웨어를 추가하겠습니다. 이 미들웨어는 경로 매개변수에서 테넌트 ID를 가져와 `AsyncLocalStorage`에 저장합니다.
+`src/db/index.ts`에서 생성한 `tenantDB` 래퍼는 쿼리 실행 시 이 테넌트 ID를 사용하여 `nile.tenant_id`를 설정하며,
+이를 통해 쿼리가 해당 테넌트의 가상 데이터베이스에 대해 실행되는 것을 보장합니다.
 
 ```typescript copy filename="src/app.ts"
 // set the tenant ID in the context based on the URL parameter
@@ -200,14 +200,14 @@ app.use('/api/tenants/:tenantId/*', (req, res, next) => {
 ```
 
 <Callout>
-The example gets the tenant ID from path parameter, but it is also common to set the tenant ID in a header such as `x-tenant-id` or in a cookie.
+이 예제는 경로 매개변수에서 테넌트 ID를 가져오지만, `x-tenant-id`와 같은 헤더나 쿠키에 테넌트 ID를 설정하는 것도 일반적입니다.
 </Callout>
 
-#### Add routes
+#### 라우트 추가하기
 
-Lastly, we need to add some routes for creating and listing tenants and todos. Note how we are using `tenantDB` wrapper to connect to the tenant's virtual database.
-Also note how in `app.get("/api/tenants/:tenantId/todos"` we did not need to specify `where tenant_id=...` in the query. 
-This is exactly because we are routed to that tenant's database and the query cannot return data for any other tenant.
+마지막으로 테넌트와 할 일을 생성하고 조회하는 라우트를 추가해야 합니다. `tenantDB` 래퍼를 사용하여 테넌트의 가상 데이터베이스에 연결하는 방법을 주목하세요.
+또한 `app.get("/api/tenants/:tenantId/todos"`에서 쿼리에 `where tenant_id=...`를 지정할 필요가 없다는 점도 주목하세요.
+이는 정확히 해당 테넌트의 데이터베이스로 라우팅되기 때문이며, 쿼리는 다른 테넌트의 데이터를 반환할 수 없습니다.
 
 ```typescript copy filename="src/app.ts" {6,20,39,58,62,75,83}
 // create new tenant
@@ -302,15 +302,15 @@ app.get("/api/tenants/:tenantId/todos", async (req, res) => {
 });
 ```
 
-#### Try it out!
+#### 실행해보기!
 
-You can now run your new web application:
+이제 새로운 웹 애플리케이션을 실행할 수 있습니다:
 
 ```bash copy
 npx tsx src/app.ts
 ```
 
-and use `curl` to try the routes you just created:
+그리고 `curl`을 사용하여 방금 생성한 라우트를 테스트할 수 있습니다:
 
 ```bash
 # create a tenant
@@ -333,10 +333,10 @@ curl  -X GET \
 ```
 </Steps>
 
-## Project file structure
+## 프로젝트 파일 구조
 
-This is the file structure of the project. In the `src/db` directory, we have database-related files including connection in `db.ts` and schema definitions 
-in `schema.ts`. The files generated by the migrations and introspections are in `./drizzle`
+다음은 프로젝트의 파일 구조입니다. `src/db` 디렉토리에는 `db.ts`의 연결 설정과 `schema.ts`의 스키마 정의를 포함한 데이터베이스 관련 파일이 있습니다.
+마이그레이션 및 인트로스펙션으로 생성된 파일은 `./drizzle`에 있습니다
 
 ```plaintext
 📦 <project root>

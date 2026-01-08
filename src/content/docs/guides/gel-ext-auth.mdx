@@ -1,5 +1,5 @@
 ---
-title: Gel auth extension
+title: Gel 인증 확장
 slug: gel-ext-auth
 ---
 import Prerequisites from "@mdx/Prerequisites.astro";
@@ -7,13 +7,13 @@ import Callout from "@mdx/Callout.astro";
 import Npx from "@mdx/Npx.astro";
 
 <Prerequisites>
-- Get started with [Gel](/docs/get-started-gel)
-- Using [drizzle-kit pull](/docs/drizzle-kit-pull)
+- [Gel](/docs/get-started-gel) 시작하기
+- [drizzle-kit pull](/docs/drizzle-kit-pull) 사용하기
 </Prerequisites>
 
-#### Step 1 - Define Gel auth schema
+#### 단계 1 - Gel 인증 스키마 정의
 
-In `dbschema/default.esdl` file add a Gel schema with an auth extension
+`dbschema/default.esdl` 파일에 auth 확장이 포함된 Gel 스키마를 추가합니다
 
 ```esdl
 using extension auth;
@@ -34,46 +34,45 @@ module default {
 }
 ```
 
-#### Step 2 - Push Gel schema to the database
+#### 단계 2 - 데이터베이스에 Gel 스키마 푸시
 
-Generate Gel migration file:
+Gel 마이그레이션 파일 생성:
 ```bash
 gel migration create
 ```
 
-Apply Gel migrations to the database
+데이터베이스에 Gel 마이그레이션 적용:
 ```bash
 gel migration apply
 ```
 
-#### Step 3 - Setup Drizzle config file
+#### 단계 3 - Drizzle 설정 파일 설정
 
-**Drizzle config** - a configuration file that is used by [Drizzle Kit](/docs/kit-overview) and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config** - [Drizzle Kit](/docs/kit-overview)에서 사용되는 설정 파일로, 데이터베이스 연결, 마이그레이션 폴더, 스키마 파일에 대한 모든 정보를 포함합니다.
 
-Create a `drizzle.config.ts` file in the root of your project and add the following content:
+프로젝트 루트에 `drizzle.config.ts` 파일을 생성하고 다음 내용을 추가합니다:
 
 ```typescript copy filename="drizzle.config.ts"
 import { defineConfig } from 'drizzle-kit';
 
 export default defineConfig({
   dialect: 'gel',
-  // Enable auth schema for drizzle-kit
+  // drizzle-kit에서 auth 스키마 활성화
   schemaFilter: ['ext::auth', 'public']
 });
 ```
 
-#### Step 4 - Pull Gel types to Drizzle schema
+#### 단계 4 - Gel 타입을 Drizzle 스키마로 풀
 
-Pull your database schema:
+데이터베이스 스키마를 풀합니다:
 <Npx>
 drizzle-kit pull
 </Npx>
 
-Here is an example of the generated schema.ts file:
+다음은 생성된 schema.ts 파일의 예시입니다:
 
 <Callout type="warning">
-You'll get more than just the `Identity` table from `ext::auth`. Drizzle will pull in all the 
-`auth` tables you can use. The example below showcases just one of them.
+`ext::auth`에서 `Identity` 테이블뿐만 아니라 더 많은 테이블을 가져옵니다. Drizzle은 사용할 수 있는 모든 `auth` 테이블을 풀합니다. 아래 예시는 그 중 하나만 보여줍니다.
 </Callout>
 
 ```ts
@@ -113,4 +112,4 @@ export const user = gelTable('User', {
 ]);
 ```
 
-🎉 Now you can use the `auth` tables in your queries!
+🎉 이제 쿼리에서 `auth` 테이블을 사용할 수 있습니다!

@@ -1,5 +1,5 @@
 ---
-title: SQL Timestamp as a default value
+title: 기본값으로 SQL Timestamp 사용하기
 slug: timestamp-default-value
 ---
 
@@ -9,14 +9,14 @@ import CodeTabs from '@mdx/CodeTabs.astro';
 import CodeTab from '@mdx/CodeTab.astro';
 
 <Prerequisites>
-- Get started with [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql) and [SQLite](/docs/get-started-sqlite)
-- Learn about column data types for [PostgreSQL](/docs/column-types/pg), [MySQL](/docs/column-types/mysql) and [SQLite](/docs/column-types/sqlite)
-- [sql operator](/docs/sql)
+- [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql), [SQLite](/docs/get-started-sqlite) 시작하기
+- [PostgreSQL](/docs/column-types/pg), [MySQL](/docs/column-types/mysql), [SQLite](/docs/column-types/sqlite) 컬럼 데이터 타입 알아보기
+- [sql 연산자](/docs/sql)
 </Prerequisites>
 
 ### PostgreSQL
 
-To set current timestamp as a default value in PostgreSQL, you can use the `defaultNow()` method or `sql` operator with `now()` function which returns the current date and time with the time zone:
+PostgreSQL에서 현재 타임스탬프를 기본값으로 설정하려면 `defaultNow()` 메서드를 사용하거나, 타임존을 포함한 현재 날짜와 시간을 반환하는 `now()` 함수와 함께 `sql` 연산자를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {6,9}
@@ -41,11 +41,11 @@ CREATE TABLE IF NOT EXISTS "users" (
 ```
 </Section>
 
-The `mode` option defines how values are handled in the application. Values with `string` mode are treated as `string` in the application, but stored as timestamps in the database.
+`mode` 옵션은 애플리케이션에서 값이 처리되는 방식을 정의합니다. `string` 모드의 값은 애플리케이션에서 `string`으로 처리되지만, 데이터베이스에는 타임스탬프로 저장됩니다.
 
 <Section>
 ```plaintext
-// Data stored in the database
+// 데이터베이스에 저장된 데이터
 +----+----------------------------+----------------------------+
 | id |         timestamp1         |         timestamp2         |
 +----+----------------------------+----------------------------+
@@ -54,18 +54,18 @@ The `mode` option defines how values are handled in the application. Values with
 ```
 
 ```ts
-// Data returned by the application
+// 애플리케이션에서 반환된 데이터
 [
   {
     id: 1,
-    timestamp1: 2024-04-11T14:14:28.038Z, // Date object
+    timestamp1: 2024-04-11T14:14:28.038Z, // Date 객체
     timestamp2: '2024-04-11 14:14:28.038697' // string
   }
 ]
 ```
 </Section>
 
-To set unix timestamp as a default value in PostgreSQL, you can use the `sql` operator and `extract(epoch from now())` function which returns the number of seconds since `1970-01-01 00:00:00 UTC`:
+PostgreSQL에서 유닉스 타임스탬프를 기본값으로 설정하려면 `sql` 연산자와 `1970-01-01 00:00:00 UTC` 이후 초 수를 반환하는 `extract(epoch from now())` 함수를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {8}
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 ```
 
 ```plaintext
-// Data stored in the database
+// 데이터베이스에 저장된 데이터
 +----+------------+
 | id | timestamp  |
 +----+------------+
@@ -97,12 +97,12 @@ CREATE TABLE IF NOT EXISTS "users" (
 ```
 
 ```ts
-// Data returned by the application
-[ 
-  { 
-    id: 1, 
+// 애플리케이션에서 반환된 데이터
+[
+  {
+    id: 1,
     timestamp: 1712846784 // number
-  } 
+  }
 ]
 ```
 </Section>
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 
 ### MySQL
 
-To set current timestamp as a default value in MySQL, you can use the `defaultNow()` method or `sql` operator with `now()` function which returns the current date and time `(YYYY-MM-DD HH-MM-SS)`:
+MySQL에서 현재 타임스탬프를 기본값으로 설정하려면 `defaultNow()` 메서드를 사용하거나, 현재 날짜와 시간 `(YYYY-MM-DD HH-MM-SS)`을 반환하는 `now()` 함수와 함께 `sql` 연산자를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {6,9,12}
@@ -140,12 +140,12 @@ CREATE TABLE `users` (
 ```
 </Section>
 
-`fsp` option defines the number of fractional seconds to include in the timestamp. The default value is `0`.
-The `mode` option defines how values are handled in the application. Values with `string` mode are treated as `string` in the application, but stored as timestamps in the database.
+`fsp` 옵션은 타임스탬프에 포함할 소수 초 자릿수를 정의합니다. 기본값은 `0`입니다.
+`mode` 옵션은 애플리케이션에서 값이 처리되는 방식을 정의합니다. `string` 모드의 값은 애플리케이션에서 `string`으로 처리되지만, 데이터베이스에는 타임스탬프로 저장됩니다.
 
 <Section>
 ```plaintext
-// Data stored in the database
+// 데이터베이스에 저장된 데이터
 +----+---------------------+---------------------+-------------------------+
 | id | timestamp1          | timestamp2          | timestamp3              |
 +----+---------------------+---------------------+-------------------------+
@@ -154,19 +154,19 @@ The `mode` option defines how values are handled in the application. Values with
 ```
 
 ```ts
-// Data returned by the application
+// 애플리케이션에서 반환된 데이터
 [
   {
     id: 1,
-    timestamp1: 2024-04-11T15:24:53.000Z, // Date object
+    timestamp1: 2024-04-11T15:24:53.000Z, // Date 객체
     timestamp2: '2024-04-11 15:24:53', // string
-    timestamp3: 2024-04-11T15:24:53.236Z // Date object
+    timestamp3: 2024-04-11T15:24:53.236Z // Date 객체
   }
 ]
 ```
 </Section>
 
-To set unix timestamp as a default value in MySQL, you can use the `sql` operator and `unix_timestamp()` function which returns the number of seconds since `1970-01-01 00:00:00 UTC`:
+MySQL에서 유닉스 타임스탬프를 기본값으로 설정하려면 `sql` 연산자와 `1970-01-01 00:00:00 UTC` 이후 초 수를 반환하는 `unix_timestamp()` 함수를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {8}
@@ -190,7 +190,7 @@ CREATE TABLE `users` (
 ```
 
 ```plaintext
-// Data stored in the database
+// 데이터베이스에 저장된 데이터
 +----+------------+
 | id | timestamp  |
 +----+------------+
@@ -199,19 +199,19 @@ CREATE TABLE `users` (
 ```
 
 ```ts
-// Data returned by the application
-[ 
-  { 
-    id: 1, 
+// 애플리케이션에서 반환된 데이터
+[
+  {
+    id: 1,
     timestamp: 1712847986 // number
-  } 
+  }
 ]
 ```
 </Section>
 
 ### SQLite
 
-To set current timestamp as a default value in SQLite, you can use `sql` operator with `current_timestamp` constant which returns text representation of the current UTC date and time `(YYYY-MM-DD HH:MM:SS)`:
+SQLite에서 현재 타임스탬프를 기본값으로 설정하려면 현재 UTC 날짜와 시간 `(YYYY-MM-DD HH:MM:SS)`의 텍스트 표현을 반환하는 `current_timestamp` 상수와 함께 `sql` 연산자를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {8}
@@ -234,7 +234,7 @@ CREATE TABLE `users` (
 ```
 
 ```plaintext
-// Data stored in the database
+// 데이터베이스에 저장된 데이터
 +----+---------------------+
 | id | timestamp           |
 +----+---------------------+
@@ -243,7 +243,7 @@ CREATE TABLE `users` (
 ```
 
 ```ts
-// Data returned by the application
+// 애플리케이션에서 반환된 데이터
 [
   {
     id: 1,
@@ -253,7 +253,7 @@ CREATE TABLE `users` (
 ```
 </Section>
 
-To set unix timestamp as a default value in SQLite, you can use the `sql` operator and `unixepoch()` function which returns the number of seconds since `1970-01-01 00:00:00 UTC`:
+SQLite에서 유닉스 타임스탬프를 기본값으로 설정하려면 `sql` 연산자와 `1970-01-01 00:00:00 UTC` 이후 초 수를 반환하는 `unixepoch()` 함수를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {8,11,14}
@@ -284,12 +284,12 @@ CREATE TABLE `users` (
 ```
 </Section>
 
-The `mode` option defines how values are handled in the application. In the application, values with `timestamp` and `timestamp_ms` modes are treated as `Date` objects, but stored as integers in the database.
-The difference is that `timestamp` handles seconds, while `timestamp_ms` handles milliseconds.
+`mode` 옵션은 애플리케이션에서 값이 처리되는 방식을 정의합니다. 애플리케이션에서 `timestamp`와 `timestamp_ms` 모드의 값은 `Date` 객체로 처리되지만, 데이터베이스에는 정수로 저장됩니다.
+차이점은 `timestamp`는 초 단위를 처리하고, `timestamp_ms`는 밀리초 단위를 처리한다는 것입니다.
 
 <Section>
 ```plaintext
-// Data stored in the database
+// 데이터베이스에 저장된 데이터
 +------------+------------+---------------+------------+
 | id         | timestamp1 | timestamp2    | timestamp3 |
 +------------+------------+---------------+------------+
@@ -298,12 +298,12 @@ The difference is that `timestamp` handles seconds, while `timestamp_ms` handles
 ```
 
 ```ts
-// Data returned by the application
+// 애플리케이션에서 반환된 데이터
 [
   {
     id: 1,
-    timestamp1: 2024-04-11T11:40:40.000Z, // Date object
-    timestamp2: 2024-04-11T11:40:40.000Z, // Date object
+    timestamp1: 2024-04-11T11:40:40.000Z, // Date 객체
+    timestamp2: 2024-04-11T11:40:40.000Z, // Date 객체
     timestamp3: 1712835640 // number
   }
 ]

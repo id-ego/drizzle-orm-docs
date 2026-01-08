@@ -2,53 +2,53 @@ import Callout from '@mdx/Callout.astro';
 import CodeTabs from '@mdx/CodeTabs.astro';
 import YoutubeCards from '@mdx/YoutubeCards.astro';
 
-# Drizzle ORM  
-> Drizzle is a good friend who's there for you when necessary and doesn't bother when you need some space.
+# Drizzle ORM
+> Drizzle은 필요할 때 함께하고, 여유가 필요할 때는 물러서는 좋은 친구입니다.
 
-Drizzle ORM is a headless TypeScript ORM with a head. 🐲
+Drizzle ORM은 머리가 있는 헤드리스 TypeScript ORM입니다. 🐲
 
-It looks and feels simple, performs on day _1000_ of your project, 
-lets you do things your way, and is there when you need it.  
+보기에도 사용하기에도 간단하며, 프로젝트 _1000일차_에도 성능을 발휘하고,
+여러분이 원하는 방식대로 작업할 수 있게 하며, 필요할 때 함께합니다.
 
-**It's the only ORM with both [relational](/docs/rqb) and [SQL-like](/docs/select) query APIs**, 
-providing you the best of both worlds when it comes to accessing your relational data. 
-Drizzle is lightweight, performant, typesafe, non-lactose, gluten-free, sober, flexible and **serverless-ready by design**.
-Drizzle is not just a library, it's an experience. 🤩
+**[관계형](/docs/rqb)과 [SQL-유사](/docs/select) 쿼리 API를 모두 제공하는 유일한 ORM**으로,
+관계형 데이터에 접근할 때 두 세계의 장점을 모두 누릴 수 있습니다.
+Drizzle은 가볍고, 고성능이며, 타입 안전하고, 유당 불포함, 글루텐 프리, 절제되어 있고, 유연하며 **설계부터 서버리스를 지원**합니다.
+Drizzle은 단순한 라이브러리가 아닌, 하나의 경험입니다. 🤩
 
 [![Drizzle bestofjs](@/assets/images/bestofjs.jpg)](https://bestofjs.org/projects/drizzle-orm)
 
-## Headless ORM? 
-First and foremost, Drizzle is a library and a collection of complementary opt-in tools. 
+## 헤드리스 ORM이란?
+무엇보다도, Drizzle은 라이브러리이자 선택적으로 사용할 수 있는 보완 도구들의 모음입니다.
 
-**ORM** stands for _object relational mapping_, and developers tend to call Django-like or Spring-like tools an ORM. 
-We truly believe it's a misconception based on legacy nomenclature, and we call them **data frameworks**.
+**ORM**은 _객체 관계 매핑(object relational mapping)_ 을 의미하며, 개발자들은 Django나 Spring과 같은 도구를 ORM이라고 부르는 경향이 있습니다.
+우리는 이것이 레거시 명명법에 기반한 오해라고 진심으로 믿으며, 이러한 도구들을 **데이터 프레임워크**라고 부릅니다.
 
 <Callout type="error" emoji="️💔">
-  With data frameworks you have to build projects **around them** and not **with them**.
+  데이터 프레임워크를 사용하면 프로젝트를 **프레임워크 중심으로** 구축해야 하며, **프레임워크와 함께** 구축할 수 없습니다.
 </Callout>
 
-**Drizzle** lets you build your project the way you want, without interfering with your project or structure. 
+**Drizzle**은 프로젝트나 구조를 방해하지 않고 원하는 방식대로 프로젝트를 구축할 수 있게 합니다.
 
-Using Drizzle you can define and manage database schemas in TypeScript, access your data in a SQL-like 
-or relational way, and take advantage of opt-in tools 
-to push your developer experience _through the roof_. 🤯 
+Drizzle을 사용하면 TypeScript로 데이터베이스 스키마를 정의하고 관리할 수 있으며, SQL-유사 방식이나
+관계형 방식으로 데이터에 접근할 수 있고, 선택적 도구들을 활용하여
+개발자 경험을 _최고 수준으로_ 끌어올릴 수 있습니다. 🤯 
 
-## Why SQL-like?
-**If you know SQL, you know Drizzle.**
+## 왜 SQL-유사인가요?
+**SQL을 알면, Drizzle을 아는 것입니다.**
 
-Other ORMs and data frameworks tend to deviate/abstract you away from SQL, which 
-leads to a double learning curve: needing to know both SQL and the framework's API.  
+다른 ORM과 데이터 프레임워크는 SQL에서 벗어나거나 추상화하려는 경향이 있어,
+SQL과 프레임워크의 API를 모두 알아야 하는 이중 학습 곡선이 발생합니다.
 
-Drizzle is the opposite. 
-We embrace SQL and built Drizzle to be SQL-like at its core, so you can have zero to no 
-learning curve and access to the full power of SQL.  
+Drizzle은 그 반대입니다.
+우리는 SQL을 수용하고 Drizzle을 핵심부터 SQL-유사하게 만들어서,
+학습 곡선이 거의 없거나 전혀 없이 SQL의 모든 기능에 접근할 수 있게 했습니다.
 
-We bring all the familiar **[SQL schema](/docs/sql-schema-declaration)**, **[queries](/docs/select)**, 
-**[automatic migrations](/docs/migrations)** and **[one more thing](/docs/rqb)**. ✨
+익숙한 **[SQL 스키마](/docs/sql-schema-declaration)**, **[쿼리](/docs/select)**,
+**[자동 마이그레이션](/docs/migrations)** 그리고 **[한 가지 더](/docs/rqb)**를 제공합니다. ✨
 
 <CodeTabs items={["index.ts", "schema.ts", "migration.sql"]}>
 ```typescript copy
-// Access your data
+// 데이터 접근
 await db
 	.select()
 	.from(countries)
@@ -56,7 +56,7 @@ await db
 	.where(eq(countries.id, 10))
 ```
 ```typescript copy
-// manage your schema
+// 스키마 관리
 export const countries = pgTable('countries', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 256 }),
@@ -69,7 +69,7 @@ export const cities = pgTable('cities', {
 });
 ```
 ```sql
--- generate migrations
+-- 마이그레이션 생성
 CREATE TABLE IF NOT EXISTS "countries" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar(256)
@@ -85,14 +85,14 @@ ALTER TABLE "cities" ADD CONSTRAINT "cities_country_id_countries_id_fk" FOREIGN 
 ```
 </CodeTabs>
 
-## Why not SQL-like?
-We're always striving for a perfectly balanced solution, and while SQL-like does cover 100% of the needs, 
-there are certain common scenarios where you can query data in a better way.  
+## 왜 SQL-유사가 아닌 것도 필요한가요?
+우리는 항상 완벽하게 균형 잡힌 솔루션을 위해 노력하고 있으며, SQL-유사가 대부분의 요구사항을 충족하지만,
+더 나은 방식으로 데이터를 쿼리할 수 있는 특정 일반적인 시나리오들이 있습니다.
 
-We've built the **[Queries API](/docs/rqb)** for you, so you can fetch relational nested data from the database 
-in the most convenient and performant way, and never think about joins and data mapping.  
+우리는 **[Queries API](/docs/rqb)**를 구축했습니다. 이를 통해 가장 편리하고 성능이 좋은 방식으로 데이터베이스에서 관계형 중첩 데이터를 가져올 수 있으며,
+조인과 데이터 매핑에 대해 고민할 필요가 없습니다.
 
-**Drizzle always outputs exactly 1 SQL query.** Feel free to use it with serverless databases and never worry about performance or roundtrip costs!
+**Drizzle은 항상 정확히 1개의 SQL 쿼리만 실행합니다.** 서버리스 데이터베이스와 함께 자유롭게 사용하고 성능이나 왕복 비용에 대해 걱정하지 마세요!
 
 ```ts
 const result = await db.query.users.findMany({
@@ -102,31 +102,31 @@ const result = await db.query.users.findMany({
 });
 ```
 
-## Serverless?
+## 서버리스?
 <Callout type="info" emoji="🥳">
-  The best part is no part. **Drizzle has exactly 0 dependencies!**
+  가장 좋은 부분은 군더더기가 없다는 것입니다. **Drizzle은 정확히 0개의 의존성을 가지고 있습니다!**
 </Callout>
 
 
 ![Drizzle is slim an Serverless ready](@/assets/images/drizzle31kb.jpg)
-  
-Drizzle ORM is dialect-specific, slim, performant and serverless-ready **by design**.  
 
-We've spent a lot of time to make sure you have best-in-class SQL dialect support, including Postgres, MySQL, and others.
+Drizzle ORM은 다이얼렉트별로 특화되어 있고, 가볍고, 고성능이며 **설계부터 서버리스를 지원**합니다.
 
-Drizzle operates natively through industry-standard database drivers. We support all major **[PostgreSQL](/docs/get-started-postgresql)**, **[MySQL](/docs/get-started-mysql)** or **[SQLite](/docs/get-started-sqlite)** drivers out there, and we're adding new ones **[really fast](https://twitter.com/DrizzleORM/status/1653082492742647811?s=20)**.  
+우리는 Postgres, MySQL 등을 포함한 최고 수준의 SQL 다이얼렉트 지원을 제공하기 위해 많은 시간을 투자했습니다.
+
+Drizzle은 업계 표준 데이터베이스 드라이버를 통해 기본적으로 작동합니다. 모든 주요 **[PostgreSQL](/docs/get-started-postgresql)**, **[MySQL](/docs/get-started-mysql)** 또는 **[SQLite](/docs/get-started-sqlite)** 드라이버를 지원하며, 새로운 드라이버를 **[정말 빠르게](https://twitter.com/DrizzleORM/status/1653082492742647811?s=20)** 추가하고 있습니다.  
 
 
-## Welcome on board!
-More and more companies are adopting Drizzle in production, experiencing immense benefits in both DX and performance.
+## 환영합니다!
+점점 더 많은 회사들이 프로덕션에서 Drizzle을 채택하여 개발자 경험과 성능 모두에서 엄청난 이점을 경험하고 있습니다.
 
-**We're always there to help, so don't hesitate to reach out. We'll gladly assist you in your Drizzle journey!**
+**우리는 항상 도움을 드릴 준비가 되어 있으니 주저하지 말고 연락하세요. Drizzle 여정에 기꺼이 함께하겠습니다!**
 
-We have an outstanding **[Discord community](https://driz.link/discord)** and welcome all builders to our **[Twitter](https://twitter.com/drizzleorm)**.
-  
-Now go build something awesome with Drizzle and your **[PostgreSQL](/docs/get-started-postgresql)**, **[MySQL](/docs/get-started-mysql)** or **[SQLite](/docs/get-started-sqlite)** database. 🚀
+활발한 **[Discord 커뮤니티](https://driz.link/discord)**가 있으며, 모든 개발자를 **[Twitter](https://twitter.com/drizzleorm)**에서도 환영합니다.
 
-### Video Showcase
+이제 Drizzle과 **[PostgreSQL](/docs/get-started-postgresql)**, **[MySQL](/docs/get-started-mysql)** 또는 **[SQLite](/docs/get-started-sqlite)** 데이터베이스로 멋진 무언가를 만들어보세요. 🚀
+
+### 비디오 쇼케이스
 
 {/* tRPC + NextJS App Router = Simple Typesafe APIs
 Jack Herrington 19:17

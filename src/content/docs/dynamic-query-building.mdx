@@ -1,9 +1,9 @@
 import Callout from '@mdx/Callout.astro';
 
-# Dynamic query building
+# 동적 쿼리 빌딩
 
-By default, as all the query builders in Drizzle try to conform to SQL as much as possible, you can only invoke most of the methods once.
-For example, in a `SELECT` statement there might only be one `WHERE` clause, so you can only invoke `.where()` once:
+기본적으로 Drizzle의 모든 쿼리 빌더는 가능한 한 SQL을 따르려고 하기 때문에, 대부분의 메서드를 한 번만 호출할 수 있습니다.
+예를 들어, `SELECT` 문에는 `WHERE` 절이 하나만 있을 수 있으므로 `.where()`를 한 번만 호출할 수 있습니다:
 
 ```ts
 const query = db
@@ -13,14 +13,14 @@ const query = db
 	.where(eq(users.name, 'John')); // ❌ Type error - where() can only be invoked once
 ```
 
-In the previous ORM versions, when such restrictions weren't implemented, this example in particular was a source of confusion for many users, as they expected the query builder to "merge" multiple `.where()` calls into a single condition.
+이전 ORM 버전에서는 이러한 제한이 구현되지 않았을 때, 이 예제는 많은 사용자들에게 혼란의 원인이었습니다. 사용자들은 쿼리 빌더가 여러 `.where()` 호출을 단일 조건으로 "병합"할 것으로 예상했기 때문입니다.
 
-This behavior is useful for conventional query building, i.e. when you create the whole query at once.
-However, it becomes a problem when you want to build a query dynamically, i.e. if you have a shared function that takes a query builder and enhances it.
-To solve this problem, Drizzle provides a special 'dynamic' mode for query builders, which removes the restriction of invoking methods only once.
-To enable it, you need to call `.$dynamic()` on a query builder.
+이 동작은 기존 쿼리 빌딩, 즉 전체 쿼리를 한 번에 생성할 때 유용합니다.
+그러나 동적으로 쿼리를 빌드하려고 할 때, 즉 쿼리 빌더를 받아서 향상시키는 공유 함수가 있는 경우 문제가 됩니다.
+이 문제를 해결하기 위해 Drizzle은 쿼리 빌더를 위한 특별한 'dynamic' 모드를 제공하며, 이는 메서드를 한 번만 호출해야 하는 제한을 제거합니다.
+이를 활성화하려면 쿼리 빌더에서 `.$dynamic()`을 호출해야 합니다.
 
-Let's see how it works by implementing a simple `withPagination` function that adds `LIMIT` and `OFFSET` clauses to a query based on the provided page number and an optional page size:
+제공된 페이지 번호와 선택적 페이지 크기를 기반으로 쿼리에 `LIMIT`과 `OFFSET` 절을 추가하는 간단한 `withPagination` 함수를 구현하여 작동 방식을 살펴보겠습니다:
 
 ```ts
 function withPagination<T extends PgSelect>(
@@ -38,7 +38,7 @@ const dynamicQuery = query.$dynamic();
 withPagination(dynamicQuery, 1); // ✅ OK
 ```
 
-Note that the `withPagination` function is generic, which allows you to modify the result type of the query builder inside it, for example by adding a join:
+`withPagination` 함수는 제네릭이므로, 내부에서 쿼리 빌더의 결과 타입을 수정할 수 있습니다. 예를 들어 조인을 추가할 수 있습니다:
 
 ```ts
 function withFriends<T extends PgSelect>(qb: T) {
@@ -49,9 +49,9 @@ let query = db.select().from(users).where(eq(users.id, 1)).$dynamic();
 query = withFriends(query);
 ```
 
-This is possible, because `PgSelect` and other similar types are specifically designed to be used in dynamic query building. They can only be used in dynamic mode.
+이것이 가능한 이유는 `PgSelect` 및 기타 유사한 타입이 동적 쿼리 빌딩에 사용되도록 특별히 설계되었기 때문입니다. 이들은 동적 모드에서만 사용할 수 있습니다.
 
-Here is the list of all types that can be used as generic parameters in dynamic query building:
+다음은 동적 쿼리 빌딩에서 제네릭 매개변수로 사용할 수 있는 모든 타입의 목록입니다:
 
 {
 
@@ -150,9 +150,7 @@ Here is the list of all types that can be used as generic parameters in dynamic 
 }
 
 <Callout type='info'>
-	The `...QueryBuilder` types are for usage with [standalone query builder
-	instances](/docs/goodies#standalone-query-builder). DB query builders are
-	subclasses of them, so you can use them as well.
+	`...QueryBuilder` 타입은 [독립형 쿼리 빌더 인스턴스](/docs/goodies#standalone-query-builder)와 함께 사용하기 위한 것입니다. DB 쿼리 빌더는 이들의 서브클래스이므로, 동일하게 사용할 수 있습니다.
 
     ```ts
     	import { QueryBuilder } from 'drizzle-orm/pg-core';

@@ -1,5 +1,5 @@
 ---
-title: Conditional filters in query
+title: 쿼리의 조건부 필터
 slug: conditional-filters-in-query
 ---
 import Section from "@mdx/Section.astro";
@@ -9,12 +9,12 @@ import Prerequisites from "@mdx/Prerequisites.astro";
 <IsSupportedChipGroup chips={{PostgreSQL: true, MySQL: true, SQLite: true}}/>
 
 <Prerequisites>
-- Get started with [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql) and [SQLite](/docs/get-started-sqlite);
-- [Select statement](/docs/select);
-- [Filtering](/docs/select#filtering) and [Filter operators](/docs/operators);
+- [PostgreSQL](/docs/get-started-postgresql), [MySQL](/docs/get-started-mysql), [SQLite](/docs/get-started-sqlite) 시작하기
+- [Select 문](/docs/select)
+- [필터링](/docs/select#filtering) 및 [필터 연산자](/docs/operators)
 </Prerequisites>
 
-To pass a conditional filter in query you can use `.where()` method and logical operator like below:
+쿼리에서 조건부 필터를 전달하려면 아래와 같이 `.where()` 메서드와 논리 연산자를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {9}
@@ -40,7 +40,7 @@ select * from posts where title ilike 'AI';
 ```
 </Section>
 
-To combine conditional filters you can use `and()` or `or()` operators like below:
+조건부 필터를 결합하려면 아래와 같이 `and()` 또는 `or()` 연산자를 사용할 수 있습니다:
 
 <Section>
 ```ts copy {7,8,9,10,11,12,13}
@@ -74,7 +74,7 @@ select * from posts
 ```
 </Section>
 
-If you need to combine conditional filters in different part of the project you can create a variable, push filters and then use it in `.where()` method with `and()` or `or()` operators like below:
+프로젝트의 다른 부분에서 조건부 필터를 결합해야 하는 경우, 변수를 만들고 필터를 추가한 다음 아래와 같이 `and()` 또는 `or()` 연산자와 함께 `.where()` 메서드에서 사용할 수 있습니다:
 
 ```ts copy {7,10}
 import { SQL, ... } from 'drizzle-orm';
@@ -94,7 +94,7 @@ filters.push(gt(posts.views, 200));
 await searchPosts(filters);
 ```
 
-Drizzle has useful and flexible API, which lets you create your custom solutions. This is how you can create a custom filter operator:
+Drizzle은 유용하고 유연한 API를 제공하여 맞춤형 솔루션을 만들 수 있습니다. 다음은 사용자 정의 필터 연산자를 만드는 방법입니다:
 
 <Section>
 
@@ -128,7 +128,7 @@ select * from posts where (length(title) < 8 and views > 200);
 ```
 </Section>
 
-Drizzle filter operators are just SQL expressions under the hood. This is example of how `lt` operator is implemented in Drizzle:
+Drizzle 필터 연산자는 내부적으로 단순히 SQL 표현식입니다. 다음은 Drizzle에서 `lt` 연산자가 구현된 방법의 예시입니다:
 
 ```js
 const lt = (left, right) => {

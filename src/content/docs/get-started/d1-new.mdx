@@ -1,3 +1,8 @@
+---
+title: "Drizzle ORM과 D1 시작하기"
+description: "Cloudflare D1 데이터베이스에서 Drizzle ORM을 설정하고 사용하는 방법을 단계별로 안내합니다."
+---
+
 import Npm from '@mdx/Npm.astro';
 import Npx from '@mdx/Npx.astro';
 import Callout from '@mdx/Callout.astro';
@@ -19,23 +24,23 @@ import ConnectLibsql from '@mdx/get-started/sqlite/ConnectLibsql.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and D1
+# Drizzle ORM과 D1 시작하기
 
-<Prerequisites>  
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **Cloudflare D1** - Serverless SQL database to query from your Workers and Pages projects - [read here](https://developers.cloudflare.com/d1/)
-  - **wrangler** - Cloudflare Developer Platform command-line interface - [read here](https://developers.cloudflare.com/workers/wrangler)
+<Prerequisites>
+  - **dotenv** - 환경 변수 관리 패키지 - [자세히 보기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [자세히 보기](https://tsx.is/)
+  - **Cloudflare D1** - Workers와 Pages 프로젝트에서 쿼리할 수 있는 서버리스 SQL 데이터베이스 - [자세히 보기](https://developers.cloudflare.com/d1/)
+  - **wrangler** - Cloudflare Developer Platform 명령줄 인터페이스 - [자세히 보기](https://developers.cloudflare.com/workers/wrangler)
 </Prerequisites>
 
 <FileStructure />
 
-#### Step 1 - Install required packages
+#### Step 1 - 필수 패키지 설치
 <InstallPackages lib='wrangler'/>
 
-#### Step 2 - Setup wrangler.toml
+#### Step 2 - wrangler.toml 설정
 
-You would need to have a `wrangler.toml` file for D1 database and will look something like this:
+D1 데이터베이스를 위한 `wrangler.toml` 파일이 필요하며, 다음과 같은 형태입니다:
 ```toml
 name = "YOUR PROJECT NAME"
 main = "src/index.ts"
@@ -49,7 +54,7 @@ database_id = "YOUR DB ID"
 migrations_dir = "drizzle"
 ```
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### Step 3 - 데이터베이스에 Drizzle ORM 연결
 
 ```typescript copy
 import { drizzle } from 'drizzle-orm/d1';
@@ -64,25 +69,25 @@ export default {
 };
 ```
 
-#### Step 4 - Generate wrangler types 
+#### Step 4 - wrangler 타입 생성
 
 <Npx>
 wrangler types
 </Npx>
 
 <Callout>
-The output of this command will be a `worker-configuration.d.ts` file.
+이 명령의 출력은 `worker-configuration.d.ts` 파일입니다.
 </Callout>
 
-#### Step 5 - Create a table
+#### Step 5 - 테이블 생성
 
 <CreateTable/>
 
-#### Step 6 - Setup Drizzle config file
+#### Step 6 - Drizzle 설정 파일 구성
 
-**Drizzle config** - a configuration file that is used by [Drizzle Kit](/docs/kit-overview) and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config** - [Drizzle Kit](/docs/kit-overview)에서 사용하는 설정 파일로, 데이터베이스 연결, 마이그레이션 폴더, 스키마 파일에 대한 모든 정보를 포함합니다.
 
-Create a `drizzle.config.ts` file in the root of your project and add the following content:
+프로젝트 루트에 `drizzle.config.ts` 파일을 생성하고 다음 내용을 추가합니다:
 
 ```typescript copy filename="drizzle.config.ts"
 import 'dotenv/config';
@@ -100,15 +105,15 @@ export default defineConfig({
   },
 });
 ```
-<Callout title='tips'>
-You can check [our tutorial](/docs/guides/d1-http-with-drizzle-kit) on how to get env variables from CloudFlare
+<Callout title='팁'>
+CloudFlare에서 환경 변수를 가져오는 방법은 [튜토리얼](/docs/guides/d1-http-with-drizzle-kit)을 확인하세요.
 </Callout>
 
-#### Step 7 - Applying changes to the database
+#### Step 7 - 데이터베이스에 변경사항 적용
 
 <ApplyChanges />
 
-#### Step 8 - Seed and Query the database
+#### Step 8 - 데이터베이스 시드 및 쿼리
 
 ```typescript copy
 import { drizzle } from 'drizzle-orm/d1';
@@ -125,6 +130,6 @@ export default {
 };
 ```
 
-#### Step 9 - Run index.ts file
+#### Step 9 - index.ts 파일 실행
 
 <RunFile/>

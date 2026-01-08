@@ -7,11 +7,11 @@ import Npm from '@mdx/Npm.astro';
 
 # drizzle-graphql
 
-Create a GraphQL server from a Drizzle schema in one line, and easily enhance it with custom queries and mutations.
+Drizzle 스키마에서 한 줄로 GraphQL 서버를 생성하고, 커스텀 쿼리와 뮤테이션으로 쉽게 확장할 수 있습니다.
 
-## Quick start
+## 빠른 시작
 
-Make sure your `drizzle-orm` version is at least `0.30.9`, and update if needed:
+`drizzle-orm` 버전이 최소 `0.30.9` 이상인지 확인하고, 필요하면 업데이트하세요:
 <Npm>drizzle-orm@latest</Npm>
 
 ### Apollo Server
@@ -119,13 +119,13 @@ export const postsRelations = relations(posts, ({ one }) => ({
 </CodeTab>
 </CodeTabs>
 
-## Customizing schema
+## 스키마 커스터마이징
 
 <Callout type='info' emoji='ℹ️'>
-`buildSchema()` produces schema and types using standard `graphql` SDK, so its output is compatible with any library that supports it.
+`buildSchema()`는 표준 `graphql` SDK를 사용하여 스키마와 타입을 생성하므로, 이를 지원하는 모든 라이브러리와 호환됩니다.
 </Callout>
 
-If you want to customize your schema, you can use `entities` object to build your own new schema:
+스키마를 커스터마이징하려면 `entities` 객체를 사용하여 새로운 스키마를 구성할 수 있습니다:
 
 <CodeTabs items={['server.ts', 'schema.ts']}>
 <CodeTab>
@@ -142,27 +142,27 @@ const db = drizzle({ schema: dbSchema });
 
 const { entities } = buildSchema(db);
 
-// You can customize which parts of queries or mutations you want
+// 원하는 쿼리 또는 뮤테이션의 부분을 커스터마이징할 수 있습니다
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
     fields: {
-      // Select only wanted queries out of all generated
+      // 생성된 모든 쿼리 중 원하는 쿼리만 선택
       users: entities.queries.users,
       customer: entities.queries.customersSingle,
 
-      // Create a custom one
+      // 커스텀 쿼리 생성
       customUsers: {
-        // You can reuse and customize types from original schema
+        // 원본 스키마의 타입을 재사용하고 커스터마이징할 수 있습니다
         type: new GraphQLList(new GraphQLNonNull(entities.types.UsersItem)),
         args: {
-          // You can reuse inputs as well
+          // 입력값도 재사용할 수 있습니다
           where: {
             type: entities.inputs.UsersFilters
           },
         },
         resolve: async (source, args, context, info) => {
-          // Your custom logic goes here...
+          // 커스텀 로직을 여기에 작성합니다...
           const result = await db.select(schema.users).where()...
 
           return result;
@@ -170,12 +170,12 @@ const schema = new GraphQLSchema({
       },
     },
   }),
-  // Same rules apply to mutations
+  // 뮤테이션에도 동일한 규칙이 적용됩니다
   mutation: new GraphQLObjectType({
     name: 'Mutation',
     fields: entities.mutations,
   }),
-  // In case you need types inside your schema
+  // 스키마 내에서 타입이 필요한 경우
   types: [...Object.values(entities.types), ...Object.values(entities.inputs)],
 });
 

@@ -19,31 +19,31 @@ import SetupEnv from '@mdx/get-started/SetupEnv.mdx';
 
 <Breadcrumbs/>
 
-# Get Started with Drizzle and MSSQL
+# Drizzle과 MSSQL 시작하기
 
 <Callout type='error'>
-This page explains concepts available on drizzle versions `1.0.0-beta.2` and higher.
+이 페이지는 Drizzle 버전 `1.0.0-beta.2` 이상에서 사용 가능한 개념을 설명합니다.
 </Callout>
 
 <br/>
 
 <Prerequisites>
-  - **dotenv** - package for managing environment variables - [read here](https://www.npmjs.com/package/dotenv)
-  - **tsx** - package for running TypeScript files - [read here](https://tsx.is/)
-  - **node-mssql** - package for querying your MSSQL database - [read here](https://github.com/tediousjs/node-mssql)
+  - **dotenv** - 환경 변수 관리 패키지 - [여기서 읽기](https://www.npmjs.com/package/dotenv)
+  - **tsx** - TypeScript 파일 실행 패키지 - [여기서 읽기](https://tsx.is/)
+  - **node-mssql** - MSSQL 데이터베이스 쿼리 패키지 - [여기서 읽기](https://github.com/tediousjs/node-mssql)
 </Prerequisites>
 
-Drizzle has native support for PostgreSQL connections with the `node-mssql` driver.
+Drizzle은 `node-mssql` 드라이버를 사용하여 MSSQL 연결을 기본적으로 지원합니다.
 
 <FileStructure/>
 
-#### Step 1 - Install **mssql** package
+#### 1단계 - **mssql** 패키지 설치
 <Npm>
   drizzle-orm@beta mssql dotenv
   -D drizzle-kit@beta tsx
 </Npm>
 
-#### Step 2 - Setup connection variables
+#### 2단계 - 연결 변수 설정
 
 <SetupEnv env_variable='DATABASE_URL' />
 
@@ -53,26 +53,26 @@ If you don't have a PostgreSQL database yet and want to create one for testing, 
 The PostgreSQL in Docker guide is available [here](/docs/guides/postgresql-local-setup). Go set it up, generate a database URL (explained in the guide), and come back for the next steps
 </Callout> */}
 
-#### Step 3 - Connect Drizzle ORM to the database
+#### 3단계 - Drizzle ORM을 데이터베이스에 연결
 
 <ConnectMSSQL/>
 
-#### Step 4 - Create a table
+#### 4단계 - 테이블 생성
 
 <CreateTable />
 
-#### Step 5 - Setup Drizzle config file
+#### 5단계 - Drizzle 설정 파일 구성
 
 <SetupConfig dialect='mssql' env_variable='DATABASE_URL'/>
 
-#### Step 6 - Applying changes to the database
+#### 6단계 - 데이터베이스에 변경사항 적용
 
 <ApplyChanges />
 
-#### Step 7 - Seed and Query the database
+#### 7단계 - 데이터베이스 시드 및 쿼리
 
 <QueryDatabase dialect='node-mssql' env_variable='DATABASE_URL'/>
 
-#### Step 8 - Run index.ts file
+#### 8단계 - index.ts 파일 실행
 
 <RunFile/>

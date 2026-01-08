@@ -10,25 +10,25 @@ import WhatsNextPostgres from "@mdx/WhatsNextPostgres.astro";
 # Drizzle \<\> Nile
 
 <Prerequisites>
-- Database [connection basics](/docs/connect-overview) with Drizzle
-- Nile Database - [website](https://thenile.dev)
-- Drizzle PostgreSQL drivers - [docs](/docs/get-started-postgresql)
+- Drizzle의 데이터베이스 [연결 기본 사항](/docs/connect-overview)
+- Nile Database - [웹사이트](https://thenile.dev)
+- Drizzle PostgreSQL 드라이버 - [문서](/docs/get-started-postgresql)
 </Prerequisites>
 
-According to the **[official website](https://thenile.dev)**, Nile is PostgreSQL re-engineered for multi-tenant apps.
+**[공식 웹사이트](https://thenile.dev)**에 따르면, Nile은 멀티 테넌트 앱을 위해 재설계된 PostgreSQL입니다.
 
-Checkout official **[Nile + Drizzle Quickstart](https://www.thenile.dev/docs/getting-started/languages/drizzle)** and **[Migration](https://www.thenile.dev/docs/getting-started/schema_migrations/drizzle)** docs.
+공식 **[Nile + Drizzle 빠른 시작](https://www.thenile.dev/docs/getting-started/languages/drizzle)** 및 **[마이그레이션](https://www.thenile.dev/docs/getting-started/schema_migrations/drizzle)** 문서를 확인하세요.
 
-You can use Nile with any of Drizzle's Postgres drivers, we'll be showing the use of `node-postgres` below.
+Nile은 Drizzle의 모든 Postgres 드라이버와 함께 사용할 수 있으며, 아래에서는 `node-postgres`의 사용법을 보여드립니다.
 
-#### Step 1 - Install packages
+#### 단계 1 - 패키지 설치
 
 <Npm>
 drizzle-orm postgres
 -D drizzle-kit
 </Npm>
 
-#### Step 2 - Initialize the driver and make a query
+#### 단계 2 - 드라이버 초기화 및 쿼리 실행
 
 ```typescript copy filename="index.ts"
 // Make sure to install the 'pg' package
@@ -39,7 +39,7 @@ const db = drizzle(process.env.NILEDB_URL);
 const response = await db.select().from(...);
 ```
 
-If you need to provide your existing driver:
+기존 드라이버를 제공해야 하는 경우:
 
 ```typescript copy filename="index.ts"
 // Make sure to install the 'pg' package
@@ -53,13 +53,13 @@ const db = drizzle({ client: pool });
 const response = await db.select().from(...);
 ```
 
-#### Connecting to a virtual tenant database
+#### 가상 테넌트 데이터베이스에 연결
 
-Nile provides virtual tenant databases, when you set the tenant context, Nile will direct your queries to the virtual database for this particular tenant and all queries will apply to that tenant (i.e. `select * from table` will result records only for this tenant). 
+Nile은 가상 테넌트 데이터베이스를 제공합니다. 테넌트 컨텍스트를 설정하면 Nile은 해당 테넌트의 가상 데이터베이스로 쿼리를 전달하며, 모든 쿼리는 해당 테넌트에만 적용됩니다(즉, `select * from table`은 해당 테넌트의 레코드만 반환합니다).
 
-In order to set the tenant context, we wrap each query in a transaction that sets the appropriate tenant context before running the transaction.
+테넌트 컨텍스트를 설정하기 위해, 트랜잭션을 실행하기 전에 적절한 테넌트 컨텍스트를 설정하는 트랜잭션으로 각 쿼리를 래핑합니다.
 
-The tenant ID can simply be passed into the wrapper as an argument:
+테넌트 ID는 단순히 래퍼에 인자로 전달할 수 있습니다:
 
 ```typescript copy filename="index.ts"
 import { drizzle } from 'drizzle-orm/node-postgres';
@@ -90,7 +90,7 @@ const response = await tenantDB(tenantId, async (tx) => {
 console.log(response);
 ```
 
-If you are using a web framwork that supports it, you can set up [AsyncLocalStorage](https://nodejs.org/api/async_context.html) and use middleware to populate it with the tenant ID. In this case, your Drizzle client setup will be:
+이를 지원하는 웹 프레임워크를 사용하는 경우, [AsyncLocalStorage](https://nodejs.org/api/async_context.html)를 설정하고 미들웨어를 사용하여 테넌트 ID로 채울 수 있습니다. 이 경우 Drizzle 클라이언트 설정은 다음과 같습니다:
 
 ```typescript copy filename="db/index.ts
 import { drizzle } from 'drizzle-orm/node-postgres';
@@ -115,7 +115,7 @@ export function tenantDB<T>(cb: (tx: any) => T | Promise<T>): Promise<T> {
 }
 ```
 
-And then, configure a middleware to populate the the AsyncLocalStorage and use `tenantDB` method when handling requests:
+그런 다음, AsyncLocalStorage를 채우도록 미들웨어를 구성하고 요청을 처리할 때 `tenantDB` 메서드를 사용합니다:
 
 ```typescript copy filename="app.ts"
 // Middleware to set tenant context
@@ -142,7 +142,7 @@ app.get("/api/tenants/:tenantId/todos", async (c) => {
 ```
 
 
-#### What's next?
+#### 다음 단계는?
 
 <WhatsNextPostgres/>
 

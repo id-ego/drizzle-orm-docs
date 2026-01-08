@@ -1,17 +1,17 @@
 ---
-title: DrizzleORM v0.29.0 release
+title: DrizzleORM v0.29.0 릴리스
 pubDate: 2023-11-09
-description: Added new features like unsigned option for bigint in MySQL, improved query builder types, added possibility to specify name for primary keys and foreign keys, read replicas support, set operators support, new MySQL and PostgreSQL proxy drivers, D1 Batch API support.
+description: MySQL bigint의 unsigned 옵션, 개선된 쿼리 빌더 타입, 기본 키와 외래 키의 이름 지정 기능, 읽기 전용 복제본 지원, 집합 연산자 지원, 새로운 MySQL 및 PostgreSQL 프록시 드라이버, D1 Batch API 지원 등의 새로운 기능이 추가되었습니다.
 ---
 import Section from "@mdx/Section.astro";
 
-> Drizzle ORM version `0.29.0` will require a minimum Drizzle Kit version of `0.20.0`, and vice versa. Therefore, when upgrading to a newer version of Drizzle ORM, you will also need to upgrade Drizzle Kit. This may result in some breaking changes throughout the versions, especially if you need to upgrade Drizzle Kit and your Drizzle ORM version is older than `<0.28.0`
+> Drizzle ORM 버전 `0.29.0`은 최소 Drizzle Kit 버전 `0.20.0`이 필요하며, 그 반대도 마찬가지입니다. 따라서 Drizzle ORM을 새 버전으로 업그레이드할 때는 Drizzle Kit도 함께 업그레이드해야 합니다. 특히 Drizzle Kit을 업그레이드해야 하는데 Drizzle ORM 버전이 `<0.28.0`보다 낮은 경우, 버전 전반에 걸쳐 일부 호환성 문제가 발생할 수 있습니다.
 
-## New Features
+## 새로운 기능
 
-### 🎉 MySQL `unsigned` option for bigint
+### 🎉 MySQL `unsigned` 옵션 (bigint)
 
-You can now specify `bigint unsigned` type
+이제 `bigint unsigned` 타입을 지정할 수 있습니다
 
 ```ts copy {2}
 const table = mysqlTable('table', {
@@ -19,11 +19,11 @@ const table = mysqlTable('table', {
 });
 ```
 
-Read more in [docs](/docs/column-types/mysql#bigint)
+자세한 내용은 [문서](/docs/column-types/mysql#bigint)를 참조하세요.
 
-### 🎉 Improved query builder types
+### 🎉 개선된 쿼리 빌더 타입
 
-Starting from `0.29.0` by default, as all the query builders in Drizzle try to conform to SQL as much as possible, you can only invoke most of the methods once. For example, in a SELECT statement there might only be one WHERE clause, so you can only invoke .where() once:
+`0.29.0`부터 기본적으로, Drizzle의 모든 쿼리 빌더는 가능한 한 SQL 표준을 따르기 위해 대부분의 메서드를 한 번만 호출할 수 있습니다. 예를 들어, SELECT 문에는 WHERE 절이 하나만 있을 수 있으므로 .where()는 한 번만 호출할 수 있습니다:
 
 ```ts copy {5}
 const query = db
@@ -33,9 +33,9 @@ const query = db
   .where(eq(users.name, 'John')); // ❌ Type error - where() can only be invoked once
 ```
 
-This behavior is useful for conventional query building, i.e. when you create the whole query at once. However, it becomes a problem when you want to build a query dynamically, i.e. if you have a shared function that takes a query builder and enhances it. To solve this problem, Drizzle provides a special 'dynamic' mode for query builders, which removes the restriction of invoking methods only once. To enable it, you need to call .$dynamic() on a query builder.
+이 동작은 전체 쿼리를 한 번에 작성하는 기존의 쿼리 빌딩에는 유용합니다. 하지만 쿼리를 동적으로 빌드하려는 경우, 예를 들어 쿼리 빌더를 받아서 확장하는 공유 함수가 있는 경우에는 문제가 됩니다. 이 문제를 해결하기 위해 Drizzle은 쿼리 빌더를 위한 특별한 'dynamic' 모드를 제공합니다. 이 모드는 메서드를 한 번만 호출해야 하는 제한을 제거합니다. 이를 활성화하려면 쿼리 빌더에서 .$dynamic()을 호출해야 합니다.
 
-Let's see how it works by implementing a simple withPagination function that adds LIMIT and OFFSET clauses to a query based on the provided page number and an optional page size:
+제공된 페이지 번호와 선택적 페이지 크기를 기반으로 쿼리에 LIMIT 및 OFFSET 절을 추가하는 간단한 withPagination 함수를 구현하여 작동 방식을 살펴보겠습니다:
 
 ```ts copy {12,13}
 function withPagination<T extends PgSelect>(
@@ -53,7 +53,7 @@ const dynamicQuery = query.$dynamic();
 withPagination(dynamicQuery, 1); // ✅ OK
 ```
 
-Note that the withPagination function is generic, which allows you to modify the result type of the query builder inside it, for example by adding a join:
+withPagination 함수는 제네릭이므로, 예를 들어 조인을 추가하는 등 함수 내부에서 쿼리 빌더의 결과 타입을 수정할 수 있습니다:
 
 ```ts copy {2}
 function withFriends<T extends PgSelect>(qb: T) {
@@ -64,11 +64,11 @@ let query = db.select().from(users).where(eq(users.id, 1)).$dynamic();
 query = withFriends(query);
 ```
 
-Read more in [docs](/docs/dynamic-query-building)
+자세한 내용은 [문서](/docs/dynamic-query-building)를 참조하세요.
 
-### 🎉 Possibility to specify name for primary keys and foreign keys
+### 🎉 기본 키 및 외래 키의 이름 지정 기능
 
-There is an issue when constraint names exceed the 64-character limit of the database. This causes the database engine to truncate the name, potentially leading to issues. Starting from `0.29.0`, you have the option to specify custom names for both `primaryKey()` and `foreignKey()`. We have also deprecated the old `primaryKey()` syntax, which can still be used but will be removed in future releases
+제약 조건 이름이 데이터베이스의 64자 제한을 초과하는 경우 문제가 발생합니다. 이로 인해 데이터베이스 엔진이 이름을 잘라내어 문제가 발생할 수 있습니다. `0.29.0`부터 `primaryKey()` 및 `foreignKey()` 모두에 대해 사용자 정의 이름을 지정할 수 있습니다. 또한 이전 `primaryKey()` 구문은 더 이상 사용되지 않지만 여전히 사용할 수 있으며 향후 릴리스에서 제거될 예정입니다.
 
 ```ts copy {5,7}
 const table = pgTable('table', {
@@ -84,11 +84,11 @@ const table = pgTable('table', {
 }));
 ```
 
-Read more in [docs](/docs/indexes-constraints#composite-primary-key)
+자세한 내용은 [문서](/docs/indexes-constraints#composite-primary-key)를 참조하세요.
 
-### 🎉 Read Replicas Support
+### 🎉 읽기 전용 복제본 지원
 
-You can now use the Drizzle `withReplica` function to specify different database connections for read replicas and the main instance for write operations. By default, `withReplicas` will use a random read replica for read operations and the main instance for all other data modification operations. You can also specify custom logic for choosing which read replica connection to use. You have the freedom to make any weighted, custom decision for that. Here are some usage examples:
+이제 Drizzle `withReplica` 함수를 사용하여 읽기 전용 복제본과 쓰기 작업을 위한 메인 인스턴스에 대해 서로 다른 데이터베이스 연결을 지정할 수 있습니다. 기본적으로 `withReplicas`는 읽기 작업에 임의의 읽기 전용 복제본을 사용하고, 다른 모든 데이터 수정 작업에는 메인 인스턴스를 사용합니다. 또한 사용할 읽기 전용 복제본 연결을 선택하는 사용자 정의 로직을 지정할 수도 있습니다. 가중치를 적용하거나 사용자 정의 결정을 내릴 수 있습니다. 다음은 사용 예제입니다:
 
 ```ts copy {5}
 const primaryDb = drizzle({ client });
@@ -107,7 +107,7 @@ db.select().from(usersTable)
 db.delete(usersTable).where(eq(usersTable.id, 1))
 ```
 
-Implementation example of custom logic for selecting read replicas, where the first replica has a 70% chance of being chosen, and the second replica has a 30% chance of being chosen. Note that you can implement any type of random selection for read replicas
+첫 번째 복제본이 70% 확률로 선택되고 두 번째 복제본이 30% 확률로 선택되는 읽기 전용 복제본 선택을 위한 사용자 정의 로직 구현 예제입니다. 읽기 전용 복제본에 대해 어떤 유형의 랜덤 선택이든 구현할 수 있습니다:
 
 ```ts copy
 const db = withReplicas(primaryDb, [read1, read2], (replicas) => {
@@ -123,16 +123,16 @@ const db = withReplicas(primaryDb, [read1, read2], (replicas) => {
 });
 ```
 
-`withReplicas` function is available for all dialects in Drizzle ORM
+`withReplicas` 함수는 Drizzle ORM의 모든 dialect에서 사용할 수 있습니다.
 
-Read more in [docs](/docs/read-replicas)
+자세한 내용은 [문서](/docs/read-replicas)를 참조하세요.
 
-### 🎉 Set operators support (UNION, UNION ALL, INTERSECT, INTERSECT ALL, EXCEPT, EXCEPT ALL)
+### 🎉 집합 연산자 지원 (UNION, UNION ALL, INTERSECT, INTERSECT ALL, EXCEPT, EXCEPT ALL)
 
-Huge thanks to @Angelelz for the significant contribution he made, from API discussions to proper type checks and runtime logic, along with an extensive set of tests. This greatly assisted us in delivering this feature in this release
+API 논의부터 적절한 타입 체크 및 런타임 로직, 광범위한 테스트 세트에 이르기까지 중요한 기여를 해주신 @Angelelz에게 큰 감사를 드립니다. 이는 이번 릴리스에서 이 기능을 제공하는 데 큰 도움이 되었습니다.
 
-Usage examples:
-All set operators can be used in a two ways: `import approach` or `builder approach`
+사용 예제:
+모든 집합 연산자는 두 가지 방식으로 사용할 수 있습니다: `import 방식` 또는 `빌더 방식`
 
 <Section>
 ```ts copy {2,7}
@@ -151,15 +151,15 @@ const result = await db.select().from(users).union(db.select().from(customers));
 ```
 </Section>
 
-Read more in [docs](/docs/set-operations)
+자세한 내용은 [문서](/docs/set-operations)를 참조하세요.
 
-### 🎉 New MySQL Proxy Driver
+### 🎉 새로운 MySQL 프록시 드라이버
 
-A new driver has been released, allowing you to create your own implementation for an HTTP driver using a MySQL database. You can find usage examples in the `./examples/mysql-proxy` folder
+MySQL 데이터베이스를 사용하는 HTTP 드라이버에 대한 자체 구현을 만들 수 있는 새로운 드라이버가 릴리스되었습니다. `./examples/mysql-proxy` 폴더에서 사용 예제를 찾을 수 있습니다.
 
-You need to implement two endpoints on your server that will be used for queries and migrations(Migrate endpoint is optional and only if you want to use drizzle migrations). Both the server and driver implementation are up to you, so you are not restricted in any way. You can add custom mappings, logging, and much more
+쿼리 및 마이그레이션에 사용될 두 개의 엔드포인트를 서버에 구현해야 합니다(마이그레이션 엔드포인트는 선택 사항이며 drizzle 마이그레이션을 사용하려는 경우에만 필요합니다). 서버 및 드라이버 구현은 모두 사용자에게 달려 있으므로 어떤 방식으로든 제한되지 않습니다. 사용자 정의 매핑, 로깅 등을 추가할 수 있습니다.
 
-You can find both server and driver implementation examples in the `./examples/mysql-proxy` folder
+서버 및 드라이버 구현 예제는 모두 `./examples/mysql-proxy` 폴더에서 찾을 수 있습니다.
 
 ```ts copy {4,9}
 // Driver
@@ -210,15 +210,15 @@ async function main() {
 }
 ```
 
-Read more in [docs](/docs/get-started-mysql#http-proxy)
+자세한 내용은 [문서](/docs/get-started-mysql#http-proxy)를 참조하세요.
 
-### 🎉 New PostgreSQL Proxy Driver
+### 🎉 새로운 PostgreSQL 프록시 드라이버
 
-Same as MySQL you can now implement your own http driver for PostgreSQL database. You can find usage examples in the `./examples/pg-proxy` folder
+MySQL과 마찬가지로 이제 PostgreSQL 데이터베이스용 자체 HTTP 드라이버를 구현할 수 있습니다. `./examples/pg-proxy` 폴더에서 사용 예제를 찾을 수 있습니다.
 
-You need to implement two endpoints on your server that will be used for queries and migrations (Migrate endpoint is optional and only if you want to use drizzle migrations). Both the server and driver implementation are up to you, so you are not restricted in any way. You can add custom mappings, logging, and much more
+쿼리 및 마이그레이션에 사용될 두 개의 엔드포인트를 서버에 구현해야 합니다(마이그레이션 엔드포인트는 선택 사항이며 drizzle 마이그레이션을 사용하려는 경우에만 필요합니다). 서버 및 드라이버 구현은 모두 사용자에게 달려 있으므로 어떤 방식으로든 제한되지 않습니다. 사용자 정의 매핑, 로깅 등을 추가할 수 있습니다.
 
-You can find both server and driver implementation examples in the `./examples/pg-proxy` folder
+서버 및 드라이버 구현 예제는 모두 `./examples/pg-proxy` 폴더에서 찾을 수 있습니다.
 
 ```ts copy {3,8}
 import axios from 'axios';
@@ -254,13 +254,13 @@ async function main() {
 }
 ```
 
-Read more in [docs](/docs/get-started-postgresql#http-proxy)
+자세한 내용은 [문서](/docs/get-started-postgresql#http-proxy)를 참조하세요.
 
-### 🎉 `D1` Batch API support
+### 🎉 `D1` Batch API 지원
 
-Reference: https://developers.cloudflare.com/d1/platform/client-api/#dbbatch
+참조: https://developers.cloudflare.com/d1/platform/client-api/#dbbatch
 
-Batch API usage example:
+Batch API 사용 예제:
 
 <Section>
 ```ts copy {1}
@@ -303,7 +303,7 @@ type BatchResponse = [
 ```
 </Section>
 
-All possible builders that can be used inside `db.batch`:
+`db.batch` 내부에서 사용할 수 있는 모든 빌더:
 
 ```ts
 `db.all()`,
@@ -318,17 +318,17 @@ All possible builders that can be used inside `db.batch`:
 `db.insert()...`,
 ```
 
-More usage examples here: [integration-tests/tests/d1-batch.test.ts](https://github.com/drizzle-team/drizzle-orm/blob/beta/integration-tests/tests/d1-batch.test.ts) and in [docs](/docs/batch-api)
+더 많은 사용 예제는 [integration-tests/tests/d1-batch.test.ts](https://github.com/drizzle-team/drizzle-orm/blob/beta/integration-tests/tests/d1-batch.test.ts) 및 [문서](/docs/batch-api)에서 확인할 수 있습니다.
 
 ---
 ## Drizzle Kit 0.20.0
 
-1. New way to define drizzle.config using `defineConfig` function
-2. Possibility to access Cloudflare D1 with Drizzle Studio using wrangler.toml file
-3. Drizzle Studio is migrating to https://local.drizzle.studio/
-4. `bigint unsigned` support
-5. `primaryKeys` and `foreignKeys` now can have custom names
-6. Environment variables are now automatically fetched 
-7. Some bug fixes and improvements
+1. `defineConfig` 함수를 사용한 새로운 drizzle.config 정의 방법
+2. wrangler.toml 파일을 사용하여 Drizzle Studio로 Cloudflare D1에 액세스하는 기능
+3. Drizzle Studio가 https://local.drizzle.studio/로 마이그레이션
+4. `bigint unsigned` 지원
+5. `primaryKeys` 및 `foreignKeys`에 사용자 정의 이름 지정 가능
+6. 환경 변수가 이제 자동으로 가져옴
+7. 일부 버그 수정 및 개선 사항
 
-You can read more about drizzle-kit updates [here](https://github.com/drizzle-team/drizzle-kit-mirror/releases/tag/v0.20.0)
+drizzle-kit 업데이트에 대한 자세한 내용은 [여기](https://github.com/drizzle-team/drizzle-kit-mirror/releases/tag/v0.20.0)에서 확인할 수 있습니다.
