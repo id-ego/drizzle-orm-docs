@@ -1,6 +1,7 @@
 <div id="banner" class="banner">
   <div class="banner__content">
-    <a href="https://github.com/drizzle-team/drizzle-orm/releases/tag/v1.0.0-beta.2" target="_blank" rel="nofollow noreferrer">We've merged alternation-engine into Beta release. Try it out!</a>
+    <span class="banner__text">🇰🇷 이 사이트는 커뮤니티에서 번역한 한글 문서입니다.</span>
+    <a href="https://orm.drizzle.team" target="_blank" rel="nofollow noreferrer" class="banner__link">원본 보기 →</a>
   </div>
 </div>  
 
@@ -47,5 +48,27 @@
     font-weight: 500;
     color: #909090;
     transition: color 0.2s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .banner__text {
+    color: #505050;
+  }
+
+  html[class~=dark] .banner__text {
+    color: #a0a0a0;
+  }
+
+  .banner__link {
+    color: #C5F74F;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .banner__link:hover {
+    text-decoration: underline;
   }
 </style>

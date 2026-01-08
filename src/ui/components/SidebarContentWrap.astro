@@ -12,6 +12,10 @@ interface Props {
 const { slug, tree, filteredHeadings, forLanding } = Astro.props;
 ---
 <div class="nav_sticky"></div>
+<div class="lang-notice">
+  <span class="lang-badge">🇰🇷 한글</span>
+  <a href="https://orm.drizzle.team" target="_blank" rel="nofollow noreferrer" class="lang-link">원본 →</a>
+</div>
 <AsideAstro tree={tree} headings={filteredHeadings} slug={slug!} forLanding={forLanding} />
 <style>
 
@@ -42,6 +46,40 @@ html[class~="dark"] .nav_sticky {
     height: 20px;
     background: linear-gradient(to bottom, #ffffff 0%, transparent 100%);
     pointer-events: none;
+  }
+
+  .lang-notice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    margin: 12px 0;
+    background: #f6f6f7;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+
+  html[class~=dark] .lang-notice {
+    background: #1c1c1c;
+  }
+
+  .lang-badge {
+    font-weight: 600;
+    color: #505050;
+  }
+
+  html[class~=dark] .lang-badge {
+    color: #a0a0a0;
+  }
+
+  .lang-link {
+    color: #4bb74a;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .lang-link:hover {
+    text-decoration: underline;
   }
 </style>
 <style is:global>
