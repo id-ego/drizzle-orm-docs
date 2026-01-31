@@ -9,29 +9,29 @@ import CodeTabs from "@mdx/CodeTabs.astro";
 # Drizzle \<\> Effect Postgres
 
 <Callout type='error'>
-This page explains concepts available on drizzle versions `1.0.0-beta.9` and higher.
+이 페이지는 Drizzle 버전 `1.0.0-beta.9` 이상에서 사용 가능한 기능을 설명합니다.
 
-Effect is only available for PostgreSQL right now and soon be implemented for all other dialects
+Effect는 현재 PostgreSQL에서만 사용 가능하며, 곧 다른 모든 데이터베이스에도 구현될 예정입니다.
 
-On how to upgrade (read more [here](/docs/upgrade-v1))
+업그레이드 방법은 [여기](/docs/upgrade-v1)를 참조하세요.
 </Callout>
 
 <Prerequisites>
-- Database [connection basics](/docs/connect-overview) with Drizzle
-- Effect - [website](https://effect.website/docs)
-- Bun SQL - native bindings for working with PostgreSQL databases - [read here](https://bun.sh/docs/api/sql)
-- **@effect/sql-pg** - A PostgreSQL toolkit for Effect - [read here](https://effect-ts.github.io/effect/docs/sql-pg)
+- Drizzle 데이터베이스 [연결 기본 사항](/docs/connect-overview)
+- Effect - [웹사이트](https://effect.website/docs)
+- Bun SQL - PostgreSQL 데이터베이스 작업을 위한 네이티브 바인딩 - [자세히 보기](https://bun.sh/docs/api/sql)
+- **@effect/sql-pg** - Effect를 위한 PostgreSQL 툴킷 - [자세히 보기](https://effect-ts.github.io/effect/docs/sql-pg)
 </Prerequisites>
 
-Drizzle has native support for Effect PostgreSQL connections with the `@effect/sql-pg` driver
+Drizzle은 `@effect/sql-pg` 드라이버를 통해 Effect PostgreSQL 연결을 네이티브로 지원합니다.
 
-#### Step 1 - Install packages
+#### Step 1 - 패키지 설치
 <Npm>
 drizzle-orm effect @effect/sql-pg pg
 -D drizzle-kit
 </Npm>
 
-#### Step 2 - Initialize the driver and make a query
+#### Step 2 - 드라이버 초기화 및 쿼리 실행
 ```typescript copy
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/effect-postgres';
@@ -43,7 +43,7 @@ const clientLayer = PgClient.layer({
     url: Redacted.make(process.env.DATABASE_URL!);
 	  types: {
 		  getTypeParser: (typeId, format) => {
-			  if ([1184, 1114, 1082, 1186, 1231, 1115, 1185, 1187, 1182].includes(typeId)) { 
+			  if ([1184, 1114, 1082, 1186, 1231, 1115, 1185, 1187, 1182].includes(typeId)) {
           return (val: any) => val;
         }
 			  return types.getTypeParser(typeId, format);
@@ -59,6 +59,6 @@ const program = Effect.gen(function*() {
 await Effect.runPromise(program).pipe(Effect.provide(clientLayer));
 ```
 
-#### What's next?
+#### 다음 단계
 
 <WhatsNextPostgres/>
