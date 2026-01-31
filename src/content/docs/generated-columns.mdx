@@ -43,33 +43,39 @@ import Callout from '@mdx/Callout.astro';
     이 컬럼 데이터를 자동으로 생성할 수 있습니다.
 
     #### 기능
-    이 함수는 3가지 방법으로 generated 표현식을 받을 수 있습니다:
+    이 함수는 2가지 방법으로 generated 표현식을 받을 수 있습니다:
+
+    <Callout type='warning' collapsed="1.0.0-beta.12 버전부터 변경된 사항">
+
+    이전 버전에서는 `.generatedAlwaysAs()`가 리터럴을 표현식으로 받을 수 있었습니다.
 
     **`string`**
     <CodeTab>
     ```ts
     export const test = pgTable("test", {
-        generatedName: text("gen_name").generatedAlwaysAs(`hello world!`),
+        generatedName: text("gen_name").generatedAlwaysAs(`'hello world!'`),
     });
     ```
     ```sql
-    CREATE TABLE IF NOT EXISTS "test" (
-	    "gen_name" text GENERATED ALWAYS AS (hello world!) STORED
+    CREATE TABLE "test" (
+	    "gen_name" text GENERATED ALWAYS AS ('hello world!') STORED
     );
     ```
     </CodeTab>
+
+    </Callout>
 
     **`sql`** 태그 - Drizzle이 일부 값을 이스케이프하도록 하려는 경우
 
     <CodeTab>
     ```ts
     export const test = pgTable("test", {
-        generatedName: text("gen_name").generatedAlwaysAs(sql`hello "world"!`),
+        generatedName: text("gen_name").generatedAlwaysAs(sql`'hello "world"!'`),
     });
     ```
     ```sql
-    CREATE TABLE IF NOT EXISTS "test" (
-	    "gen_name" text GENERATED ALWAYS AS (hello "world"!) STORED
+    CREATE TABLE "test" (
+	    "gen_name" text GENERATED ALWAYS AS ('hello "world"!') STORED
     );
     ```
     </CodeTab>
@@ -80,14 +86,14 @@ import Callout from '@mdx/Callout.astro';
     export const test = pgTable("test", {
         name: text("first_name"),
         generatedName: text("gen_name").generatedAlwaysAs(
-          (): SQL => sql`hi, ${test.name}!`
+          (): SQL => sql`'hi, ' || ${test.name} || '!'`
         ),
     });
     ```
     ```sql
-    CREATE TABLE IF NOT EXISTS "test" (
+    CREATE TABLE "test" (
 	    "first_name" text,
-	    "gen_name" text GENERATED ALWAYS AS (hi, "test"."first_name"!) STORED
+	    "gen_name" text GENERATED ALWAYS AS ('hi, ' || "test"."first_name" || '!') STORED
     );
     ```
     </CodeTab>
@@ -122,17 +128,17 @@ import Callout from '@mdx/Callout.astro';
     );
     ```
     ```sql {4}
-    CREATE TABLE IF NOT EXISTS "test" (
+    CREATE TABLE "test" (
     	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "test_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
     	"content" text,
     	"content_search" "tsvector" GENERATED ALWAYS AS (to_tsvector('english', "test"."content")) STORED
     );
     --> statement-breakpoint
-    CREATE INDEX IF NOT EXISTS "idx_content_search" ON "test" USING gin ("content_search");
+    CREATE INDEX "idx_content_search" ON "test" USING gin ("content_search");
     ```
     </CodeTab>
    </CodeTabs>
-  </Tab> 
+  </Tab>
   <Tab>
     #### 데이터베이스 측
     **타입**: `STORED`, `VIRTUAL`
@@ -153,56 +159,67 @@ import Callout from '@mdx/Callout.astro';
     자세한 정보는 [MySQL Alter Generated](https://dev.mysql.com/doc/refman/8.4/en/alter-table-generated-columns.html) 문서 및 [MySQL create generated](https://dev.mysql.com/doc/refman/8.4/en/create-table-generated-columns.html) 문서를 확인하세요
 
     #### Drizzle 측
+    Drizzle에서는 모든 컬럼 타입에 `.generatedAlwaysAs()` 함수를 지정하고 지원되는 SQL 쿼리를 추가하여
+    이 컬럼 데이터를 자동으로 생성할 수 있습니다.
 
-    #### 기능 
+    #### 기능
+    이 함수는 2가지 방법으로 generated 표현식을 받을 수 있습니다:
+
+    <Callout type='warning' collapsed="1.0.0-beta.12 버전부터 변경된 사항">
+
+    이전 버전에서는 `.generatedAlwaysAs()`가 리터럴을 표현식으로 받을 수 있었습니다.
 
     **`string`**
     <CodeTab>
     ```ts
     export const test = mysqlTable("test", {
-        generatedName: text("gen_name").generatedAlwaysAs(`hello world!`),
+        generatedName: text("gen_name").generatedAlwaysAs(`'hello world!'`),
     });
     ```
+
     ```sql
-    CREATE TABLE `test` (
-	    `gen_name` text GENERATED ALWAYS AS (hello world!) VIRTUAL
+    CREATE TABLE "test" (
+	    "gen_name" text GENERATED ALWAYS AS ('hello world!') VIRTUAL
     );
     ```
     </CodeTab>
+
+    </Callout>
 
     **`sql`** 태그 - Drizzle이 일부 값을 이스케이프하도록 하려는 경우
 
     <CodeTab>
     ```ts
     export const test = mysqlTable("test", {
-        generatedName: text("gen_name").generatedAlwaysAs(sql`hello "world"!`),
+        generatedName: text("gen_name").generatedAlwaysAs(sql`'hello "world"!'`),
     });
     ```
     ```sql
     CREATE TABLE `test` (
-	    `gen_name` text GENERATED ALWAYS AS (hello "world"!) VIRTUAL
+	    `gen_name` text GENERATED ALWAYS AS ('hello "world"!') VIRTUAL
     );
     ```
     </CodeTab>
 
     **`callback`** - 테이블의 컬럼을 참조해야 하는 경우
 
-    <CodeTab>
+     <CodeTab>
     ```ts
     export const test = mysqlTable("test", {
         name: text("first_name"),
         generatedName: text("gen_name").generatedAlwaysAs(
-          (): SQL => sql`hi, ${test.name}!`
+          (): SQL => sql`'hi, ' || ${test.name} || '!'`
         ),
     });
     ```
     ```sql
     CREATE TABLE `test` (
-    	`first_name` text,
-    	`gen_name` text GENERATED ALWAYS AS (hi, `test`.`first_name`!) VIRTUAL
+  	  `first_name` text,
+  	  `gen_name` text GENERATED ALWAYS AS ('hi, ' || `test`.`first_name` || '!') VIRTUAL
     );
     ```
     </CodeTab>
+
     #### 제한사항
     Drizzle Kit은 `push` 명령에 대해 다음과 같은 제한사항이 있습니다:
     1. `push`를 사용하여 generated 제약조건 표현식 및 타입을 변경할 수 없습니다. Drizzle-kit은 이 변경사항을 무시합니다. 이를 작동시키려면 `컬럼을 삭제`하고, `push`한 다음, `새 표현식으로 컬럼을 추가`해야 합니다. 이는 데이터베이스 측의 복잡한 매핑으로 인한 것으로, 스키마 표현식이 데이터베이스 측에서 수정되고 인트로스펙션 시 다른 문자열을 얻게 됩니다. 표현식을 변경했는지 아니면 데이터베이스에 의해 변경 및 포맷되었는지 확신할 수 없습니다. 이러한 컬럼이 generated columns이고 `push`가 주로 로컬 데이터베이스 프로토타이핑에 사용되는 한, generated columns을 `삭제`하고 `생성`하는 것이 빨라야 합니다. 이러한 컬럼이 `generated`이므로 모든 데이터가 복원됩니다
@@ -216,27 +233,27 @@ import Callout from '@mdx/Callout.astro';
         id2: int("id2"),
         name: text("name"),
         storedGenerated: text("stored_gen").generatedAlwaysAs(
-          (): SQL => sql`${users.name} || 'hello'`,
+          (): SQL => sql`concat(${users.name}, ' ', 'hello')`,
           { mode: "stored" }
         ),
         virtualGenerated: text("virtual_gen").generatedAlwaysAs(
-          (): SQL => sql`${users.name} || 'hello'`,
+          (): SQL => sql`concat(${users.name}, ' ', 'hello')`,
           { mode: "virtual" }
         ),
-    })
+    });
     ```
     ```sql
     CREATE TABLE `users` (
-	    `id` int,
-	    `id2` int,
-	    `name` text,
-	    `stored_gen` text GENERATED ALWAYS AS (`users`.`name` || 'hello') STORED,
-	    `virtual_gen` text GENERATED ALWAYS AS (`users`.`name` || 'hello') VIRTUAL
+      `id` int,
+      `id2` int,
+      `name` text,
+      `stored_gen` text GENERATED ALWAYS AS (concat(`users`.`name`, ' ', 'hello')) STORED,
+      `virtual_gen` text GENERATED ALWAYS AS (concat(`users`.`name`, ' ', 'hello')) VIRTUAL
     );
     ```
     </CodeTab>
   </CodeTabs>
-  </Tab> 
+  </Tab>
   <Tab>
     #### 데이터베이스 측
     **타입**: `STORED`, `VIRTUAL`
@@ -257,30 +274,47 @@ import Callout from '@mdx/Callout.astro';
     자세한 정보는 [SQLite](https://www.sqlite.org/gencol.html) 문서를 확인하세요
 
     #### Drizzle 측
+    Drizzle에서는 모든 컬럼 타입에 `.generatedAlwaysAs()` 함수를 지정하고 지원되는 SQL 쿼리를 추가하여
+    이 컬럼 데이터를 자동으로 생성할 수 있습니다.
 
     #### 기능
+    이 함수는 2가지 방법으로 generated 표현식을 받을 수 있습니다:
+
+    <Callout type='warning' collapsed="1.0.0-beta.12 버전부터 변경된 사항">
+
+    1.0.0-beta.12 이전 버전에서는 `.generatedAlwaysAs()`가 리터럴을 표현식으로 받을 수 있었습니다.
+
     **`string`**
+    <CodeTab>
     ```ts
     export const test = sqliteTable("test", {
-        generatedName: text("gen_name").generatedAlwaysAs(`hello world!`),
+        id: int("id").primaryKey(),
+        generatedName: text("gen_name").generatedAlwaysAs(`'hello world!'`),
     });
     ```
+
     ```sql
     CREATE TABLE `test` (
-	    `gen_name` text GENERATED ALWAYS AS (hello world!) VIRTUAL
+	    `id` integer PRIMARY KEY,
+	    `gen_name` text GENERATED ALWAYS AS ('hello world!') VIRTUAL
     );
     ```
+    </CodeTab>
+
+    </Callout>
 
     **`sql`** 태그 - Drizzle이 일부 값을 이스케이프하도록 하려는 경우
 
     ```ts
     export const test = sqliteTable("test", {
-        generatedName: text("gen_name").generatedAlwaysAs(sql`hello "world"!`),
+        id: int("id").primaryKey(),
+        generatedName: text("gen_name").generatedAlwaysAs(sql`'hello "world"!'`),
     });
     ```
     ```sql
     CREATE TABLE `test` (
-	    `gen_name` text GENERATED ALWAYS AS (hello "world"!) VIRTUAL
+      `id` integer PRIMARY KEY,
+      `gen_name` text GENERATED ALWAYS AS ('hello "world"!') VIRTUAL
     );
     ```
 
@@ -290,14 +324,14 @@ import Callout from '@mdx/Callout.astro';
     export const test = sqliteTable("test", {
         name: text("first_name"),
         generatedName: text("gen_name").generatedAlwaysAs(
-          (): SQL => sql`hi, ${test.name}!`
+          (): SQL => sql`'hi,' || ${test.name} || '!'`
         ),
     });
     ```
     ```sql
     CREATE TABLE `test` (
-	    `first_name` text,
-	    `gen_name` text GENERATED ALWAYS AS (hi, "first_name"!) VIRTUAL
+      `first_name` text,
+      `gen_name` text GENERATED ALWAYS AS ('hi,' || "first_name" || '!') VIRTUAL
     );
     ```
 
@@ -308,7 +342,7 @@ import Callout from '@mdx/Callout.astro';
     3. 위와 같은 이유로 기존 컬럼의 `stored` generated 표현식을 변경할 수 없습니다. 그러나 `virtual` 표현식은 변경할 수 있습니다.
     4. 위와 같은 이유로 generated 제약조건 타입을 `virtual`에서 `stored`로 변경할 수 없습니다. 그러나 `stored`에서 `virtual`로는 변경할 수 있습니다.
 
-   <CodeTabs items={["index.ts", "schema.ts"]}>
+  <CodeTabs items={["schema.ts"]}>
 	<CodeTab>
 	```typescript copy
     export const users = sqliteTable("users", {
@@ -334,11 +368,11 @@ import Callout from '@mdx/Callout.astro';
     ```
     </CodeTab>
   </CodeTabs>
-  </Tab> 
+  </Tab>
   <Tab>
   작업 진행 중
   </Tab>
-<Tab>
+  <Tab>
     #### 데이터베이스 측
     **타입**: `PERSISTED`, `VIRTUAL`
 
@@ -350,34 +384,44 @@ import Callout from '@mdx/Callout.astro';
     자세한 정보는 [MSSQL](https://learn.microsoft.com/en-us/sql/relational-databases/tables/specify-computed-columns-in-a-table?view=sql-server-ver17) 문서를 확인하세요
 
     #### Drizzle 측
+    Drizzle에서는 모든 컬럼 타입에 `.generatedAlwaysAs()` 함수를 지정하고 지원되는 SQL 쿼리를 추가하여
+    이 컬럼 데이터를 자동으로 생성할 수 있습니다.
 
-    #### 기능 
+    #### 기능
+    이 함수는 2가지 방법으로 generated 표현식을 받을 수 있습니다:
+
+    <Callout type='warning' collapsed="1.0.0-beta.12 버전부터 변경된 사항">
+
+    이전 버전에서는 `.generatedAlwaysAs()`가 리터럴을 표현식으로 받을 수 있었습니다.
 
     **`string`**
     <CodeTab>
     ```ts
     export const test = mssqlTable("test", {
-        generatedName: text("gen_name").generatedAlwaysAs(`hello world!`),
+        generatedName: text("gen_name").generatedAlwaysAs(`'hello world!'`),
     });
     ```
     ```sql
     CREATE TABLE [test] (
-	    [gen_name] AS ('hello world!') VIRTUAL
+	    [gen_name] AS ('hello world!')
     );
     ```
     </CodeTab>
+    </Callout>
 
     **`sql`** 태그 - Drizzle이 일부 값을 이스케이프하도록 하려는 경우
 
     <CodeTab>
     ```ts
     export const test = mssqlTable("test", {
+        id: int("id"),
         generatedName: text("gen_name").generatedAlwaysAs(sql`hello "world"!`),
     });
     ```
     ```sql
     CREATE TABLE [test] (
-	    [gen_name] AS ('hello "world"!') VIRTUAL
+	    [id] int,
+	    [gen_name] AS ('hello "world"!')
     );
     ```
     </CodeTab>
@@ -389,14 +433,14 @@ import Callout from '@mdx/Callout.astro';
     export const test = mssqlTable("test", {
         name: text("first_name"),
         generatedName: text("gen_name").generatedAlwaysAs(
-          (): SQL => sql`hi, ${test.name}!`
+          (): SQL => sql`concat('hi,', ' ', ${test.name}, '!')`
         ),
     });
     ```
     ```sql
     CREATE TABLE [test] (
     	[first_name] text,
-    	[gen_name] AS ('hi, [test].[first_name]!') VIRTUAL
+    	[gen_name] AS (concat('hi,', ' ', [test].[first_name], '!'))
     );
     ```
     </CodeTab>
@@ -406,33 +450,38 @@ import Callout from '@mdx/Callout.astro';
     이 컬럼 데이터를 자동으로 생성할 수 있습니다.
 
     #### 기능
-    이 함수는 3가지 방법으로 generated 표현식을 받을 수 있습니다:
+    이 함수는 2가지 방법으로 generated 표현식을 받을 수 있습니다:
+
+    <Callout type='warning' collapsed="1.0.0-beta.12 버전부터 변경된 사항">
+
+    이전 버전에서는 `.generatedAlwaysAs()`가 리터럴을 표현식으로 받을 수 있었습니다.
 
     **`string`**
     <CodeTab>
     ```ts
     export const test = cockroachTable("test", {
-        generatedName: text("gen_name").generatedAlwaysAs(`hello world!`),
+        generatedName: text("gen_name").generatedAlwaysAs(`'hello world!'`),
     });
     ```
     ```sql
     CREATE TABLE "test" (
-	    "gen_name" text GENERATED ALWAYS AS (hello world!) STORED
+    	"gen_name" string GENERATED ALWAYS AS ('hello world!') STORED
     );
     ```
     </CodeTab>
+    </Callout>
 
     **`sql`** 태그 - Drizzle이 일부 값을 이스케이프하도록 하려는 경우
 
     <CodeTab>
     ```ts
     export const test = cockroachTable("test", {
-        generatedName: text("gen_name").generatedAlwaysAs(sql`hello "world"!`),
+        generatedName: text("gen_name").generatedAlwaysAs(sql`'hello "world"!'`),
     });
     ```
     ```sql
     CREATE TABLE "test" (
-	    "gen_name" text GENERATED ALWAYS AS (hello "world"!) STORED
+	    "gen_name" string GENERATED ALWAYS AS ('hello "world"!') STORED
     );
     ```
     </CodeTab>
@@ -443,14 +492,15 @@ import Callout from '@mdx/Callout.astro';
     export const test = cockroachTable("test", {
         name: text("first_name"),
         generatedName: text("gen_name").generatedAlwaysAs(
-          (): SQL => sql`hi, ${test.name}!`
+          (): SQL => sql`'hi, ' || ${test.name} || '!'`
         ),
     });
     ```
+
     ```sql
     CREATE TABLE "test" (
-	    "first_name" text,
-	    "gen_name" text GENERATED ALWAYS AS (hi, "test"."first_name"!) STORED
+    	"first_name" string,
+    	"gen_name" string GENERATED ALWAYS AS ('hi, ' || "test"."first_name" || '!') STORED
     );
     ```
     </CodeTab>
@@ -486,14 +536,13 @@ import Callout from '@mdx/Callout.astro';
     ```
     ```sql {4}
     CREATE TABLE "test" (
-    	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "test_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-    	"content" text,
-    	"content_search" "tsvector" GENERATED ALWAYS AS (to_tsvector('english', "test"."content")) STORED
+    	"id" int4 PRIMARY KEY GENERATED ALWAYS AS IDENTITY (INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+    	"content" string,
+    	"content_search" tsvector GENERATED ALWAYS AS (to_tsvector('english', "test"."content")) STORED
     );
-    --> statement-breakpoint
     CREATE INDEX "idx_content_search" ON "test" USING gin ("content_search");
     ```
     </CodeTab>
    </CodeTabs>
-  </Tab> 
+  </Tab>
 </Tabs>
