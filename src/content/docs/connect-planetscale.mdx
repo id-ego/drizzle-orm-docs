@@ -1,13 +1,13 @@
-import Npm from '@mdx/Npm.astro';
-import Callout from '@mdx/Callout.astro';
-import Tabs from '@mdx/Tabs.astro';
-import Tab from '@mdx/Tab.astro';
-import AnchorCards from '@mdx/AnchorCards.astro';
+import Npm from "@mdx/Npm.astro";
+import Callout from "@mdx/Callout.astro";
+import Tabs from "@mdx/Tabs.astro";
+import Tab from "@mdx/Tab.astro";
+import AnchorCards from "@mdx/AnchorCards.astro";
 import WhatsNextPostgres from "@mdx/WhatsNextPostgres.astro";
 import Prerequisites from "@mdx/Prerequisites.astro";
 import CodeTabs from "@mdx/CodeTabs.astro";
 
-# Drizzle \<\> PlanetScale
+# Drizzle \<\> PlanetScale MySQL
 
 <Prerequisites>
 - Drizzle을 사용한 데이터베이스 [연결 기본사항](/docs/connect-overview)
@@ -16,22 +16,22 @@ import CodeTabs from "@mdx/CodeTabs.astro";
 - Drizzle MySQL 드라이버 - [문서](/docs/get-started-mysql)
 </Prerequisites>
 
-**[공식 웹사이트](https://planetscale.com)**에 따르면,
-PlanetScale은 세계에서 가장 진보된 서버리스 MySQL 플랫폼입니다.
+PlanetScale은 MySQL(Vitess)과 PostgreSQL 데이터베이스를 모두 제공합니다. 이 페이지에서는 PlanetScale MySQL 연결을 다룹니다.
+
+PlanetScale Postgres의 경우 [PlanetScale Postgres 연결 가이드](/docs/connect-planetscale-postgres)를 참조하세요.
 
 Drizzle ORM을 사용하면 `drizzle-orm/planetscale-serverless` 패키지를 통해
 공식 **[`database-js`](https://github.com/planetscale/database-js)** 드라이버로
-서버리스 및 서버풀 환경에서 http를 통해 PlanetScale에 접근할 수 있습니다.
+서버리스 및 서버풀 환경에서 http를 통해 PlanetScale MySQL에 접근할 수 있습니다.
 
-`mysql2` 드라이버를 사용하여 TCP를 통해 PlanetScale에 접근할 수도 있습니다 — **[여기를 참조하세요.](/docs/get-started-mysql)**
+`mysql2` 드라이버를 사용하여 TCP를 통해 PlanetScale MySQL에 접근할 수도 있습니다 — **[여기를 참조하세요.](/docs/get-started-mysql)**
 
 #### 1단계 - 패키지 설치
-<Npm>
-drizzle-orm @planetscale/database
--D drizzle-kit
-</Npm>
+
+<Npm>drizzle-orm @planetscale/database -D drizzle-kit</Npm>
 
 #### 2단계 - 드라이버 초기화 및 쿼리 실행
+
 ```typescript copy"
 import { drizzle } from "drizzle-orm/planetscale-serverless";
 
@@ -64,4 +64,4 @@ PlanetScale 공식 **[MySQL 강좌](https://planetscale.com/courses/mysql-for-de
 
 #### 다음 단계
 
-<WhatsNextPostgres/>
+<WhatsNextPostgres />
